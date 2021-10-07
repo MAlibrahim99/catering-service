@@ -1,0 +1,73 @@
+[options="header"]
+[cols="1, 3, 3"]
+|===
+|Version | Bearbeitungsdatum   | Autor 
+|...	| ... | ...
+|===
+
+= Entwicklerdokumentation
+
+== Einführung und Ziele
+* Aufgabenstellung
+* Qualitätsziele
+
+== Randbedingungen
+* Hardware-Vorgaben
+* Software-Vorgaben
+* Vorgaben zum Betrieb des Software
+
+== Kontextabgrenzung
+* Kontextdiagramm
+
+== Lösungsstrategie
+=== Erfüllung der Qualitätsziele
+[options="header"]
+|=== 
+|Qualitätsziel |Lösungsansatz
+|... |...
+|===
+
+=== Softwarearchitektur
+* Beschreibung der Architektur anhand der Top-Level-Architektur oder eines Client-Server-Diagramms
+
+=== Entwurfsentscheidungen
+* Verwendete Muster
+* Persistenz
+* Benutzeroberfläche
+* Verwendung externer Frameworks
+
+[options="header", cols="1,2"]
+|===
+|Externes Package |Verwendet von (Klasse der eigenen Anwendung)
+|... |... 
+|===
+
+== Bausteinsicht
+* Entwurfsklassendiagramme der einzelnen Packages
+
+[options="header"]
+|=== 
+|Klasse/Enumeration |Description
+|...|...
+|===
+
+=== Rückverfolgbarkeit zwischen Analyse- und Entwurfsmodell
+_Die folgende Tabelle zeigt die Rückverfolgbarkeit zwischen Entwurfs- und Analysemodell. Falls eine Klasse aus einem externen Framework im Entwurfsmodell eine Klasse des Analysemodells ersetzt,
+wird die Art der Verwendung dieser externen Klasse in der Spalte *Art der Verwendung* mithilfe der folgenden Begriffe definiert:_
+
+* Inheritance/Interface-Implementation
+* Class Attribute
+* Method Parameter
+
+[options="header"]
+|===
+|Klasse/Enumeration (Analysemodell) |Klasse/Enumeration (Entwurfsmodell) |Art der Verwendung
+|...|...|...
+|===
+
+== Laufzeitsicht
+* Darstellung der Komponenteninteraktion anhand eines Sequenzdiagramms, welches die relevantesten Interaktionen darstellt.
+
+== Technische Schulden
+* Auflistung der nicht erreichten Quality Gates und der zugehörigen SonarQube Issues zum Zeitpunkt der Abgabe
+
