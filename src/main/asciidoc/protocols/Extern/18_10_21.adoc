@@ -1,0 +1,34 @@
+= Protokoll Gruppe 27
+
+Treffen am 18.10.2021
+
+Ort:      Online (BBB) +
+Beginn:   14:50 Uhr +
+Ende:     15:35 Uhr
+
+__Schriftführer:__ Lennart Obermüller
+
+*Nächstes Treffen:* +
+25.10.2021, 14:50 Uhr, Online (BBB)
+
+__Teilnehmer:__
+//Tabellarisch oder Aufzählung, Kennzeichnung von Teilnehmern mit besonderer Rolle (z.B. Kunde)
+
+- Phillipp Zschiedrich (Tutor)
+- Lennart Obermüller (Scrum Master)
+- Dan Kornelius Nguyen
+- Konrad Schneider
+- Lisa-Marie Müller
+- Mohamad Alibrahim
+- Rosa Splittgerber
+
+== Bemerkungen
+- Scrum Master wurde ausgewählt
+
+== Ereignisse
+- Vergleich der Bearbeitung der Guestbook-Anwendung
+- Hilfestellung bei Problemen beim Programmieren
+- Erläuterung der Aufgabe zum Videoshop
+
+== Aktueller Stand
+- Teammitglieder machten sich erstmals mit dem Framework durch die Guestbook-Anwendung vertraut
