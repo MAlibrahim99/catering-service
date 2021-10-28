@@ -24,12 +24,16 @@ Insbesondere ergänzen, welche Ziele mit dem Abschluss des Projektes erreicht we
 In welchem Kontext soll das System später genutzt werden? Welche Rahmenbedingungen gelten?
 Zusätzlich kurze Einleitung für fachfremde Personen
 
+
 Die Website des Cateringservice Mampf soll übersichtlich und informativ die unterschiedlichen Angebote der Firma an die Kunden bringen. Neben den gebotenen Informationen, soll es Kunden möglich sein, ein Event ohne großen Aufwand zu buchen. 
 Bei der Zielgruppe handelt es sich sowohl um Firmen, die in der Lage sind, ohne große Probleme eine Website zu navigieren, als auch um Privatpersonen, die Feiern für verschiedene private Anlässe organisieren wollen, bei denen technisches Wissen nicht zwingend vorauszusetzen ist.
+
 Die Website ist vor allem für die Nutzung am Computer vorgesehen und für folgende Browser optimiert: 
 
 - Google Chrome, Version 95.0.4638.54+
 - Mozilla Firefox, Version	93.0+
+
+Die Software soll ohne Wartungsarbeiten konstant laufen und alle gespeicherten Daten sollen für den Betreiber ohne technisches Wissen über die Webseite abrufbar sein.
 
 == Interessensgruppen (Stakeholders)
 Welche realen und juristischen Personen(-gruppen) haben Einfluss auf die Anforderungen im Projekt?
@@ -98,6 +102,17 @@ Anforderungen die das Programm leisten können soll, aber für den korrekten Bet
 === Qualitätsziele
 
 Dokumentieren Sie in einer Tabelle die Qualitätsziele, welche das System erreichen soll, sowie deren Priorität.
+
+1 = Nicht wichtig ...
+5 = Am wichtigsten
+
+[options="header", cols="3h, ^1, ^1, ^1, ^1, ^1"]
+|===
+|Qualitätsziel           | 1 | 2 | 3 | 4 | 5 
+|Wartbarkeit             |   | x |   |   |
+|Bedienbarkeit           |   |   |   | x |
+|Sicherheit              |   |   |   | x |
+|===
 
 === Konkrete Nicht-Funktionale Anforderungen
 
