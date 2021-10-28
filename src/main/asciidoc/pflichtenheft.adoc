@@ -156,6 +156,83 @@ Dieser Abschnitt stellt eine Vereinigung von Glossar und der Beschreibung von Kl
 Mithilfe von Akzeptanztests wird geprüft, ob die Software die funktionalen Erwartungen und Anforderungen im Gebrauch erfüllt. Diese sollen und können aus den Anwendungsfallbeschreibungen und den UML-Sequenzdiagrammen abgeleitet werden. D.h., pro (komplexen) Anwendungsfall gibt es typischerweise mindestens ein Sequenzdiagramm (welches ein Szenarium beschreibt). Für jedes Szenarium sollte es einen Akzeptanztestfall geben. Listen Sie alle Akzeptanztestfälle in tabellarischer Form auf.
 Jeder Testfall soll mit einer ID versehen werde, um später zwischen den Dokumenten (z.B. im Test-Plan) referenzieren zu können.
 
+
+[cols="1h, 4"]
+|===
+|ID                  |<<AT000>>
+|Anwedungsfall       |<<UC00>>
+|Voraussetzung       a|Das System hat Nutzer.
+|Event               a|Ein unregistrierter Nutzer befindet sich auf der “Anmelden”-Seite, gibt dort E-Mail-Adresse und Passwort ein, die mit den Daten eines registrierten Nutzers übereinstimmen (hannes.wurst@mampf.de, cAt3r1nG_yeay) und klickt “Anmelden”.
+|Erwartetes Resultat a|
+- Der Nutzer ist nun angemeldet als “hannes.wurst@mampf.de”
+- Der Nutzer wird zur Startseite weitergeleitet
+- Der Nutzer hat Zugriff zu allen Funktionen, die der Rolle “CUSTOMER” zugeordnet sind.
+|===
+
+[cols="1h, 4"]
+|===
+|ID                  |<<AT001>>
+|Anwedungsfall       |<<UC00>>
+|Voraussetzung       a|Ein angemeldeter Nutzer nutzt das System.
+|Event               a|Der angemeldete Nutzer klickt “Ausloggen”.
+|Erwartetes Resultat a|
+- Der Nutzer ist abgemeldet
+- Der Nutzer verliert den Zugriff auf alle Funktionalitäten, die der Rolle “CUSTOMER” zugeordnet sind.
+|===
+
+[cols="1h, 4"]
+|===
+|ID                  |<<AT010>>
+|Anwedungsfall       |<<UC01>>
+|Voraussetzung       a|Ein unregistrierter Nutzer nutzt das System.
+|Event               a|Der nicht registrierte Nutzer klickt “Registrieren” und gibt die folgenden Informationen ein:
+
+- Name: Test Kunde
+- E-Mail-Adresse: test@kunde.com
+- Passwort: irgendWAS_123
+
+Um die Registrierung abzuschließen klickt der Nutzer “Registrieren”
+|Erwartetes Resultat a|
+- Es wird ein neues Kundenkonto mit den angegeben Daten erstell
+- Es ist nun möglich sich mit der angegebenen E-Mail-Adresse und dem Passwort anzumelden
+- Der unangemeldete Nutzer ist immer noch unangemeldet und wird auf die Startseite weitergeleitet
+|===
+
+[cols="1h, 4"]
+|===
+|ID                  |<<AT011>>
+|Anwedungsfall       |<<UC01>>
+|Voraussetzung       a|Ein unregistrierter Nutzer nutzt das System.
+|Event               a|Der nicht registrierte Nutzer klickt “Registrieren” und gibt die folgenden Informationen ein:
+
+- Name: Hannes Wurst
+- E-Mail-Adresse: test@kunde.com
+- Passwort: cAt3r1nG_yeay
+
+Um die Registrierung abzuschließen klickt der Nutzer “Registrieren”
+|Erwartetes Resultat a|
+- Dem Nutzer wird eine Fehlermeldung angezeigt die ihn informiert, dass ein Nutzer mit dieser E-Mail-Adresse bereits existiert
+|===
+
+[cols="1h, 4"]
+|===
+|ID                  |<<AT100>>
+|Anwedungsfall       |<<UC11>>
+|Voraussetzung       a|Ein Nutzer nutzt das System.
+|Event               a|Der Nutzer klickt in der Navigationsleiste auf “Angebot”.
+|Erwartetes Resultat a|Dem Nutzer werden die angebotenen Dienstleistungen ‘Eventcatering’, ‘Partyservice’, ‘Mobile Breakfast’ und ‘Rent-a-cook’ mit einer kurzen Beschreibung vorgestellt.
+|===
+
+[cols="1h, 4"]
+|===
+|ID                  |<<AT101>>
+|Anwedungsfall       |<<UC02>>
+|Voraussetzung       a|Ein angemeldeter Nutzer benutzt das System.
+|Event               a|Der Nutzer klickt auf den Menüpunkt “Profil”.
+|Erwartetes Resultat a|Der Nutzer erlangt (auf einer neuen Seite) einsicht auf die Daten, die er beim registrieren angegeben hat und kann diese bearbeiten.
+|===
+
+
 == Glossar
 Sämtliche Begriffe, die innerhalb des Projektes verwendet werden und deren gemeinsames Verständnis aller beteiligten Stakeholder essentiell ist, sollten hier aufgeführt werden.
 Insbesondere Begriffe der zu implementierenden Domäne wurden bereits beschrieben, jedoch gibt es meist mehr Begriffe, die einer Beschreibung bedürfen. +
