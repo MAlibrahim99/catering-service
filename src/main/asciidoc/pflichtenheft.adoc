@@ -5,8 +5,9 @@
 [options="header"]
 [cols="1, 1, 1, 1, 4"]
 |===
-|Version | Status      | Bearbeitungsdatum   | Autoren(en) |  Vermerk
-|0.1     | In Arbeit   | 10.10.2021          | Autor       | Initiale Version
+|Version | Status      | Bearbeitungsdatum   | Autoren |  Vermerk
+|0.1     | In Arbeit   | 28.10.2021          | Dan Nguyen, Konrad Schneider, Lennart Obermüller, Lisa-Marie Müller, Mohamad Alibrahim, Rosa Splittgerber
+| Alle Inhalte vom Pflichtenheft wurden gemeinsam in der Gruppe erarbeitet und in einem Google-Document zusammengestellt. Ein Mitglied, dass einige Inhalte auf GitHub hochlädt, repräsentiert nicht unbedingt den Hauptautor dieser Inhalte.
 |===
 
 == Inhaltsverzeichnis
@@ -36,17 +37,36 @@ Dokumentieren Sie ihre Top-Level-Architektur mit Hilfe eines Komponentendiagramm
 
 == Anwendungsfälle
 
+Anwendungsfälle beschreiben welche Interaktionen der Nutzer mit dem System durchführen kann, welche Funktionalität das System dabei erfüllen muss und welche Akteure beteiligt sind.
+
 === Akteure
 
-Akteure sind die Benutzer des Software-Systems oder Nachbarsysteme, welche darauf zugreifen. Dokumentieren Sie die Akteure in einer Tabelle. Diese Tabelle gibt einen Überblick über die Akteure und beschreibt sie kurz. Die Tabelle hat also mindestens zwei Spalten (Akteur Name und Kommentar).
-Weitere relevante Spalten können bei Bedarf ergänzt werden.
+Akteure sind die Benutzer des Software-Systems oder Nachbarsysteme, welche darauf zugreifen. Diese Tabelle gibt einen Überblick über die Akteure und beschreibt sie kurz.
 
 // See http://asciidoctor.org/docs/user-manual/#tables
 [options="header"]
 [cols="1,4"]
 |===
-|Name |Beschreibung
-|...  |...
+|Name
+|Beschreibung
+
+|Nutzer
+|Steht für alle Nutzer, die mit der Software interagieren, egal ob registriert oder nicht.
+
+|Unregistrierter Nutzer
+|Steht für alle nicht registrierten und nicht angemeldeten Nutzer.
+
+|Angemeldeter Nutzer
+|Steht für alle Nutzer, die einen Account registriert haben, und angemeldet sind.
+
+|Kunde
+|Steht für alle angemeldeten Nutzer, die die Rolle “CUSTOMER” haben und somit Bestellungen tätigen können.
+
+|Personal
+|Steht für alle angemeldeten Nutzer, die die Rolle “STAFF” haben, und somit die eingegangenen Bestellungen einsehen können.
+
+|Administrator
+|Steht für alle angemeldeten Nutzer, die die Rolle “ADMIN” haben, und somit das System vollständig verwalten können.
 |===
 
 === Überblick Anwendungsfalldiagramm
