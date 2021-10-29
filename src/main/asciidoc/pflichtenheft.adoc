@@ -84,10 +84,281 @@ Akteure sind die Benutzer des Software-Systems oder Nachbarsysteme, welche darau
 Anwendungsfall-Diagramm, das alle Anwendungsfälle und alle Akteure darstellt
 
 === Anwendungsfallbeschreibungen
-Dieser Unterabschnitt beschreibt die Anwendungsfälle. In dieser Beschreibung müssen noch nicht alle Sonderfälle und Varianten berücksichtigt werden. Schwerpunkt ist es, die wichtigsten Anwendungsfälle des Systems zu finden. Wichtig sind solche Anwendungsfälle, die für den Auftraggeber, den Nutzer den größten Nutzen bringen.
-Für komplexere Anwendungsfälle ein UML-Sequenzdiagramm ergänzen.
-Einfache Anwendungsfälle mit einem Absatz beschreiben.
-Die typischen Anwendungsfälle (Anlegen, Ändern, Löschen) können zu einem einzigen zusammengefasst werden.
+Dieser Unterabschnitt gibt eine detaillierte Beschreibung aller Anwendungsfälle.
+
+[cols="1h, 3"]
+[[UC00]]
+|===
+|ID
+|*<<UC00>>*
+
+|Name
+|Login/Logout
+
+|Beschreibung
+|Ein Nutzer soll in der Lage sein, sich auf der Website anzumelden, um Zugriff auf bestimmte Funktionalitäten zu erhalten. Am Ende kann sich der Nutzer wieder abmelden.
+
+|Akteure
+|Nutzer
+
+|Auslöser
+a|
+- Login: Der Nutzer möchte erweiterten Zugriff erhalten und meldet sich über den “Anmelden”-Zugang an.
+- Logout: Der Nutzer möchte die Seite wieder verlassen.
+
+|Voraussetzungen
+a|
+- Login: Der Nutzer ist bereits registriert, ist jedoch noch nicht angemeldet.
+- Logout: Der Nutzer ist angemeldet.
+
+|Notwendige Schritte
+a|
+- Login: 
+    1. Nutzer klickt auf “Anmelden”
+    2. Er gibt E-Mail Adresse und Passwort ein
+    3. Er klickt auf “Anmelden”
+    4. Das System prüft, ob ein Nutzer mit der eingegebenen E-Mail Adresse und Passwort im System registriert ist
+        * Anmeldedaten korrekt: Nutzer wird angemeldet
+        * Anmeldedaten inkorrekt: Nutzer bekommt eine Fehlermeldung
+- Logout:
+    1. Nutzer klickt auf “Abmelden”
+    2. Er wird abgemeldet und auf die Startseite geleitet
+
+|Funktionale Anforderungen
+|
+|===
+
+[cols="1h, 3"]
+[[UC01]]
+|===
+|ID
+|*<<UC01>>*
+
+|Name
+|Registrieren
+
+|Beschreibung
+|Ein Nutzer, der noch keinen Account besitzt, kann sich registrieren und einen neuen Account anlegen.
+
+|Akteure
+|Unregistrierter Nutzer
+
+|Auslöser
+|Unregistrierter Nutzer möchte einen neuen Account anlegen und klickt auf “Registrieren”
+
+|Voraussetzungen
+a|
+- Nutzer ist nicht angemeldet
+
+|Notwendige Schritte
+a|
+1. Unregistrierter Nutzer klickt auf den Menüpunkt “Registrieren”
+2. Er gibt Name, E-Mail Adresse und Passwort an
+3. Er klickt auf “Registrieren”
+4. System prüft, ob die E-Mail Adresse schon von einem anderen Nutzer benutzt wurde und ob das Passwort minimalen Sicherheitsanforderungen entspricht
+    * Wenn die E-Mail Adresse nicht bereits vorhanden und das Passwort sicher genug ist: ein neuer Account wird angelegt
+    * Ansonsten: Nutzer bekommt Fehlermeldung entsprechend des nichterfüllten Kriteriums
+
+|Funktionale Anforderungen
+|
+|===
+
+[cols="1h, 3"]
+[[UC02]]
+|===
+|ID
+|*<<UC02>>*
+
+|Name
+|Profil
+
+|Beschreibung
+|Ein angemeldeter Nutzer kann seine bei der Registrierung eingegebenen Daten einsehen und bearbeiten.
+
+|Akteure
+|Angemeldeter Nutzer
+
+|Auslöser
+|Angemeldeter Nutzer möchte sein Profil einsehen oder bearbeiten und klickt auf den Menüpunkt “Profil”
+
+|Voraussetzungen
+a|
+- Nutzer ist angemeldet
+
+|Notwendige Schritte
+a|
+1. Angemeldeter Nutzer klickt auf den Menüpunkt “Profil”
+2. Er kann neuen Name, neue E-Mail Adresse oder neues Passwort eingeben.
+3. Er klickt auf “Bestätigen”
+4. System prüft, ob die neue E-Mail Adresse schon von einem anderen Nutzer benutzt wurde und ob das Passwort minimalen Sicherheitsanforderungen entspricht
+    * Wenn die E-Mail Adresse nicht bereits vorhanden und das Passwort sicher genug ist: die Daten werden im Account des Nutzers geändert
+    * Ansonsten: Nutzer bekommt Fehlermeldung entsprechend des nichterfüllten Kriteriums
+
+|Funktionale Anforderungen
+|
+|===
+
+[cols="1h, 3"]
+[[UC03]]
+|===
+|ID
+|*<<UC03>>*
+
+|Name
+|Account löschen
+
+|Beschreibung
+|Ein angemeldeter Nutzer kann seinen Account löschen.
+
+|Akteure
+|Angemeldeter Nutzer
+
+|Auslöser
+|Angemeldeter Nutzer möchte seinen Account löschen und klickt auf “Account löschen”
+
+|Voraussetzungen
+a|
+- Nutzer ist angemeldet
+- Nutzer befindet sich auf der Seite
+
+|Notwendige Schritte
+a|
+1. Angemeldeter Nutzer klickt auf “Account löschen”
+2. Der Nutzer wird abgemeldet
+3. Der Account des Nutzers wird aus dem System gelöscht
+
+|Funktionale Anforderungen
+|
+|===
+
+[cols="1h, 3"]
+[[UC10]]
+|===
+|ID
+|*<<UC10>>*
+
+|Name
+|Startseite einsehen
+
+|Beschreibung
+|Dem Nutzer wird eine übersichtliche Seite mit allen Menüpunkten und einer kurzen Beschreibung des Unternehmens Cateringservice _Mampf_ angezeigt.
+
+|Akteure
+|Nutzer
+
+|Auslöser
+|Nutzer ruft die Internetseite des Cateringservice _Mampf_ auf, oder er möchte von einer Unterseite, durch Klicken auf “Cateringservice Mampf” im obersten Bereich jeder Seite, wieder zurück auf die Startseite gehen
+
+|Voraussetzungen
+a|keine
+
+|Notwendige Schritte
+a|
+1. Nutzer ruft die Internetseite auf
+  _oder_
+  Nutzer klickt auf “Cateringservice Mampf” im obersten Bereich jeder Unterseite
+2. Dem Nutzer wird die Startseite angezeigt
+
+|Funktionale Anforderungen
+|
+|===
+
+[cols="1h, 3"]
+[[UC11]]
+|===
+|ID
+|*<<UC11>>*
+
+|Name
+|Katalog einsehen
+
+|Beschreibung
+|Dem Nutzer werden die vier Dienstleistungen “Eventcatering”, “Partyservice”, “Mobile Breakfast” und “Rent-a-Cook” mit kurzen Beschreibungen aufgelistet.
+
+|Akteure
+|Nutzer
+
+|Auslöser
+|Nutzer möchte, durch Klicken auf den Menüpunkt “Angebot”, das Angebot des Cateringservice einsehen
+
+|Voraussetzungen
+a|keine
+
+|Notwendige Schritte
+a|
+1. Nutzer klickt auf den Menüpunkt “Angebot”
+2. Dem Nutzer werden alle angebotenen Dienstleistungen mit einer kurzen Beschreibung angezeigt
+
+|Funktionale Anforderungen
+|
+|===
+
+[cols="1h, 3"]
+[[UC12]]
+|===
+|ID
+|*<<UC12>>*
+
+|Name
+|Detailseite einsehen
+
+|Beschreibung
+|Dem Nutzer werden Bilder und eine detaillierte Beschreibung von jeweils einem der vier Dienstleistungen “Eventcatering”, “Partyservice”, “Mobile Breakfast” und “Rent-a-cook” angezeigt.
+
+|Akteure
+|Nutzer
+
+|Auslöser
+|Nutzer klickt auf eine der vier Dienstleistungen, um eine detaillierte Beschreibung zu sehen.
+
+|Voraussetzungen
+a|
+- Nutzer befindet sich auf der Seite “Angebot”
+
+|Notwendige Schritte
+a|
+1. Nutzer klickt auf die Bezeichnung von einer der vier Dienstleistungen “Eventcatering”, “Partyservice”, “Mobile Breakfast” und “Rent-a-cook”
+2. Dem Nutzer werden Bilder und eine detaillierte Beschreibung der ausgewählten Dienstleistung angezeigt
+
+|Funktionale Anforderungen
+|
+|===
+
+[cols="1h, 3"]
+[[UC13]]
+|===
+|ID
+|*<<UC13>>*
+
+|Name
+|Preise bearbeiten
+
+|Beschreibung
+|Der Administrator kann die Preise der angebotenen Produkte ändern.
+
+|Akteure
+|Administrator
+
+|Auslöser
+|Administrator möchte die Preise der Produkte ändern
+
+|Voraussetzungen
+a|
+- Nutzer ist angemeldet und hat die Rolle “ADMIN”
+- Nutzer befindet sich auf der Detailseite einer Dienstleistung
+
+|Notwendige Schritte
+a|
+1. Administrator klickt auf “Preise bearbeiten”
+2. Er gibt neue Preise ein
+3. Er klickt auf “Bestätigen”
+4. Das System prüft die Eingabe
+    * Gültige Eingabe: Die Preise im Katalog werden geändert
+    * Ungültige Eingabe: Dem Administrator wird eine Fehlermeldung angezeigt
+
+|Funktionale Anforderungen
+|
+|===
 
 == Funktionale Anforderungen
 
