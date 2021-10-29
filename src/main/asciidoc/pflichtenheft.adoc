@@ -232,6 +232,27 @@ Um die Registrierung abzuschließen klickt der Nutzer “Registrieren”
 |Erwartetes Resultat a|Der Nutzer erlangt (auf einer neuen Seite) einsicht auf die Daten, die er beim registrieren angegeben hat und kann diese bearbeiten.
 |===
 
+[cols="1h, 4"]
+|===
+|ID                  |<<AT111>>
+|Anwedungsfall       |<<UC03>>
+|Voraussetzung       a|Ein angemeldeter Nutzer benutzt das System und befindet sich auf seinem Profil.
+|Event               a|Der Nutzer klickt auf "Account löschen".
+|Erwartetes Resultat a|- Das Benutzerkonto wird aus dem System entfernt
+- Der Nutzer verliert seine Rolle "CUSTOMER"
+- Der nun unregistrierter  Nutzer wird zurück zur Startseite geleitet
+|===
+
+[cols="1h, 4"]
+|===
+|ID                  |<<AT002>>
+|Anwedungsfall       |<<UC20>>
+|Voraussetzung       a|Ein angemeldeter Nutzer benutzt das System und befindet sich am Ende auf einer der vier Angebotsseiten.
+|Event               a|Der Nutzer klickt auf "Bestellen".
+|Erwartetes Resultat a|Dem Nutzer wird auf einer neuen Seite das Bestellformular für seine Dienstleistung angezeigt.
+|===
+
+
 
 == Glossar
 Sämtliche Begriffe, die innerhalb des Projektes verwendet werden und deren gemeinsames Verständnis aller beteiligten Stakeholder essentiell ist, sollten hier aufgeführt werden.
