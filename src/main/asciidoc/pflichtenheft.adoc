@@ -12,6 +12,9 @@
 
 == Inhaltsverzeichnis
 Dieses Dokument benötigt ein Inhaltsverzeichnis. Es existieren mehrere Einbindungsmöglichkeiten.
+//um einen Kapiteltitel zu referenzieren, fügt man den Titel in Doppelspitzeklammmer.
+
+<<Nicht-Funktionale Anforderungen>>
 
 == Zusammenfassung
 Eine kurze Beschreibung des Dokuments. Wenige Absätze.
@@ -98,10 +101,11 @@ Was das zu erstellende Programm auf alle Fälle leisten muss.
 Anforderungen die das Programm leisten können soll, aber für den korrekten Betrieb entbehrlich sind.
 
 == Nicht-Funktionale Anforderungen
+Dieses Kapitel gibt einen Überblick über die Nicht-Funktionalen Anforderungen. Diese beinhalten Qulitätsattribute, ohne die eine der Nutzergruppen benachteiligt wird. Beispielsweise die Bedienbarkeit oder die Sicherheit.
 
 === Qualitätsziele
 
-Dokumentieren Sie in einer Tabelle die Qualitätsziele, welche das System erreichen soll, sowie deren Priorität.
+Die folgende Tabelle zeigt die zu erreichenden Qualitätsziele im System und ihre Priorität.
 
 1 = Nicht wichtig ...
 5 = Am wichtigsten
@@ -118,6 +122,14 @@ Dokumentieren Sie in einer Tabelle die Qualitätsziele, welche das System erreic
 
 Beschreiben Sie Nicht-Funktionale Anforderungen, welche dazu dienen, die zuvor definierten Qualitätsziele zu erreichen.
 Achten Sie darauf, dass deren Erfüllung (mindestens theoretisch) messbar sein muss.
+
+[options="header", cols="h, ^1, ^1, ^1"]
+|===
+|ID         |Version | Name          | Beschreibung
+|[NF010]    |0.1     |Wartbarkeit    | Das System soll mit einer ausreichenden Developerdokumentation geliefert weden.
+|[NF020]    |0.1     |Bedienbarkeit  | Die Benutzeroberflächen sollen pbersichtlich sein. Knöpfe und Forms sollen gut zusammengestellt und weisen eine einfache Bedienung aller Nutzergruppen aus
+|[NF030]    |0.1     |Autorität     | Die Systemnutzer sollen nicht mehr Zugriffsrechte haben als die, die bei der Kontoerstellung angegeben wurden. Bei sehr großen Bestellungen soll dem Nutzer daraut hingewiesen werden, dass die Bestellung vor Ort abgeschlossen werden muss
+|===
 
 == GUI Prototyp
 
