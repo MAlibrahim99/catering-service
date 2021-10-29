@@ -360,6 +360,469 @@ a|
 |
 |===
 
+[cols="1h, 3"]
+[[UC20]]
+|===
+|ID
+|*<<UC20>>*
+
+|Name
+|Bestellformular einsehen
+
+|Beschreibung
+|Ein angemeldeter Nutzer entscheidet sich für eine Dienstleistung und kann ein Formular mit allen nötigen Optionen für die Bestellung einsehen.
+
+|Akteure
+|Angemeldeter Nutzer
+
+|Auslöser
+|Angemeldeter Nutzer ruft die Formularseite auf, um Bestelldetails einzugeben
+
+|Voraussetzungen
+a|
+- Nutzer ist angemeldet
+- Nutzer befindet sich auf der Detailseite einer Dienstleistung
+
+|Notwendige Schritte
+a|
+1. Angemeldeter Nutzer klickt auf “Bestellen” auf der Detailseite einer Dienstleistung
+2. Dem angemeldeten Nutzer wird jeweils das Bestellformular zur ausgewählten Dienstleistung angezeigt
+
+|Funktionale Anforderungen
+|
+|===
+
+[cols="1h, 3"]
+[[UC21]]
+|===
+|ID
+|*<<UC21>>*
+
+|Name
+|Bestelldetails einsehen
+
+|Beschreibung
+|Einem angemeldeten Nutzer werden sämtliche Details und Attribute einer Bestellung angezeigt.
+
+|Akteure
+|Angemeldeter Nutzer
+
+|Auslöser
+|Nutzer klickt auf den Typ (“Eventcatering”, “Partyservice”, “Mobile Breakfast”, “Rent-a-Cook”) einer Bestellung
+
+|Voraussetzungen
+a|
+- Nutzer ist angemeldet und hat die Rolle “CUSTOMER”
+- Nutzer befindet sich auf der Seite
+“Bestellverlauf”
+
+_oder_
+
+- Nutzer ist angemeldet und hat die Rolle “STAFF”
+- Nutzer befindet sich auf der Seite
+    “Bestellliste”
+    _oder_
+    “Kalender”
+
+|Notwendige Schritte
+a|
+1. Angemeldeter Nutzer klickt auf den Typ einer Bestellung
+2. Dem Nutzer werden alle Details zur gewählten Bestellung angezeigt
+
+|Funktionale Anforderungen
+|
+|===
+
+[cols="1h, 3"]
+[[UC22]]
+|===
+|ID
+|*<<UC22>>*
+
+|Name
+|Kaufen
+
+|Beschreibung
+|Ein Kunde kann eine Bestellung tätigen.
+
+|Akteure
+|Kunde
+
+|Auslöser
+|Kunde klickt auf “Kaufen”
+
+|Voraussetzungen
+a|
+- Nutzer ist angemeldet und hat die Rolle “CUSTOMER”
+- Nutzer befindet auf der Formularseite einer Dienstleistung
+
+|Notwendige Schritte
+a|
+1. Kunde gibt alle gewünschten Optionen an
+2. Er klickt auf “Kaufen”
+3. System prüft, ob alle Felder korrekt ausgefüllt wurden und ob zum gewählten Termin noch genügend Ressourcen verfügbar sind
+    * Alle Felder sind korrekt ausgefüllt und es sind genügend Ressourcen verfügbar: die Bestellung wird mit dem Status “Aktiv” im System eingetragen und dem Kunden wird eine Bestätigungs-E-Mail geschickt
+    * Alle Felder sind korrekt ausgefüllt und es sind zu wenig Verbrauchsgüter oder Ausrüstung verfügbar: die Bestellung wird mit dem Status ‘Aktiv’ im System eingetragen, dem Kunden wird eine Bestätigungs-E-Mail geschickt und dem Administrator wird eine Informations-E-Mail zum Auffüllen der Bestände geschickt
+    * Alle Felder sind korrekt ausgefüllt und es ist zu wenig Personal verfügbar: Kunde bekommt eine Fehlermeldung, dass der Cateringservice zum gewählten Termin schon voll ausgelastet ist und dem Administrator wird eine Informations-E-Mail geschickt, dass eine Bestellung mangels Personal abgelehnt wurde
+    * Es wurden nicht alle Felder korrekt ausgefüllt oder der gewählte Termin liegt weniger als drei Tage im Voraus: Kunde bekommt eine entsprechende Fehlermeldung
+
+|Funktionale Anforderungen
+|
+|===
+
+[cols="1h, 3"]
+[[UC23]]
+|===
+|ID
+|*<<UC23>>*
+
+|Name
+|Bestellverlauf einsehen
+
+|Beschreibung
+|Einem Kunden kann eine Liste mit all seinen bereits getätigten Bestellungen angezeigt werden.
+
+|Akteure
+|Kunde
+
+|Auslöser
+|Kunde möchte seine Bestellverlauf einsehen und klickt auf den Menüpunkt “Bestellverlauf”
+
+|Voraussetzungen
+a|
+- Nutzer ist angemeldet und hat die Rolle “CUSTOMER”
+
+|Notwendige Schritte
+a|
+1. Kunde klickt auf den Menüpunkt “Bestellverlauf”
+2. Dem Nutzer wird eine Liste seiner Bestellungen mit Typ, Termin und Status angezeigt
+
+|Funktionale Anforderungen
+|
+|===
+
+[cols="1h, 3"]
+[[UC24]]
+|===
+|ID
+|*<<UC24>>*
+
+|Name
+|Bestellung stornieren
+
+|Beschreibung
+|Ein Kunde kann eine von ihm getätigte Bestellung mit dem Status “Aktiv” stornieren.
+
+|Akteure
+|Kunde
+
+|Auslöser
+|Kunde klickt auf “Stornieren” neben einer Bestellung
+
+|Voraussetzungen
+a|
+- Nutzer ist angemeldet und hat die Rolle “CUSTOMER”
+- Nutzer befindet sich auf der Seite “Bestellverlauf”
+
+|Notwendige Schritte
+a|
+1. Kunde klickt auf “Stornieren”
+2. Der Status der ausgewählten Bestellung wird von “Aktiv” auf “Storniert” gesetzt
+3. Dem Kunden wird eine Bestätigungs-E-Mail geschickt
+
+|Funktionale Anforderungen
+|
+|===
+
+[cols="1h, 3"]
+[[UC30]]
+|===
+|ID
+|*<<UC30>>*
+
+|Name
+|Bestellliste einsehen
+
+|Beschreibung
+|Dem Personal kann eine Liste aller eingegangenen Bestellungen angezeigt werden. Es kann nach Status der Bestellung gefiltert werden.
+
+|Akteure
+|Personal
+
+|Auslöser
+|Personal möchte die Bestellliste einsehen und klickt auf den Menüpunkt “Bestellliste”
+
+|Voraussetzungen
+a|
+- Nutzer ist angemeldet und hat die Rolle “STAFF”
+
+|Notwendige Schritte
+a|
+1. Personal klickt auf den Menüpunkt “Bestellliste”
+2. Dem Personal wird eine Liste mit eingegangenen Bestellungen angezeigt
+
+|Funktionale Anforderungen
+|
+|===
+
+[cols="1h, 3"]
+[[UC31]]
+|===
+|ID
+|*<<UC31>>*
+
+|Name
+|Kalender einsehen
+
+|Beschreibung
+|Dem Personal können alle eingegangenen Bestellungen mit dem Status “Aktiv” in einem Kalender angezeigt werden.
+
+|Akteure
+|Personal
+
+|Auslöser
+|Personal möchte den Kalender einsehen und klickt auf den Menüpunkt “Kalender”
+
+|Voraussetzungen
+a|
+- Nutzer ist angemeldet und hat die Rolle “STAFF”
+
+|Notwendige Schritte
+a|
+1. Personal klickt auf den Menüpunkt “Kalender”
+2. Dem Personal werden aktive Bestellungen in Form eines Kalenders angezeigt
+
+|Funktionale Anforderungen
+|
+|===
+
+[cols="1h, 3"]
+[[UC32]]
+|===
+|ID
+|*<<UC32>>*
+
+|Name
+|Kundenliste einsehen
+
+|Beschreibung
+|Der Administrator kann eine Liste aller registrierten Kunden mit ihren ID’s, Namen und E-Mail Adressen einsehen.
+
+|Akteure
+|Administrator
+
+|Auslöser
+|Administrator möchte die Kundenliste einsehen klickt auf den Menüpunkt “Kundenliste”
+
+|Voraussetzungen
+a|
+- Nutzer ist angemeldet und hat die Rolle “ADMIN”
+
+|Notwendige Schritte
+a|
+1. Administrator klickt auf den Menüpunkt “Kundenliste”
+2. Dem Administrator wird eine Liste aller Kunden mit ID, Name und E-Mail Adresse angezeigt
+
+|Funktionale Anforderungen
+|
+|===
+
+[cols="1h, 3"]
+[[UC33]]
+|===
+|ID
+|*<<UC33>>*
+
+|Name
+|Personalliste einsehen
+
+|Beschreibung
+|Der Administrator kann eine Liste aller registrierten Nutzer mit der Rolle “STAFF” mit ihren ID’s, Namen und E-Mail Adressen einsehen.
+
+|Akteure
+|Administrator
+
+|Auslöser
+|Administrator möchte die Personalliste einsehen und klickt auf den Menüpunkt “Personalliste”
+
+|Voraussetzungen
+a|
+- Nutzer ist angemeldet und hat die Rolle “ADMIN”
+
+|Notwendige Schritte
+a|
+1. Administrator klickt auf den Menüpunkt “Personalliste”
+2. Dem Administrator wird eine Liste aller Mitarbeiter mit ID, Name und E-Mail Adresse angezeigt
+
+|Funktionale Anforderungen
+|
+|===
+
+[cols="1h, 3"]
+[[UC34]]
+|===
+|ID
+|*<<UC34>>*
+
+|Name
+|Personalaccount erstellen
+
+|Beschreibung
+|Der Administrator kann einen neuen Account registrieren welcher die Rolle “STAFF” bekommt.
+
+|Akteure
+|Administrator
+
+|Auslöser
+|Administrator möchte einen neuen Personalaccount anlegen und klickt auf “Personalaccount erstellen”
+
+|Voraussetzungen
+a|
+- Nutzer ist angemeldet und hat die Rolle “ADMIN”
+- Nutzer befindet sich auf der Seite “Personalliste”
+
+|Notwendige Schritte
+a|
+1. Administrator klickt auf “Personalaccount erstellen”
+2. Er gibt Name, E-Mail Adresse und Passwort an
+3. Er klickt auf “Registrieren”
+4. System prüft, ob die E-Mail Adresse schon von einem anderen Nutzer benutzt wurde und ob das Passwort minimalen Sicherheitsanforderungen entspricht
+    * Wenn die E-Mail Adresse nicht bereits vorhanden und das Passwort sicher genug ist: ein neuer Account wird angelegt und ihm wird die Rolle “STAFF” zugewiesen
+    * Ansonsten: Administrator bekommt Fehlermeldung entsprechend des nichterfüllten Kriteriums
+
+|Funktionale Anforderungen
+|
+|===
+
+[cols="1h, 3"]
+[[UC35]]
+|===
+|ID
+|*<<UC35>>*
+
+|Name
+|Personalaccount löschen
+
+|Beschreibung
+|Der Administrator kann einen Personalaccount löschen.
+
+|Akteure
+|Administrator
+
+|Auslöser
+|Administrator möchte einen Personalaccount löschen und klickt auf “Account löschen”
+
+|Voraussetzungen
+a|
+- Nutzer ist angemeldet und hat die Rolle “ADMIN”
+- Nutzer befindet sich auf der Seite “Personalliste”
+
+|Notwendige Schritte
+a|
+1. Administrator klickt auf “Account löschen” neben einem Mitarbeiter in der Personalliste
+2. Der Account des entsprechenden Mitarbeiters wird aus dem System gelöscht
+
+|Funktionale Anforderungen
+|
+|===
+
+[cols="1h, 3"]
+[[UC36]]
+|===
+|ID
+|*<<UC36>>*
+
+|Name
+|Inventar einsehen
+
+|Beschreibung
+|Der Administrator kann eine Liste aller vorhandenen Verbrauchsgüter, Ausrüstung und Personal einsehen. 
+
+|Akteure
+|Administrator
+
+|Auslöser
+|Administrator möchte das Inventar einsehen und klickt auf den Menüpunkt “Inventar”
+
+|Voraussetzungen
+a|
+- Nutzer ist angemeldet und hat die Rolle “ADMIN”
+
+|Notwendige Schritte
+a|
+1. Administrator klickt auf den Menüpunkt “Inventar”
+2. Dem Administrator wird eine Liste aller verfügbaren Ressourcen und Personal angezeigt
+
+|Funktionale Anforderungen
+|
+|===
+
+[cols="1h, 3"]
+[[UC37]]
+|===
+|ID
+|*<<UC37>>*
+
+|Name
+|Inventar bearbeiten
+
+|Beschreibung
+|Der Administrator kann Verbrauchsgüter zum Inventar hinzufügen und die Quantitäten der insgesamt verfügbaren Ausrüstung und Personal bearbeiten.
+
+|Akteure
+|Administrator
+
+|Auslöser
+|Administrator möchte die Quantitäten verfügbarer Ressourcen ändern
+
+|Voraussetzungen
+a|
+- Nutzer ist angemeldet und hat die Rolle “ADMIN”
+- Nutzer befindet sich auf der Seite “Inventar”
+
+|Notwendige Schritte
+a|
+1. Administrator gibt ein, wie viel zu einer Ressource hinzugefügt bzw. abgezogen werden soll
+2. Administrator klickt auf “Bestätigen”
+3. Das System prüft die Eingabe
+    * Gültige Eingabe: Die Quantitäten im Inventar werden geändert
+    * Ungültige Eingabe: Dem Administrator wird eine Fehlermeldung angezeigt
+
+|Funktionale Anforderungen
+|
+|===
+
+[cols="1h, 3"]
+[[UC38]]
+|===
+|ID
+|*<<UC38>>*
+
+|Name
+|Einkommensübersicht einsehen
+
+|Beschreibung
+|Der Administrator kann eine Übersicht wichtiger Statistiken geordnet nach Jahren und Monaten sehen. Dies sind: insgesamt eingenommenes Geld, Anteil der Aktiven, Abgeschlossenen und Stornierten Bestellungen an der gesamten Anzahl eingegangener Bestellungen und Verteilung der vier Bestellungstypen.
+
+|Akteure
+|Administrator
+
+|Auslöser
+|Administrator möchte die Einkommensübersicht einsehen klickt auf den Menüpunkt “Einkommensübersicht”
+
+|Voraussetzungen
+a|
+- Nutzer ist angemeldet und hat die Rolle “ADMIN”
+
+|Notwendige Schritte
+a|
+1. Administrator klickt auf den Menüpunkt “Einkommensübersicht”
+2. Dem Administrator wird eine Übersicht wichtiger Statistiken geordnet nach bzw. unterteilt in Jahre und Monate angezeigt
+
+|Funktionale Anforderungen
+|
+|===
+
 == Funktionale Anforderungen
 
 === Muss-Kriterien
