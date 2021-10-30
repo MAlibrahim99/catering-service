@@ -1160,9 +1160,42 @@ Um die Registrierung abzuschließen klickt der Nutzer “Registrieren”
 
 
 == Glossar
-Sämtliche Begriffe, die innerhalb des Projektes verwendet werden und deren gemeinsames Verständnis aller beteiligten Stakeholder essentiell ist, sollten hier aufgeführt werden.
-Insbesondere Begriffe der zu implementierenden Domäne wurden bereits beschrieben, jedoch gibt es meist mehr Begriffe, die einer Beschreibung bedürfen. +
-Beispiel: Was bedeutet "Kunde"? Ein Nutzer des Systems? Der Kunde des Projektes (Auftraggeber)?
+Das Glossar beschreibt die in diesem Projekt benutzten Begriffe und Phrasen, die manchmal zu Missverständnis führen. Für weitere Details Wenden Sie sich Bitte an “Akteure”, “Interessengruppen” und “Klassenmodell”. +
+
+[cols="2, 5"]
+|===
+|Begriff | Erläuterung
+|ADMIN|Nutzer, der als Administrator registriert ist
+|Administrator| Siehe <<Akteure>>
+|Angemeldeter Nutzer | Siehe <<Akteure>>
+|Anmelden |Nutzerauthentifizierung mit Email und Passwort, um ihm weitere unktionalitäten zu ermöglichen
+|Bestelldetails | Informationen und Attribute einer Dienstleistung, die ein Kunde für eine Bestellung im Bestellformular angegeben hat
+|Bestellformular | Die Seite, auf der angemeldeter Nutzer Bestelldetails angibt, um eine Dienstleistung kaufen zu können
+|Bestellliste | Siehe <<Klassen und Enumerationen>>
+|Bestellstatus | Siehe <<Klassen und Enumerationen>>
+|Bestellverlauf | Auflistung aller Bestellungen, die ein Kunde getätigt hat mit Termin, Bestelldetails und Status der Aufträge (Abgeschlossen, Aktiv & Storniert)
+|CUSTOMER | Nutzer, der als Kunde registriert ist
+|Detailseite | Ausführliche Beschreibung einer Dienstleistung mit ggf. Bilder
+|Dienstleistung | Eins der vier Angebote: Eventcatering, Partyservice, Rent-a-cook und Mobile Breakfast
+|Einkommensübersicht | Zeigt, wie hoch ist das Einkommen in einer bestimmten Zeit
+|Entwickler | Das Team, das an diesem Projekt arbeitet
+|Inventar | Siehe <<Klassen und Enumerationen>>
+|Kalender | Übersicht über aktive Bestellungen für Personal
+|Katalog | Siehe <<Klassen und Enumerationen>>
+|Kunde | Siehe <<Klassen und Enumerationen>>
+|Kundenliste | Liste aller registrierten Nutzer, die die Rolle “CUSTOMER” haben, mit IDs, Namen und Email Adressen
+|Navigationsleiste | Eine Leiste im oberen Bereich jeder Unterseite, mit einzelnen Links zu den verschiedenen Unterseiten.
+|Menüpunkte | siehe Navigationsleiste
+|Personal | Siehe <<Klassen und Enumerationen>>
+|Preis | gegen eine Dienstleistung zu verrichtende Beträge
+|Ressourcen | werden bei einer Bestellung aufgewendet, im Inventar gespeichert und sind vom Typ Verbrauchsgüter, Ausrüstung oder Personal
+|Rolle | Autorität, die jedem Nutzer zugeordnet wird, um ihm weitere Funktionalitäten zur Verfügung zu stellen
+|STAFF | Nutzer, der als Personal registriert ist
+|Status | Siehe <<Klassen und Enumerationen>>
+|Tageszeit | Siehe <<Klassen und Enumerationen>>
+|(Unregistrierter)Nutzer |  jede Person, die mit _Mampf_-App interagieren kann
+|===
+
 
 == Offene Punkte
 Offene Punkte werden entweder direkt in der Spezifikation notiert. Wenn das Pflichtenheft zum finalen Review vorgelegt wird, sollte es keine offenen Punkte mehr geben.
