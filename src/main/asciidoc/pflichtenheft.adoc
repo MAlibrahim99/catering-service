@@ -44,10 +44,14 @@ Die Software soll ohne Wartungsarbeiten konstant laufen und alle gespeicherten D
 [cols="5,5,5,5"]
 |===
 |*Name* | *Priorität*      | *Beschreibung*'   | *Ziele*
-|_Cateringservice_ _Mampf_    | 5 | -Auftraggeber | -automatisieren -mehr verkaufen/höhere Effizienz </br> -übersichtlicher
-|Kunden (Firmen, Privatkunden) | 4 | -Hauptnutzer, sollen Geld einbringen | -übersichtlich </br> -schnelles/einfaches buchen von Events
-|Administrator(en) Herr Wurst | 2 | -kann alle Bestellungen und Termine sehen | -Einsicht in gesamtes System </br> -Verwaltet alles
-|Entwickler | 3 | -implementiert das System, Wartung, Erweiterungen | -geringer wartungsaufwand </br> -einfach erweiterbar
+|_Cateringservice_ _Mampf_    | 5 | -Auftraggeber | -automatisieren -mehr verkaufen/höhere Effizienz +
+-übersichtlicher
+|Kunden (Firmen, Privatkunden) | 4 | -Hauptnutzer, sollen Geld einbringen | -übersichtlich +
+-schnelles/einfaches buchen von Events
+|Administrator(en) Herr Wurst | 2 | -kann alle Bestellungen und Termine sehen | -Einsicht in gesamtes System +
+-Verwaltet alles
+|Entwickler | 3 | -implementiert das System, Wartung, Erweiterungen | -geringer wartungsaufwand +
+-einfach erweiterbar
 | Personal | 1 | -Angestellte beim Cateringservice, kann Termine einsehen | -einfacher Zugriff und übersichtliche Ansicht auf alle Termine
 |===
 
