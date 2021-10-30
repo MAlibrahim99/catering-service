@@ -1075,10 +1075,29 @@ UML-Analyseklassendiagramm
 Dieser Abschnitt stellt eine Vereinigung von Glossar und der Beschreibung von Klassen/Enumerationen dar. Jede Klasse und Enumeration wird in Form eines Glossars textuell beschrieben. Zusätzlich werden eventuellen Konsistenz- und Formatierungsregeln aufgeführt.
 
 // See http://asciidoctor.org/docs/user-manual/#tables
-[options="header"]
+[options="header" cols="2, 5"]
 |===
-|Klasse/Enumeration |Beschreibung |
-|…                  |…            |
+|Klasse/Enumeration |Beschreibung
+|Catering | Zentrale Klasse der Software, welche alle wichtigen Funktionen verknüpft und für den Cateringservice an sich steht.
+|Nutzer | Repräsentation eines beliebigen realen Nutzers der Software, egal ob angemeldet oder nicht.
+|Angemeldeter Nutzer | Repräsentation eines Nutzers, welcher einen Account registriert und sich angemeldet hat.
+|Kunde | Repräsentation eines angemeldeten Nutzers, welcher sich als Kunde registriert hat.
+|Personal | Repräsentation eines angemeldeten Nutzers, welcher vom Administrator als Mitarbeiter registriert wurde.
+|Administrator | Repräsentation eines angemeldeten Nutzers, welcher als Administrator registriert ist.
+|Katalog | Klasse, welche zum Anzeigen einiger Unterseiten zuständig ist.
+|Inventar | Das Inventar speichert wie viele Verbrauchsgüter und Ausrüstung im Lager vorhanden sind und wie viel Personal gerade beschäftigt wird.
+|Bestellliste | In der Bestellliste werden alle bereits eingegangenen Bestellungen mit allen zugehörigen Details gespeichert.
+|Bestellung | Allgemeines Produkt des Cateringservice.
+|Status | Der aktuelle Status einer Bestellung.
+“Aktiv”: Kunde hat eine Bestellung getätigt und bezahlt.
+“Abgeschlossen”: Der Termin einer aktiven Bestellung ist vorüber und die Dienstleistung wurde erbracht.
+“Storniert”: Kunde hat eine aktive Bestellung vor dem Termin, an dem sie ausgeführt werden sollte, storniert.
+|Tageszeit | Repräsentiert zu welcher Uhrzeit an einem bestimmten Datum die Bestellung ausgeführt werden soll.
+Früh: 6:00 Uhr - 11:00 Uhr
+Mittag: 11:00 Uhr - 17:00 Uhr
+Abend: 17:00 Uhr - 00:00 Uhr
+|Eventcatering, Partyservice, RentACook oder MobileBreakfast | Eine bestimmte Art von Bestellung, welche spezielle Bestelloptionen zur Verfügung stellt.
+
 |===
 
 == Akzeptanztestfälle
@@ -1186,7 +1205,7 @@ Um die Registrierung abzuschließen klickt der Nutzer “Registrieren”
 == Glossar
 Das Glossar beschreibt die in diesem Projekt benutzten Begriffe und Phrasen, die manchmal zu Missverständnis führen. Für weitere Details Wenden Sie sich Bitte an “Akteure”, “Interessengruppen” und “Klassenmodell”. +
 
-[cols="2, 5"]
+[cols="2, 5" options="header"]
 |===
 |Begriff | Erläuterung
 |ADMIN|Nutzer, der als Administrator registriert ist
