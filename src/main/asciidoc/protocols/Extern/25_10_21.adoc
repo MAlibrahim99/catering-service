@@ -1,0 +1,38 @@
+= Protokoll Gruppe 27
+
+Treffen am 25.10.2021
+
+Ort:      Online (BBB) +
+Beginn:   14:50 Uhr +
+Ende:     15:50 Uhr
+
+__Schriftführer:__ Mohamad Alibrahim
+
+*Nächstes Treffen:* +
+25.10.2021, 14:50 Uhr, Online (BBB)
+
+__Teilnehmer:__
+//Tabellarisch oder Aufzählung, Kennzeichnung von Teilnehmern mit besonderer Rolle (z.B. Kunde)
+
+- Phillipp Zschiedrich (Kunde)
+- Lennart Obermüller (Scrum Master)
+- Dan Kornelius Nguyen
+- Konrad Schneider
+- Lisa-Marie Müller
+- Mohamad Alibrahim
+- Rosa Splittgerber
+
+== Bemerkungen
+
+
+== Ereignisse
+- Erestes Treffen mit dem Kunden
+- unklare Punkte in der Aufgabenstellung besprochen
+- Musskriterien festgelegt
+- Fargen an Kunden gestellt
+
+
+== Aktueller Stand
+- OOA wird fortgestzt
+
+
