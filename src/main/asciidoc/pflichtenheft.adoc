@@ -128,7 +128,7 @@ a|
     2. Er wird abgemeldet und auf die Startseite geleitet
 
 |Funktionale Anforderungen
-|
+|<<F010>>
 |===
 
 [cols="1h, 3"]
@@ -163,7 +163,7 @@ a|
     * Ansonsten: Nutzer bekommt Fehlermeldung entsprechend des nichterfüllten Kriteriums
 
 |Funktionale Anforderungen
-|
+|<<F020>>, <<F030>>
 |===
 
 [cols="1h, 3"]
@@ -198,7 +198,7 @@ a|
     * Ansonsten: Nutzer bekommt Fehlermeldung entsprechend des nichterfüllten Kriteriums
 
 |Funktionale Anforderungen
-|
+|<<F010>>
 |===
 
 [cols="1h, 3"]
@@ -231,7 +231,7 @@ a|
 3. Der Account des Nutzers wird aus dem System gelöscht
 
 |Funktionale Anforderungen
-|
+|<<F010>>, <<F040>>
 |===
 
 [cols="1h, 3"]
@@ -263,7 +263,7 @@ a|
 2. Dem Nutzer wird die Startseite angezeigt
 
 |Funktionale Anforderungen
-|
+|<<F130>>
 |===
 
 [cols="1h, 3"]
@@ -293,7 +293,7 @@ a|
 2. Dem Nutzer werden alle angebotenen Dienstleistungen mit einer kurzen Beschreibung angezeigt
 
 |Funktionale Anforderungen
-|
+|<<F140>>
 |===
 
 [cols="1h, 3"]
@@ -324,7 +324,7 @@ a|
 2. Dem Nutzer werden Bilder und eine detaillierte Beschreibung der ausgewählten Dienstleistung angezeigt
 
 |Funktionale Anforderungen
-|
+|<<F150>>
 |===
 
 [cols="1h, 3"]
@@ -360,7 +360,7 @@ a|
     * Ungültige Eingabe: Dem Administrator wird eine Fehlermeldung angezeigt
 
 |Funktionale Anforderungen
-|
+|<<F540>>, <<F160>>, <<F140>>
 |===
 
 [cols="1h, 3"]
@@ -392,7 +392,7 @@ a|
 2. Dem angemeldeten Nutzer wird jeweils das Bestellformular zur ausgewählten Dienstleistung angezeigt
 
 |Funktionale Anforderungen
-|
+|<<F160>>, <<F140>>
 |===
 
 [cols="1h, 3"]
@@ -433,7 +433,7 @@ a|
 2. Dem Nutzer werden alle Details zur gewählten Bestellung angezeigt
 
 |Funktionale Anforderungen
-|
+|<<F330>>, <<F300>>
 |===
 
 [cols="1h, 3"]
@@ -470,7 +470,7 @@ a|
     * Es wurden nicht alle Felder korrekt ausgefüllt oder der gewählte Termin liegt weniger als drei Tage im Voraus: Kunde bekommt eine entsprechende Fehlermeldung
 
 |Funktionale Anforderungen
-|
+|<<F200>>, <<F210>>, <<F310>>, <<F100>>, <<F120>>, <<F300>>, <<F160>>
 |===
 
 [cols="1h, 3"]
@@ -501,7 +501,7 @@ a|
 2. Dem Nutzer wird eine Liste seiner Bestellungen mit Typ, Termin und Status angezeigt
 
 |Funktionale Anforderungen
-|
+|<<F320>>, <<F310>>, <<F300>>, <<F210>>
 |===
 
 [cols="1h, 3"]
@@ -534,7 +534,7 @@ a|
 3. Dem Kunden wird eine Bestätigungs-E-Mail geschickt
 
 |Funktionale Anforderungen
-|
+|<<F340>>, <<F300>>, <<F210>>
 |===
 
 [cols="1h, 3"]
@@ -565,7 +565,7 @@ a|
 2. Dem Personal wird eine Liste mit eingegangenen Bestellungen angezeigt
 
 |Funktionale Anforderungen
-|
+|<<F310>>, <<F300>>, <<F210>>
 |===
 
 [cols="1h, 3"]
@@ -596,7 +596,7 @@ a|
 2. Dem Personal werden aktive Bestellungen in Form eines Kalenders angezeigt
 
 |Funktionale Anforderungen
-|
+|<<F400>>, <<F300>>, <<F310>>
 |===
 
 [cols="1h, 3"]
@@ -627,7 +627,7 @@ a|
 2. Dem Administrator wird eine Liste aller Kunden mit ID, Name und E-Mail Adresse angezeigt
 
 |Funktionale Anforderungen
-|
+|<<F500>>
 |===
 
 [cols="1h, 3"]
@@ -658,7 +658,7 @@ a|
 2. Dem Administrator wird eine Liste aller Mitarbeiter mit ID, Name und E-Mail Adresse angezeigt
 
 |Funktionale Anforderungen
-|
+|<<F510>>
 |===
 
 [cols="1h, 3"]
@@ -694,7 +694,7 @@ a|
     * Ansonsten: Administrator bekommt Fehlermeldung entsprechend des nichterfüllten Kriteriums
 
 |Funktionale Anforderungen
-|
+|<<F530>>, <<F510>>
 |===
 
 [cols="1h, 3"]
@@ -726,7 +726,7 @@ a|
 2. Der Account des entsprechenden Mitarbeiters wird aus dem System gelöscht
 
 |Funktionale Anforderungen
-|
+|<<F530>>, <<F510>>
 |===
 
 [cols="1h, 3"]
@@ -757,7 +757,7 @@ a|
 2. Dem Administrator wird eine Liste aller verfügbaren Ressourcen und Personal angezeigt
 
 |Funktionale Anforderungen
-|
+|<<F100>>
 |===
 
 [cols="1h, 3"]
@@ -792,7 +792,7 @@ a|
     * Ungültige Eingabe: Dem Administrator wird eine Fehlermeldung angezeigt
 
 |Funktionale Anforderungen
-|
+|<<F110>>
 |===
 
 [cols="1h, 3"]
@@ -823,11 +823,170 @@ a|
 2. Dem Administrator wird eine Übersicht wichtiger Statistiken geordnet nach bzw. unterteilt in Jahre und Monate angezeigt
 
 |Funktionale Anforderungen
-|
+|<<F550>>, <<F320>>, <<F300>>
 |===
 
 == Funktionale Anforderungen
 
+[options="header", cols="2h, 1, 3, 12"]
+|===
+|ID
+|Version
+|Name
+|Beschreibung
+
+|[[F010]]<<F010>>
+|v0.1
+|Authentifizierung
+a|Das System soll fähig sein bestimmte Funktionen in öffentliche und private einzuteilen. 
+Falls ein Nutzer im System gespeichert wurde (registrierter Nutzer), soll er die Möglichkeit haben sich zu authentifizieren mit folgenden Angaben: E-Mail, Passwort
+
+|[[F020]]<<F020>>
+|v0.1
+|Registrierung
+a|Das System soll einen unregistrierten Nutzer die Möglichkeit geben, sich zu registrieren bei der Nutzung des Navigationselement namens “Registrieren”. 
+
+Folgende Angaben sind zu geben: Name, E-Mail, Passwort. 
+
+Das System soll die gegebenen Daten überprüfen und bestätigen, sowie abspeichern. Nach der Validierung kann sich der Nutzer anmelden
+
+|[[F030]]<<F030>>
+|v0.1
+|Überprüfung
+a|Das System soll fähig sein die gegebenen Daten von einem unregistrierten Nutzers zu überprüfen
+
+Die Einzigartigkeit der E-Mail muss garantiert werden. Der Nutzer soll auf Beschränkungen und Verstöße hingewiesen werden
+
+|[[F040]]<<F040>>
+|v0.1
+|Nutzerdaten überprüfen
+a|Das System soll einem angemeldeten Nutzer die Möglichkeit geben, seine bereits gespeicherten Nutzerdaten zu überschreiben oder löschen
+
+|[[F100]]<<F100>>
+|v0.1
+|Inventar
+a|Das System soll andauernd die Daten der Ressourcen im Inventar aufbewahren
+
+|[[F110]]<<F110>>
+|v0.1
+|Inventar anpassen
+a|Das System soll dem Administrator erlauben den Inhalt des Inventars anpassen und diese zu überschreiben
+
+|[[F120]]<<F120>>
+|v0.1
+|Verfügbarkeit von Ressourcen im Inventar ändern
+a|Das System soll nach jeder validen erfolgreichen oder stornierten Bestellung die Verfügbarkeit der Ressourcen ändern
+
+|[[F130]]<<F130>>
+|v0.1
+|Startseite
+a|Das System soll beim aufrufen der Webseite, als erstes auf die Startseite (als Hauptseite) hinweisen.
+
+Die Startseite besitzt ein Menü, neben der es eine kurze Beschreibung der Firma gibt
+
+|[[F140]]<<F140>>
+|v0.1
+|Katalog
+a|Das System soll eine Möglichkeit zur Darstellung der Angebote zur Verfügung stellen in Form eines Katalogs
+
+|[[F150]]<<150>>
+|v0.1
+|Detailseite
+a|Das System soll eine detaillierte Einsicht der einzelnen Angebote zur Verfügung stellen
+
+|[[F160]]<<F160>>
+|v0.1
+|Bestellformular
+a|Das System stellt eine Ansicht zum auswählen und ausfüllen von Details in Form eines Bestellformulars zur Verfügung
+
+|[[F200]]<<F200>>
+|v0.1
+|Kaufen
+a|Das System soll einem angemeldeten Nutzer die Möglichkeit geben ein Angebot über das Bestellformular mit den aktuell ausgewählten Optionen zu kaufen
+
+Vor dem Kauf muss die Bestellung überprüft werden. Eine Bestellung soll aufgegeben werden, wenn genug Ressourcen auf Lager sind
+
+|[[F210]]<<F210>>
+|v0.1
+|Validierung der Bestellung
+a|Das System überprüft,, ob für den angegebenen Termin noch genug Ressourcen (Personal, Ausrüstung, Deko) vorhanden sind um die Bestellung zu validieren. Falls die Bestellung validiert wurde, wird sie der Bestellliste hinzugefügt
+
+Der Nutzer wird über Erfolg oder Fehlschlag der Validierung informiert
+
+|[[F300]]<<F300>>
+|v0.1
+|Bestellungen
+a|Das System soll fähig sein andauernd Details von Bestellungen zu speichern/lagern
+
+|[[F310]]<<F310>>
+|v0.1
+|Bestellliste
+a|Das System speichert alle erfolgreich validierten Bestellungen in der Bestellliste ab
+
+|[[F320]]<<F320>>
+|v0.1
+|Bestellverlauf
+a|Das System soll fähig sein einem angemeldeten Nutzer, alle von ihm aufgegebenen Bestellung/en (in Form einer Liste) anzuzeigen
+
+|[[F330]]<<F330>>
+|v0.1
+|Bestelldetails
+a|Das System soll beim Aufruf einer Bestellung im Bestellverlauf, dessen Details anzeigen
+
+|[[F340]]<<F340>>
+|v0.1
+|Bestellung stornieren
+a|Ein angemeldeter Nutzer kann die Bestellung 3 Tage im Voraus stornieren.
+
+Innerhalb der 3 Tage wird dem angemeldeten Nutzer eine Stornierungsgebühr von 40% des Bestellungspreises angerechnet.
+
+Bei einer erfolgreichen Stornierung werden die Daten der reservierten Ressourcen wieder an das Inventar zurückgegeben und abgespeichert
+
+|[[F400]]<<F400>>
+|v0.1
+|Kalender einsehen
+a|Das System soll alle aktiven Bestellungen abspeichern und in Form eines Kalenders darstellen
+
+|[[F500]]<<F500>>
+|v0.1
+|Kundenliste anzeigen
+a|Das System soll dem Administrator erlauben, durchs Klicken auf den entsprechenden Menüpunkt sich eine Liste aller aktuell registrierten Nutzer, die die Rolle “CUSTOMER” haben mit jeweiligem Name und E-Mail anzeigen zu lassen
+
+|[[F510]]<<F510>>
+|v0.1
+|Personalliste anzeigen
+a|Das System soll dem Administrator erlauben, durchs Klicken auf den entsprechenden Menüpunkt sich eine Liste aller aktuell registrierten Nutzer, die die Rolle “STAFF” haben mit jeweiligem Name und E-Mail anzeigen zu lassen
+
+
+|[[F520]]<<F520>>
+|v0.1
+|Bestellliste anzeigen
+a|Das System soll dem Administrator erlauben, durchs Klicken auf den entsprechenden Menüpunkt sich eine Liste aller Bestellungen mit den jeweiligen Attributen anzeigen lassen
+
+|[[F530]]<<F530>>
+|v0.1
+|Konto für Mitarbeiter erstellen (löschen)
+a|Der Administrator kann ein Konto für Mitarbeiter erstellen (gegebenenfalls löschen)
+
+Diese erstellten Konten erhalten die Rolle “STAFF” und erhalten weitere Funktionen
+
+|[[F540]]<<F540>>
+|v0.1
+|Preise anpassen
+a|Das System gibt dem Administrator die Möglichkeit, die Preise im Katalog anzupassen
+
+Das System überprüft ob die Eingab. Falls die Eingabe gültig ist wird der alte Preis überschrieben. Bei einer ungültigen Eingabe wird eine Fehlermeldung angezeigt
+
+|[[F550]]<<F550>>
+|v0.1
+|Einkommensübersicht
+a|Das System soll dem Administrator die Möglichkeit geben alle Umsätze, die durch Bestellungen hinzu kamen und ihm die Möglichkeit geben, diese auch einzusehen in einer geordneten Form oder Statistik
+
+
+Hier gibt es verschiedene Auswahlmöglichkeiten für die Angebotsoptionen, eine Eingabemöglichkeit für die Anzahl der Personen und den Termin und eine dynamische Kostenberechnung.
+
+
+|===
 === Muss-Kriterien
 Was das zu erstellende Programm auf alle Fälle leisten muss.
 
