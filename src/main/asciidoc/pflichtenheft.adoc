@@ -17,11 +17,12 @@ Dieses Dokument benötigt ein Inhaltsverzeichnis. Es existieren mehrere Einbindu
 <<Nicht-Funktionale Anforderungen>>
 
 == Zusammenfassung
-Eine kurze Beschreibung des Dokuments. Wenige Absätze.
+Dieses Dokument gibt einen Überblick über die Spezifikation des zu implementierenden Systems _“Mampf ”_, die Anforderungen, die das System erfüllen muss und weitere Details wie z.B. GUI-Prototyp und Datenmodell.
+Es stellt die Basis der Kommunikation zwischen dem Auftraggebers und Entwicklerteam und beschreibt was der Auftraggeber möchte, und wie das Entwicklerteam dieses realisiert dar.
 
 == Aufgabenstellung und Zielsetzung
-Text aus Aufgabenstellung kopieren und ggfs. präzisieren.
-Insbesondere ergänzen, welche Ziele mit dem Abschluss des Projektes erreicht werden sollen.
+Der Cateringservice Mampf (Eigentümer Hannes Wurst) möchte seine Abrechnungs- Bestell und Verwaltungsaufgaben einheitlich in einer Software ausführen können. Der Cateringservice gliedert sich in vier Geschäftsfelder: Beim Eventcatering können Veranstalter ein Buffet oder Dinner mit Ausrüstung und Personal bestellen. Beim Partyservice können private Gastgeber kalten Platten bestellen. Das Mobile Breakfast können Firmen monatlich buchen, wobei ein Frühstücksangebot in der Firma serviert wird. Mit Rent-a-Cook können private Gastgeber Personal zum Zubereiten und Servieren von Essen buchen. Die Software soll die Kundenverwaltung unterstützen, die Personalverwaltung und -zuteilung übernehmen, die Termine planen, den Bedarf an Lebensmitteln und Zubehör bestimmen und die Rechnungsstellung an die Kunden vereinfachen.
+
 
 == Produktnutzung
 In welchem Kontext soll das System später genutzt werden? Welche Rahmenbedingungen gelten?
@@ -39,7 +40,13 @@ Die Website ist vor allem für die Nutzung am Computer vorgesehen und für folge
 Die Software soll ohne Wartungsarbeiten konstant laufen und alle gespeicherten Daten sollen für den Betreiber ohne technisches Wissen über die Webseite abrufbar sein.
 
 == Interessensgruppen (Stakeholders)
-Welche realen und juristischen Personen(-gruppen) haben Einfluss auf die Anforderungen im Projekt?
+[options="header"]
+[cols="1, 1, 1, 1, 4"]
+|===
+|Version | Status      | Bearbeitungsdatum   | Autoren |  Vermerk
+|0.1     | In Arbeit   | 28.10.2021          | Dan Nguyen, Konrad Schneider, Lennart Obermüller, Lisa-Marie Müller, Mohamad Alibrahim, Rosa Splittgerber
+|
+|===
 
 == Systemgrenze und Top-Level-Architektur
 
