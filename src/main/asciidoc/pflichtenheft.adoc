@@ -41,7 +41,7 @@ Die Software soll ohne Wartungsarbeiten konstant laufen und alle gespeicherten D
 
 == Interessensgruppen (Stakeholders)
 [options="header"]
-[cols="6,6,6"]
+[cols="5,5,5,5"]
 |===
 |*Name* | *Priorität*      | *Beschreibung*'   | *Ziele*
 |_Cateringservice_ _Mampf_    | 5 | -Auftraggeber | -automatisieren -mehr verkaufen/höhere Effizienz -übersichtlicher
