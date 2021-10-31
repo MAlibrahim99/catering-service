@@ -68,10 +68,14 @@ Die Software soll ohne Wartungsarbeiten konstant laufen und alle gespeicherten D
 == Systemgrenze und Top-Level-Architektur
 
 === Kontextdiagramm
-Das Kontextdiagramm zeigt das geplante Software-System in seiner Umgebung. Zur Umgebung gehören alle Nutzergruppen des Systems und Nachbarsysteme. Die Grafik kann auch informell gehalten sein. Überlegen Sie sich dann geeignete Symbole. Die Grafik kann beispielsweise mit Visio erstellt werden. Wenn nötig, erläutern Sie diese Grafik.
+Das Kontextdiagramm zeigt das geplante Software-System in seiner Umgebung. Zur Umgebung gehören alle Nutzergruppen des Systems und Nachbarsysteme.
+
+image:models/analysis/Kontextdiagramm.png[context diagram]
 
 === Top-Level-Architektur
-Dokumentieren Sie ihre Top-Level-Architektur mit Hilfe eines Komponentendiagramm.
+Komponentendiagramm der Top-Level-Architektur des Systems.
+
+image:models/analysis/Komponentendiagramm.png[top-level-architecture]
 
 == Anwendungsfälle
 
@@ -109,6 +113,8 @@ Akteure sind die Benutzer des Software-Systems oder Nachbarsysteme, welche darau
 
 === Überblick Anwendungsfalldiagramm
 Anwendungsfall-Diagramm, das alle Anwendungsfälle und alle Akteure darstellt
+
+image:models/analysis/Anwendungsfalldiagramm.png[use-case diagram]
 
 === Anwendungsfallbeschreibungen
 Dieser Unterabschnitt gibt eine detaillierte Beschreibung aller Anwendungsfälle.
@@ -189,6 +195,8 @@ a|
 |Funktionale Anforderungen
 |<<F020>>, <<F030>>
 |===
+
+image:models/analysis/Sequenzdiagramm_Registrieren.png[seq Registrieren]
 
 [cols="1h, 3"]
 [[UC02]]
@@ -498,6 +506,8 @@ a|
 |<<F200>>, <<F210>>, <<F310>>, <<F100>>, <<F120>>, <<F300>>, <<F160>>
 |===
 
+image:models/analysis/Sequenzdiagram_Kaufen.png[seq Kaufen]
+
 [cols="1h, 3"]
 [[UC23]]
 |===
@@ -623,6 +633,8 @@ a|
 |Funktionale Anforderungen
 |<<F400>>, <<F300>>, <<F310>>
 |===
+
+image:models/analysis/Sequenzdiagramm_KalenderEinsehen.png[seq KalenderEinsehen]
 
 [cols="1h, 3"]
 [[UC32]]
@@ -754,6 +766,8 @@ a|
 |<<F530>>, <<F510>>
 |===
 
+image:models/analysis/Sequenzdiagramm_PersonalaccountLöschen.png[seq PersonalaccountLöschen]
+
 [cols="1h, 3"]
 [[UC36]]
 |===
@@ -819,6 +833,8 @@ a|
 |Funktionale Anforderungen
 |<<F110>>
 |===
+
+image:models/analysis/Sequenzdiagramm_InventarBearbeiten.png[seq InventarBearbeiten]
 
 [cols="1h, 3"]
 [[UC38]]
@@ -1066,7 +1082,8 @@ Für jeden Dialog:
 == Datenmodell
 
 === Überblick: Klassendiagramm
-UML-Analyseklassendiagramm
+
+image:models/analysis/Klassendiagramm.png[domain model]
 
 === Klassen und Enumerationen
 Dieser Abschnitt stellt eine Vereinigung von Glossar und der Beschreibung von Klassen/Enumerationen dar. Jede Klasse und Enumeration wird in Form eines Glossars textuell beschrieben. Zusätzlich werden eventuellen Konsistenz- und Formatierungsregeln aufgeführt.
