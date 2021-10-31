@@ -1063,17 +1063,13 @@ Nicht-Funktionale Anforderungen dienen dazu, die zuvor definierten Qualitätszie
 
 == GUI Prototyp
 
-[[startseite_image]]
-image::startseite.PNG[Startseite, 100%, 100%, pdfwidth=100%, title= "Startseite des Cateringservice", align=center]
+image:gui/startseite.png[Startseite, title= "Startseite des Cateringservice", align=center]
 
-[[registrieren_image]]
-image::registrieren.PNG[Registrierungsseite, 100%, 100%, pdfwidth=100%, title= "Registrierungsseite des Cateringservice", align=center]
+image:gui/registrieren.png[Registrierungsseite,title= "Registrierungsseite des Cateringservice", align=center]
 
-[[anmelden_image]]
-image::anmelden.png[Anmeldeseite des Cateringservice, 100%, 100%, pdfwidth=100%, title= "Anmeldeseite des Cateringservice", align=center]
+image:gui/anmelden.png[Anmeldeseite des Cateringservice, title= "Anmeldeseite des Cateringservice", align=center]
 
-[[angebot_image]]
-image::angebot.png[Angebotsseite, 100%, 100%, pdfwidth=100%, title= "Angebotsübersicht des Cateringservice", align=center]
+image:gui/angebot.png[Angebotsseite, title= "Angebotsübersicht des Cateringservice", align=center]
 
 
 == Datenmodell
