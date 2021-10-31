@@ -1407,24 +1407,545 @@ a|
 |===
 
 [cols="1h, 4"]
-[[AT]]
+[[AT100]]
 |===
 |ID
-|<<AT>>
+|<<AT100>>
 
 |Anwendungsfall
-|<<UC>>
+|<<UC10>>
 
 |Voraussetzung
-a|
+a|Ein Nutzer benutzt das System.
 
 |Event
-a|
+a| Nutzer klickt auf “Cateringservice Mampf” im obersten Bereich einer beliebigen Seite.
+
+|Erwartetes Resultat
+a| Der Nutzer wird auf die Startseite geleitet.
+|===
+
+[cols="1h, 4"]
+[[AT110]]
+|===
+|ID
+|<<AT110>>
+
+|Anwendungsfall
+|<<UC11>>
+
+|Voraussetzung
+a| Ein Nutzer benutzt das System.
+
+|Event
+a| Der Nutzer klickt in der Navigationsleiste auf “Angebot”.
+
+|Erwartetes Resultat
+a| Dem Nutzer wird auf die “Angebot”-Seite mit den angebotenen Dienstleistungen ‘Eventcatering’, ‘Partyservice’, ‘Mobile Breakfast’ und ‘Rent-a-cook’ mit einer kurzen Beschreibung geleitet.
+|===
+
+[cols="1h, 4"]
+[[AT120]]
+|===
+|ID
+|<<AT120>>
+
+|Anwendungsfall
+|<<UC12>>
+
+|Voraussetzung
+a| Ein Nutzer benutzt das System und befindet sich auf der Seite “Angebot” <<AT110>>.
+
+|Event
+a| Der Nutzer klickt auf die Dienstleistung “Partyservice”.
+
+|Erwartetes Resultat
+a| Der Nutzer wird auf die Detailseite des “Partyservice” geleitet.
+|===
+
+[cols="1h, 4"]
+[[AT130]]
+|===
+|ID
+|<<AT130>>
+
+|Anwendungsfall
+|<<UC13>>
+
+|Voraussetzung
+a| Ein Administrator mit der Rolle “ADMIN” benutzt das System und befindet sich auf der Bearbeitungsseite einer Dienstleistung.
+
+|Event
+a| Der Administrator gibt neue Preise für die verschiedenen Angebote ein, welche Nummern größer gleich 0,01 mit maximal zwei Nachkommastellen sind. Dann klickt er auf “Bestätigen”.
+
+|Erwartetes Resultat
+a| Die Preise werden im Katalog geändert und der Administrator wird zurück auf die Detailseite der bearbeiteten Dienstleistung geleitet.
+|===
+
+[cols="1h, 4"]
+[[AT200]]
+|===
+|ID
+|<<AT200>>
+
+|Anwendungsfall
+|<<UC20>>
+
+|Voraussetzung
+a| Ein angemeldeter Nutzer benutzt das System und befindet sich auf der Detailseite  <<AT120>> zu einer der vier Dienstleistungen.
+
+|Event
+a| Der Nutzer klickt auf das Feld “Bestellen”.
+
+|Erwartetes Resultat
+a| Der Nutzer wird auf eine Seite mit dem Bestellformular passend zur ausgewählten Dienstleistung geleitet.
+|===
+
+[cols="1h, 4"]
+[[AT210]]
+|===
+|ID
+|<<AT210>>
+
+|Anwendungsfall
+|<<UC21>>
+
+|Voraussetzung
+a| Ein Kunde mit der Rolle “CUSTOMER” benutzt das System und befindet sich auf der Seite “Bestellverlauf”  (<<AT230>>).
+
+|Event
+a| Der Kunde klickt auf den Typ einer Bestellung.
+
+|Erwartetes Resultat
+a| Der Kunde wird auf eine Seite geleitet, welche alle Details zur ausgewählten Bestellung enthält.
+|===
+
+[cols="1h, 4"]
+[[AT211]]
+|===
+|ID
+|<<AT211>>
+
+|Anwendungsfall
+|<<UC21>>
+
+|Voraussetzung
+a| Ein Mitarbeiter (Personal) mit der Rolle “STAFF” benutzt das System und befindet sich auf der Seite “Kalender”  (<<AT310>>).
+
+|Event
+a| Der Mitarbeiter klickt auf eine Bestellung.
+
+|Erwartetes Resultat
+a| Der Mitarbeiter wird auf eine Seite geleitet, welche alle Details zur ausgewählten Bestellung enthält.
+|===
+
+[cols="1h, 4"]
+[[AT220]]
+|===
+|ID
+|<<AT220>>
+
+|Anwendungsfall
+|<<UC22>>
+
+|Voraussetzung
+a| Ein Kunde mit der Rolle “CUSTOMER” hat das Bestellformular (<<AT200>>) für seine gewünschte Dienstleistung korrekt ausgefüllt und es sind genügend Ressourcen zum gewählten Termin verfügbar.
+
+|Event
+a| Der Kunde klickt auf “Kaufen”.
+
+|Erwartetes Resultat
+a| Die Bestellung wird im System eingetragen und dem Kunden wird eine Bestätigungs-E-Mail gesendet.
+|===
+
+[cols="1h, 4"]
+[[AT221]]
+|===
+|ID
+|<<AT221>>
+
+|Anwendungsfall
+|<<UC22>>
+
+|Voraussetzung
+a| Ein Kunde mit der Rolle “CUSTOMER” hat das Bestellformular (<<AT200>>) für seine gewünschte Dienstleistung korrekt ausgefüllt und es ist genügend Personal, aber nicht genügend Ausrüstung zum gewählten Termin verfügbar.
+
+|Event
+a| Der Kunde klickt auf “Kaufen”.
+
+|Erwartetes Resultat
+a| Die Bestellung wird im System eingetragen, dem Kunden wird eine Bestätigungs-E-Mail gesendet und dem Administrator wird eine Informations-E-Mail gesendet, um entsprechende Ausrüstung aufzufüllen.
+|===
+
+[cols="1h, 4"]
+[[AT222]]
+|===
+|ID
+|<<AT222>>
+
+|Anwendungsfall
+|<<UC22>>
+
+|Voraussetzung
+a| Ein Kunde mit der Rolle “CUSTOMER” hat das Bestellformular (<<AT200>>) für seine gewünschte Dienstleistung korrekt ausgefüllt und es ist nicht genügend Personal zum gewählten Termin verfügbar.
+
+|Event
+a| Der Kunde klickt auf “Kaufen”.
+
+|Erwartetes Resultat
+a| Der Kunde bekommt eine Fehlermeldung, dass der Cateringservice zum gewählten Termin schon voll ausgelastet ist.
+|===
+
+[cols="1h, 4"]
+[[AT230]]
+|===
+|ID
+|<<AT230>>
+
+|Anwendungsfall
+|<<UC23>>
+
+|Voraussetzung
+a| Ein Kunde mit der Rolle “CUSTOMER” benutzt das System.
+
+|Event
+a| Der Kunde klickt auf “Bestellverlauf” in der Navigationsleiste.
+
+|Erwartetes Resultat
+a| Der Kunde wird auf eine Seite mit einer Liste aus allen von ihm getätigten Bestellungen geleitet.
+|===
+
+[cols="1h, 4"]
+[[AT240]]
+|===
+|ID
+|<<AT240>>
+
+|Anwendungsfall
+|<<UC24>>
+
+|Voraussetzung
+a| Ein Kunde mit der Rolle “CUSTOMER” benutzt das System und befindet sich auf der Seite “Bestellverlauf” <<AT230>>.
+
+|Event
+a| Der Kunde klickt auf “Bestellung stornieren” neben einer Bestellung.
+
+|Erwartetes Resultat
+a| Der Status der ausgewählten Bestellung wird von “Aktiv” auf “Storniert” gesetzt.
+Dem Kunden wird eine Bestätigungs-E-Mail geschickt.
+|===
+
+[cols="1h, 4"]
+[[AT300]]
+|===
+|ID
+|<<AT300>>
+
+|Anwendungsfall
+|<<UC30>>
+
+|Voraussetzung
+a| Personal mit der Rolle “STAFF” benutzt das System.
+
+|Event
+a| Personal klickt auf “Bestellliste” in der Navigationsleiste.
+
+|Erwartetes Resultat
+a| Das Personal wird auf eine Seite mit einer Liste von eingegangenen Bestellungen geleitet.
+|===
+
+[cols="1h, 4"]
+[[AT310]]
+|===
+|ID
+|<<AT310>>
+
+|Anwendungsfall
+|<<UC31>>
+
+|Voraussetzung
+a| Personal mit der Rolle “STAFF” benutzt das System.
+
+|Event
+a| Personal klickt auf “Kalender” in der Navigationsleiste.
+
+|Erwartetes Resultat
+a| Das Personal wird auf eine Seite mit einem Kalender, in den alle Bestellungen mit dem Status “Aktiv” eingetragen sind, geleitet.
+|===
+
+[cols="1h, 4"]
+[[AT320]]
+|===
+|ID
+|<<AT320>>
+
+|Anwendungsfall
+|<<UC32>>
+
+|Voraussetzung
+a| Administrator mit der Rolle “ADMIN” benutzt das System.
+
+|Event
+a| Administrator klickt auf “Kundenliste” in der Navigationsleiste.
+
+|Erwartetes Resultat
+a| Der Administrator wird auf eine Seite mit einer Liste von Kunden geleitet.
+|===
+
+[cols="1h, 4"]
+[[AT330]]
+|===
+|ID
+|<<AT330>>
+
+|Anwendungsfall
+|<<UC33>>
+
+|Voraussetzung
+a| Administrator mit der Rolle “ADMIN” benutzt das System.
+
+|Event
+a| Administrator klickt auf “Personalliste” in der Navigationsleiste.
+
+|Erwartetes Resultat
+a| Der Administrator wird auf eine Seite mit einer Liste von Personal geleitet.
+|===
+
+[cols="1h, 4"]
+[[AT340]]
+|===
+|ID
+|<<AT340>>
+
+|Anwendungsfall
+|<<UC34>>
+
+|Voraussetzung
+a| Administrator mit der Rolle “ADMIN” benutzt das System.
+Administrator befindet sich auf der Seite “Personalliste” <<AT330>>.
+
+|Event
+a| Administrator klickt auf “Personalaccount erstellen”.
+
+|Erwartetes Resultat
+a| Der Administrator wird auf eine Seite mit einem Registrierungsformular geleitet.
+|===
+
+[cols="1h, 4"]
+[[AT341]]
+|===
+|ID
+|<<AT341>>
+
+|Anwendungsfall
+|<<UC34>>
+
+|Voraussetzung
+a| Ein Administrator mit der Rolle “ADMIN” nutzt das System.
+Es ist noch kein Nutzer mit der *E-Mail-Adresse test@personal.com* im System registriert.
+Der Administrator befindet sich auf der Seite “Personalaccount erstellen” <<AT340>>
+
+|Event
+a| Der Administrator gibt die folgenden Informationen ein:
+
+    * *Name: Test Personal*
+    * *E-Mail-Adresse: test@personal.com*
+    * *Passwort: irgendWAS_123*
+
+Um die Registrierung abzuschließen klickt der Nutzer “Registrieren”
+
 
 |Erwartetes Resultat
 a|
+* Es wird ein neuer Account mit ein eingegebenen Daten und der Rolle “STAFF” erstellt
+* Der Administrator wird auf die Seite “Personalliste” geleitet
 
 |===
+
+[cols="1h, 4"]
+[[AT342]]
+|===
+|ID
+|<<AT342>>
+
+|Anwendungsfall
+|<<UC34>>
+
+|Voraussetzung
+a| Ein Administrator mit der Rolle “ADMIN” nutzt das System.
+Es ist bereits ein Nutzer mit der E-Mail-Adresse *test@personal.com* im System registriert.
+Der Administrator befindet sich auf der Seite “Personalaccount erstellen” <<AT340>>
+
+|Event
+a| Der Administrator gibt die folgenden Informationen ein:
+
+* *Name: Test Personal*
+* *E-Mail-Adresse: test@personal.com*
+* *Passwort: irgendWAS_123*
+
+Um die Registrierung abzuschließen klickt der Nutzer “Registrieren”
+
+|Erwartetes Resultat
+a| Dem Administrator wird eine Fehlermeldung angezeigt, die ihn informiert, dass ein Nutzer mit dieser E-Mail-Adresse bereits existiert.
+
+|===
+
+[cols="1h, 4"]
+[[AT343]]
+|===
+|ID
+|<<AT343>>
+
+|Anwendungsfall
+|<<UC34>>
+
+|Voraussetzung
+a| Ein Administrator mit der Rolle “ADMIN” nutzt das System.
+Es ist noch kein Nutzer mit der *E-Mail-Adresse test@personal.com* im System registriert.
+Der Administrator befindet sich auf der Seite “Personalaccount erstellen” <<AT340>>.
+
+|Event
+a| Der Administrator gibt die folgenden Informationen ein:
+
+* *Name: Test Personal*
+* *E-Mail-Adresse: test@personal.com*
+* *Passwort: a1*
+Um die Registrierung abzuschließen klickt der Nutzer “Registrieren”
+
+
+
+|Erwartetes Resultat
+a| Dem Administrator wird eine Fehlermeldung angezeigt, die ihn informiert, dass das Passwort zu schwach ist.
+
+|===
+
+[cols="1h, 4"]
+[[AT350]]
+|===
+|ID
+|<<AT350>>
+
+|Anwendungsfall
+|<<UC35>>
+
+|Voraussetzung
+a| Ein Administrator mit der Rolle “ADMIN” befindet sich auf der Seite “Personalliste”.
+
+|Event
+a| Der Administrator klickt auf “Account löschen” neben einem Mitarbeiter
+
+
+|Erwartetes Resultat
+a| Der Account des ausgewählten Mitarbeiters wird aus dem System entfernt.
+
+|===
+
+[cols="1h, 4"]
+[[AT360]]
+|===
+|ID
+|<<AT360>>
+
+|Anwendungsfall
+|<<UC36>>
+
+|Voraussetzung
+a| Administrator mit der Rolle “ADMIN” benutzt das System.
+
+|Event
+a| Administrator klickt auf “Inventar” in der Navigationsleiste.
+
+|Erwartetes Resultat
+a| Der Administrator wird auf eine Seite mit dem aufgelisteten Inventar geleitet.
+
+|===
+
+[cols="1h, 4"]
+[[AT370]]
+|===
+|ID
+|<<AT370>>
+
+|Anwendungsfall
+|<<UC37>>
+
+|Voraussetzung
+a| Ein Administrator mit der Rolle “ADMIN” benutzt das System.
+Der Administrator befindet sich auf der Seite “Inventar”.
+Der Administrator gibt ein, die Quantität einer Ressource vom Typ Ausrüstung um 2 zu erhöhen.
+
+|Event
+a| Administrator klickt auf “Bestätigen”
+
+|Erwartetes Resultat
+a| Die insgesamt verfügbare Quantität der gewählten Ressource wird um 2 erhöht.
+|===
+
+[cols="1h, 4"]
+[[AT371]]
+|===
+|ID
+|<<AT371>>
+
+|Anwendungsfall
+|<<UC37>>
+
+|Voraussetzung
+a| Ein Administrator mit der Rolle “ADMIN” benutzt das System.
+Der Administrator befindet sich auf der Seite “Inventar”.
+Der Administrator gibt ein, die Quantität einer Ressource vom Typ Verbrauchsgüter um 2 zu verringern.
+
+|Event
+a| Administrator klickt auf “Bestätigen”
+
+|Erwartetes Resultat
+a| Der Administrator erhält eine Fehlermeldung, die ihn informiert, dass Verbrauchsgüter nicht entfernt werden können.
+
+|===
+
+[cols="1h, 4"]
+[[AT372]]
+|===
+|ID
+|<<AT372>>
+
+|Anwendungsfall
+|<<UC37>>
+
+|Voraussetzung
+a| Ein Administrator mit der Rolle “ADMIN” benutzt das System.
+Der Administrator befindet sich auf der Seite “Inventar”.
+Der Administrator gibt ein, die Anzahl des Personals vom Typ “Koch” um 10 zu verringern.
+Es sind aktuell 5 Mitarbeiter vom Typ “Koch” eingestellt
+
+|Event
+a| Administrator klickt auf “Bestätigen”
+
+|Erwartetes Resultat
+a| Der Administrator erhält eine Fehlermeldung, die ihn informiert, dass aktuell nur 5 Mitarbeiter vom Typ “Koch” eingestellt sind.
+|===
+
+[cols="1h, 4"]
+[[AT380]]
+|===
+|ID
+|<<AT380>>
+
+|Anwendungsfall
+|<<UC38>>
+
+|Voraussetzung
+a| Administrator mit der Rolle “ADMIN” benutzt das System.
+
+|Event
+a| Administrator klickt auf “Einkommensübersicht” in der Navigationsleiste.
+
+|Erwartetes Resultat
+a| Der Administrator wird auf eine Seite mit einer Übersicht über Einkommen und Bestellungen geleitet.
+|===
+
+*Bemerkung*: Nummerierung AT : 2 Ziffern von UC : 1 Ziffer Unternummern des Tests für einen UC
+
 
 == Glossar
 Das Glossar beschreibt die in diesem Projekt benutzten Begriffe und Phrasen, die manchmal zu Missverständnis führen. Für weitere Details Wenden Sie sich Bitte an “Akteure”, “Interessengruppen” und “Klassenmodell”. +
