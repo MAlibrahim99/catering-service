@@ -1063,6 +1063,13 @@ Nicht-Funktionale Anforderungen dienen dazu, die zuvor definierten Qualitätszie
 
 == GUI Prototyp
 
+=== Überblick: Dialoglandkarte
+Die Dialoglandkarte ist eine Übersicht, die zeigt, mit welchen Aktionen zwischen Masken navigiert werden kann.
+
+image:gui/Dialoglandkarte.png[Dialoglandkarte]
+
+=== Grafischer Prototyp
+
 image:gui/startseite.png[Startseite, title= "Startseite des Cateringservice", align=center]
 Startseite des Cateringservice
 
@@ -1984,9 +1991,6 @@ a| Administrator klickt auf “Einkommensübersicht” in der Navigationsleiste.
 |Erwartetes Resultat
 a| Der Administrator wird auf eine Seite mit einer Übersicht über Einkommen und Bestellungen geleitet.
 |===
-
-*Bemerkung*: Nummerierung AT : 2 Ziffern von UC : 1 Ziffer Unternummern des Tests für einen UC
-
 
 == Glossar
 Das Glossar beschreibt die in diesem Projekt benutzten Begriffe und Phrasen, die manchmal zu Missverständnis führen. Für weitere Details Wenden Sie sich Bitte an “Akteure”, “Interessengruppen” und “Klassenmodell”. +
