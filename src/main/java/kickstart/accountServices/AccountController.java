@@ -52,4 +52,19 @@ public class AccountController {
 		model.addAttribute("accountData", form);
 		return "profile";
 	}
+
+	@PostMapping("/edit-profile")
+	public String showProfileUpdateForm(@ModelAttribute("accountData") ProfileForm data, Model model) {
+		model.addAttribute("accountData", data);
+		return "edit-profile-page";
+	}
+
+	@PostMapping("/update-profile")
+	public String updateProfile(@ModelAttribute("accountData") ProfileForm data, Model model){
+		model.addAttribute("accountData", data);
+		this.name = data.getName();
+		this.email= data.getEmail();
+		this.address = data.getAddress();
+		return "redirect:profile";
+	}
 }

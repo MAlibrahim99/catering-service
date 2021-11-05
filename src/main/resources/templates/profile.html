@@ -25,7 +25,7 @@
     </table>
     <br/><br/>
     <div>
-        <form th:action="@{/profileUpdateForm}" th:object="${accountData}" method="post" style="display: inline">
+        <form th:action="@{/edit-profile}" th:object="${accountData}" method="post" style="display: inline">
             <input type="hidden" name="name" th:value="${accountData.getName}">
             <input type="hidden" name="email" th:value="${accountData.getEmail}">
             <input type="hidden" name="address" th:value="${accountData.getAddress}">

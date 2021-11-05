@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout}">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<section layout:fragment="content">
+    <h2 class="underlined-text">Profil</h2>
+    <form th:action="@{/update-profile}" method="post" th:object="${accountData}">
+    <table>
+        <tr>
+            <td>Name:</td>
+            <td ><input type="text" th:field="${accountData.name}" required></td>
+        </tr>
+        <tr>
+            <td>E-Mail:</td>
+            <td ><input type="email" th:field="${accountData.email}" required></td>
+        </tr>
+        <tr>
+        <td>Adresse:</td>
+        <td ><input type="text" th:field="${accountData.address}"></td>
+        </tr>
+    </table>
+        <br/>
+        <br/>
+        <button type="submit" class="ui simple green button">Speichern</button>
+    </form>
+</section>
+</body>
+</html>
