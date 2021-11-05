@@ -31,8 +31,7 @@
             <input type="hidden" name="address" th:value="${accountData.getAddress}">
             <button class="ui black basic button" type="submit">Profil bearbeiten</button>
         </form>
-
-        <button class="ui red basic button">Konto löschen</button>
+        <a th:href="@{/delete-account}" class="ui red basic button">Konto löschen</a>
     </div>
 </section>
 </body>

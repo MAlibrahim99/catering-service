@@ -67,4 +67,14 @@ public class AccountController {
 		this.address = data.getAddress();
 		return "redirect:profile";
 	}
+
+	@GetMapping("/delete-account")
+	public String deleteAccount(){
+		return "confirm-deleting";
+	}
+
+	@GetMapping("/delete-confirmation")
+	public String confirmDeletion(){
+		return "main-page";
+	}
 }
