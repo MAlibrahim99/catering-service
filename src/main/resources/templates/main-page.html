@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout}">
+<head>
+    <meta charset="UTF-8">
+    <title>Mampf</title>
+</head>
+<body>
+<section layout:fragment="content">
+    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Culpa facilis fuga labore libero nam perferendis quam
+        reiciendis tempora! Aliquid animi assumenda culpa deleniti dignissimos dolorum enim incidunt ipsa modi
+        recusandae?</p>
+    <div class="paragraph pt-4-rem" th:if="${ userName!= null}">
+        <p th:text="${'Willkommen ' + userName}"></p>
+    </div>
+</section>
+</body>
+</html>

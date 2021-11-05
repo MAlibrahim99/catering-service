@@ -9,11 +9,29 @@ body {
 	margin: 0 auto;
 	width: 940px;
 	font: 13px/22px Helvetica, Arial, sans-serif;
-	background: #f0f0f0;
+	background: #FFEDDC;
 }
 
 h1 {
 	font-size: 3em;
 	line-height: 3.2em;
 	text-align:center;
+}
+.underlined-text{
+    text-decoration: underline;
+}
+.backgroundColor {
+    background-color:#FFEDDC;
+}
+
+.pt-4-rem {
+    padding: 4rem 0;
+}
+
+.pt-1-rem{
+    padding-top: 1rem;
+}
+
+.w-input-50{
+    width: 50%;
 }
