@@ -32,6 +32,10 @@ h1 {
     padding-top: 1rem;
 }
 
+.p-1-rem {
+    padding: 1rem;
+}
+
 .w-input-50{
     width: 50%;
 }
