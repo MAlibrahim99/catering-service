@@ -26,6 +26,7 @@ public class CustomerController {
 		model.addAttribute("registrationForm", form);
 		return "register";
 	}
+
 	@PostMapping("/login")
 	public String logUserIn(@RequestParam("email")String email,
 							@RequestParam("password") String password,
@@ -41,5 +42,10 @@ public class CustomerController {
 	@GetMapping("/login")
 	public String sendLoginForm(){
 		return "login-page";
+	}
+
+	@GetMapping("/customer-list")
+	public String showCustomerList() {
+		return "customer-list";
 	}
 }
