@@ -5,6 +5,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 public class CustomerController {
@@ -24,5 +25,21 @@ public class CustomerController {
 	public String register(Model model, RegistrationFrom form){
 		model.addAttribute("registrationForm", form);
 		return "register";
+	}
+	@PostMapping("/login")
+	public String logUserIn(@RequestParam("email")String email,
+							@RequestParam("password") String password,
+							Model model){
+		if(email.equals(this.email) && password.equals(this.password)){
+			model.addAttribute("userName", this.name);
+			return "main-page";
+		}else{
+			return "login-page";
+		}
+	}
+
+	@GetMapping("/login")
+	public String sendLoginForm(){
+		return "login-page";
 	}
 }
