@@ -8,6 +8,7 @@
     <title>Registrierung</title>
 </head>
 <body>
+<nav th:replace="navigation :: navigation"></nav>
 <section layout:fragment="content">
     <form class="ui form container" th:action="@{/register}" method="post" th:object="${registrationForm}">
         <h2 class="underlined-text">Registrierung</h2>

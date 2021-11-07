@@ -8,6 +8,7 @@
 </head>
 <body>
 <section layout:fragment="content">
+    <nav th:replace="navigation :: navigation"></nav>
     <h2 class="underlined-text">Profil</h2>
     <form th:action="@{/update-profile}" method="post" th:object="${accountData}">
     <table>
