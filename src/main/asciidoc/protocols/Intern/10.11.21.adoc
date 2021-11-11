@@ -1,0 +1,32 @@
+= Protokoll Gruppe 27
+
+Treffen am 10.11.2021
+
+Ort:      Online (Discord) +
+Beginn:   18:15 Uhr +
+Ende:     20:30 Uhr
+
+__Schriftführer:__ Mohamad Alibrahim
+
+*Nächstes Treffen:* +
+11.11.2021, 17:00 Uhr, Online (Discord)
+
+__Teilnehmer:__
+//Tabellarisch oder Aufzählung, Kennzeichnung von Teilnehmern mit besonderer Rolle (z.B. Kunde)
+
+- Lennart Obermüller (Scrum Master)
+- Dan Kornelius Nguyen
+- Konrad Schneider
+- Lisa-Marie Müller
+- Mohamad Alibrahim
+- Rosa Splittgerber
+
+== Bemerkungen
+n.v.
+
+== Ereignisse
+- 5. Punkt aus Entwicklerdokumentation bearbeitet
+- Paketendiagramme erstellt
+
+== Aktueller Stand
+- Weiter mit der Entwicklerdokumentation
