@@ -15,7 +15,7 @@
 <<Kontextabgrenzung>> +
 <<Lösungsstrategie>> + 
 <<Bausteinsicht>> + 
-<<Laufzeitsicht>> + 
+<<Laufzeitsicht (Bestellung)>> + 
 <<Technische Schulden>>
 
 
