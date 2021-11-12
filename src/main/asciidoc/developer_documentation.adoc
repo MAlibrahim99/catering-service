@@ -16,7 +16,14 @@ Wartbarkeit: Grad, der angibt, wie effektiv und effizient ein Produkt oder ein S
 ** Bedienbarkeit: Grad, der angibt wie gut ein Produkt oder System von bestimmten Benutzern verwendet werden kann, um bestimmte Ziele mit Effektivität, Effizienz und Zufriedenheit in einem bestimmten Nutzungskontext zu erreichen.
 ** Sicherheit: Grad, der angibt wie gut ein Produkt oder System Informationen und Daten schützt, und dafür sorgt, dass Personen nur den Zugriff haben, der ihrer Berechtigungsstufe entspricht.
 ** Die folgende Tabelle  zeigt die zu erreichenden Qualitätsziele im System und ihre Priorität: 1 = Nicht wichtig … 5 = Am wichtigsten
-
+[options="header"]
+[cols="1,1,1,1,1,1,3]
+|===
+|Qualitätsziel|1|2|3|4|5
+|Wartbarkeit|||x||
+|Bedienbarkeit||||x|
+|Sicherheit||||x|
+|===
 
 == Randbedingungen
 * Hardware-Vorgaben
@@ -30,8 +37,20 @@ Wartbarkeit: Grad, der angibt, wie effektiv und effizient ein Produkt oder ein S
 === Erfüllung der Qualitätsziele
 [options="header"]
 |=== 
-|Qualitätsziel |Lösungsansatz
-|... |...
+|*Qualitätsziel* |*Lösungsansatz*
+|*Wartbarkeit* | -*Modularität:* Sicherstellen, dass die Anwendung aus einzelnen Komponenten besteht, sodass Änderungen an einer Komponente weniger Auswirkungen auf andere haben + 
+-*Wiederverwendbarkeit:* Sicherstellen, dass Komponenten des Systems von anderen Komponenten wiederverwendet +
+-*Modifizierbarkeit:* Sicherstellen, dass die Anwendung verändert oder erweitert werden kann, ohne die Produktqualität zu beeinträchtigen
+|*Bedienbarkeit* | -*Lernfähigkeit:* Sicherstellen, dass das System von den Nutzern einfach verstanden und genutzt werden kann +
+-> Umsetzbar durch eindeutig und unmissverständlich beschriftete Menüpunkte und Buttons + 
+-*Fehlerbehandlung:* Sicherstellen, dass fehlerhafte Eingaben von Nutzern nicht zu ungültigen Systemzuständen führen +
+-*Barrierefreiheit:* Sicherstellen, dass Menschen mit verschiedensten Eigenschaften und Fähigkeiten in der Lage sind die Website zu nutzen +
+-> Umsetzbar durch Verwendung von passenden Schriftgrößen und ordentlicher Nutzung von Schrift- und Hintergrundfarbe
+|*Sicherheit* | -*Vertraulichkeit:* Sicherstellen, dass Leute nur zugriff auf die Informationen haben, zu denen sie eine Berechtigung haben. +
+-> Umsetzbar mit _Spring Security und Thymeleaf_ (sec:authorize) + 
+-*Integrität:* Sicherstellen, dass keine unbefugten Änderungen an Daten vorgenommen werden können + 
+-> (@PreAuthorize - annotation) +
+-*Verantwortlichkeit:* Rückverfolgung von Aktionen zu eindeutiger Person/ Rolle
 |===
 
 === Softwarearchitektur
@@ -43,33 +62,134 @@ Wartbarkeit: Grad, der angibt, wie effektiv und effizient ein Produkt oder ein S
 * Benutzeroberfläche
 * Verwendung externer Frameworks
 
-[options="header", cols="1,2"]
+[options="header"]
 |===
-|Externes Package |Verwendet von (Klasse der eigenen Anwendung)
-|... |... 
+|*Externes Package* |*Verwendet von (Klasse der eigenen Anwendung)*
+|salespointframework.catalog |-order.OrderController +
+-catalog.Option + 
+-catalog.OptionCatalog
+|salespointframework.core| -catalog.CatalogDataInitializer + 
+-nutzer.NutzerDataInitializer +
+-catering.nutzer.Nutzer +
+-inventory.InventoryDataInitializer +
+-nutzer.KontoManagement
+|salespointframework.inventory | -inventory.InventoryController +
+-inventory.InventoryDataInitializer + 
+-inventory.QuantityInputs
+|salespointframework.order| -order.OrderController
+|salespointframework.payment| -order.OrderController
+|salespointframework.quantity| -order.OrderController + 
+-catalog.CatalogController +
+-inventory.InventoryDataInitializer
+|salespointframework.SalespointSecurityConfiguration|-catering.Catering
+|salespointframework.time| -catalog.CatalogController
+|salespointframework.useraccount | -nutzer.Nutzer +
+-nutzer.NutzerDataInitializer + 
+-nutzer.KontoManagement
+|salespointframework.boot | -catering.Catering +
+-nutzer.Nutzer
+|salespointframework.data | -nutzerKontoManagement +
+-catalog.OptionCatalog +
+-nutzer.NutzerRepository + 
+-inventory.InventoryController
+|salespointframework.security | -catering.Catering +
+-nutzer.NutzerKontroller
+|salespointframework.ui |-nutzer.NutzerKontroller +
+-inventory.InventoryController
+|salespointframework.util | -nutzer.NutzerKontroller +
+-nutzer.NutzerDataInitializer + 
+-order.OrderController + 
+-catalog.CatalogDataInitializer + 
+-inventory.InventoryDataInnitializer
+|salespointframework..validation | -nutzer.NutzerKontroller
+|salespointframework.web | -inventory.InventoryController + 
+-nutzer.NutzerKontroller
 |===
 
 == Bausteinsicht
-* Entwurfsklassendiagramme der einzelnen Packages
+=== Catering
 
 [options="header"]
 |=== 
-|Klasse/Enumeration |Description
-|...|...
+|*Klasse/Enumeration* |*Beschreibung*
+|Catering|Die zentrale Klasse, welche die Anwendung startet und Konfigurationen für Spring vornimmt.
+|WebSecurityConfiguration | Konfigurationsklasse, welche grundlegende Sicherheits- und An- und Abmeldeeinstellungen vornimmt.
+|===
+
+=== Katalog 
+
+[options="header"]
+|===
+|*Klasse/Enumeration* |*Beschreibung*
+|Option|Ein Produkt des Caterinservice.
+|Optiontype|Der Typ einer Option, welcher GUETER, AUSRUESTUNG, PERSONAL oder ESSEN sein kann.
+|OptionCatalog|Eine Erweiterung von Salespoint.Catalog, um nach Typ einer Option suchen zu können.
+|CatalogDataInitializer|Eine Implementation von DataInizializer, der die Produkte und deren Ursprüngliche Preise festlegt.
+|CatalogController|Ein Spring MVC Controller, der Anfragen auf Start-, Angebots- und Detailseiten verarbeiten kann.
+|===
+
+=== Nutzer
+
+[options="header"]
+|===
+|*Klasse/Enumeration* |*Beschreibung*
+|Nutzer|stellt angemeldeten Nutzer dar, der eine der Rollen “CUSTOMER”, “STAFF” oder “ADMIN” hat.
+|NutzerKontroller|leitet Nutzeranfragen zu den zuständigen Klassen weiter.
+|KontoManagement|stellt Funktionen zum Erstellen und Modifizieren von Nutzerkonten.
+|Kontodata|Dataobject zum Austausch von Kontodaten.
+|NutzerDataInnitializer|implementiert DataInitializer zum Instanziieren von Nutzerkonten.
+|===
+
+=== Inventar 
+
+[options="header"]
+|===
+|*Klasse/Enumeration* |*Beschreibung*
+|InventoryDataInitializer|Eine Implementation von DataInitializer, der die anfänglichen Lagerbestände festlegt.
+|InventoryController|Ein Spring MVC Controller, der Anfragen zum Einsehen und Bearbeiten des Inventars verarbeitet.
+|QuantityInputs|Eine Wrapper-Klasse, um Daten an das html Dokument zu übermitteln.
+|===
+
+=== Bestellung 
+
+[options="header"]
+|===
+|*Klasse/Enumeration* |*Beschreibung*
+|OrderController|Ein Spring MVC Controller, der Anfragen zum Kaufen, und zum Anzeigen von Bestellliste, Kalender und Einkommensübersicht verarbeitet.
 |===
 
 === Rückverfolgbarkeit zwischen Analyse- und Entwurfsmodell
 _Die folgende Tabelle zeigt die Rückverfolgbarkeit zwischen Entwurfs- und Analysemodell. Falls eine Klasse aus einem externen Framework im Entwurfsmodell eine Klasse des Analysemodells ersetzt,
 wird die Art der Verwendung dieser externen Klasse in der Spalte *Art der Verwendung* mithilfe der folgenden Begriffe definiert:_
 
-* Inheritance/Interface-Implementation
-* Class Attribute
-* Method Parameter
+* Vererbungsklasse/Interface-Implementation 
+* Klassenattribut
+* Funktionsargument
 
 [options="header"]
 |===
 |Klasse/Enumeration (Analysemodell) |Klasse/Enumeration (Entwurfsmodell) |Art der Verwendung
-|...|...|...
+|Catering|catering.Catering|
+|Nutzer|Salespoint.UserAccount + 
+catering.nutzer|
+|Katalog|Salespoint.catalog|
+|Inventar|Salespoint.UniqueInventory|
+|Bestellliste| Salespoint.OrderManager<Order> |Klasseneigenschaft +
+Funktionsargument
+|Bestellung| Salespoint.Order|Funktionsargument
+|Status| Salespoint.OrderStatus|Funktionsargument
+|Rollen|Salespoint.Role|Funktionsargument
+|Eventcatering, Partyservice, RentACook oder MobileBreakfast|catering.catalog.Option|Vererbungsklasse
+|InventarItem| Salespoint.UniqueInventory|Funktionsargument
+|Bestellungsinhalt|Salespoint.Orderline (via Salespoint.Order) | Klasseneigenschaft +
+Funktionsargument
+|KundenManagement| Salespoint.UserAccountManager + 
+spring.CrudRepository + 
+catering.Kunde + 
+catering.Registrierungsform| Klasseneigenschaft + 
+Klasseneigenschaft + 
+Funktionsrückgabewert + 
+Funktionsargument
 |===
 
 == Laufzeitsicht
