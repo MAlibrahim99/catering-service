@@ -230,8 +230,8 @@ Funktionsrückgabewert +
 Funktionsargument
 |===
 
-== Laufzeitsicht
-* Darstellung der Komponenteninteraktion anhand eines Sequenzdiagramms, welches die relevantesten Interaktionen darstellt.
+== Laufzeitsicht (Bestellung)
+image:models/design/SequenzdiagrammBestellung.png[seq order]
 
 == Technische Schulden
 * Auflistung der nicht erreichten Quality Gates und der zugehörigen SonarQube Issues zum Zeitpunkt der Abgabe
