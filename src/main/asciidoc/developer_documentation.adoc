@@ -1,8 +1,9 @@
 [options="header"]
-[cols="1, 3, 3"]
+[cols="1, 1, 1, 1, 4"]
 |===
-|Version | Bearbeitungsdatum   | Autor 
-|...	| ... | ...
+|Version | Status      | Bearbeitungsdatum   | Autoren |  Vermerk
+|0.1     | In Arbeit   | 12.11.2021          | Dan Nguyen, Konrad Schneider, Lennart Obermüller, Lisa-Marie Müller, Mohamad Alibrahim, Rosa Splittgerber
+| Alle Inhalte von der Developer-documentation wurden gemeinsam in der Gruppe erarbeitet und in einem Google-Document zusammengestellt. Ein Mitglied, dass einige Inhalte auf GitHub hochlädt, repräsentiert nicht unbedingt den Hauptautor dieser Inhalte.
 |===
 
 = Entwicklerdokumentation
