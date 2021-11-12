@@ -3,7 +3,7 @@
 |===
 |Version | Status      | Bearbeitungsdatum   | Autoren |  Vermerk
 |0.1     | In Arbeit   | 12.11.2021          | Dan Nguyen, Konrad Schneider, Lennart Obermüller, Lisa-Marie Müller, Mohamad Alibrahim, Rosa Splittgerber
-| Alle Inhalte von der Developer-documentation wurden gemeinsam in der Gruppe erarbeitet und in einem Google-Document zusammengestellt. Ein Mitglied, dass einige Inhalte auf GitHub hochlädt, repräsentiert nicht unbedingt den Hauptautor dieser Inhalte.
+| Alle Inhalte von der Entwicklerdokumentation wurden gemeinsam in der Gruppe erarbeitet und in einem Google-Document zusammengestellt. Ein Mitglied, dass einige Inhalte auf GitHub hochlädt, repräsentiert nicht unbedingt den Hauptautor dieser Inhalte.
 |===
 
 = Entwicklerdokumentation
@@ -12,8 +12,8 @@
 * Aufgabenstellung:
 ** 
 * Qualitätsziele
-** Die folgenden Beschreibungen sind abgeleitet von der _ISO/IEC 25010 Software Quality Model_.
-** Wartbarkeit: Grad, der angibt, wie effektiv und effizient ein Produkt oder ein System modifiziert werden kann, um es zu verbessern, zu korrigieren oder an veränderte Umgebungsbedingungen und Anforderungen anzupassen.
+** Die folgenden Beschreibungen sind abgeleitet von der ISO/IEC 25010 Software Quality Model.
+Wartbarkeit: Grad, der angibt, wie effektiv und effizient ein Produkt oder ein System modifiziert werden kann, um es zu verbessern, zu korrigieren oder an veränderte Umgebungsbedingungen und Anforderungen anzupassen.
 ** Bedienbarkeit: Grad, der angibt wie gut ein Produkt oder System von bestimmten Benutzern verwendet werden kann, um bestimmte Ziele mit Effektivität, Effizienz und Zufriedenheit in einem bestimmten Nutzungskontext zu erreichen.
 ** Sicherheit: Grad, der angibt wie gut ein Produkt oder System Informationen und Daten schützt, und dafür sorgt, dass Personen nur den Zugriff haben, der ihrer Berechtigungsstufe entspricht.
 ** Die folgende Tabelle  zeigt die zu erreichenden Qualitätsziele im System und ihre Priorität: 1 = Nicht wichtig … 5 = Am wichtigsten
@@ -32,7 +32,7 @@
 * Vorgaben zum Betrieb des Software
 
 == Kontextabgrenzung
-* Kontextdiagramm
+image:models/design/Kontextdiagramm.png[context diagram]
 
 == Lösungsstrategie
 === Erfüllung der Qualitätsziele
@@ -55,7 +55,11 @@
 |===
 
 === Softwarearchitektur
-* Beschreibung der Architektur anhand der Top-Level-Architektur oder eines Client-Server-Diagramms
+==== Top-Level-Architektur
+image:models/design/TopLevelArchitektur.png[top-level-architecture]
+
+==== Client-Server-Modell
+image:models/design/ServerClientModell.png[server-client-model]
 
 === Entwurfsentscheidungen
 * Verwendete Muster
@@ -109,6 +113,7 @@
 
 == Bausteinsicht
 === Catering
+image:models/design/BausteinsichtCatering.png[block view catering]
 
 [options="header"]
 |=== 
@@ -118,6 +123,7 @@
 |===
 
 === Katalog 
+image:models/design/BausteinsichtKatalog.png[block view catalog]
 
 [options="header"]
 |===
@@ -130,6 +136,7 @@
 |===
 
 === Nutzer
+image:models/design/BausteinsichtNutzer.png[block view user]
 
 [options="header"]
 |===
@@ -138,10 +145,12 @@
 |NutzerKontroller|leitet Nutzeranfragen zu den zuständigen Klassen weiter.
 |KontoManagement|stellt Funktionen zum Erstellen und Modifizieren von Nutzerkonten.
 |Kontodata|Dataobject zum Austausch von Kontodaten.
-|NutzerDataInnitializer|implementiert DataInitializer zum Instanziieren von Nutzerkonten.
+|NutzerDataInitialisierer|implementiert DataInitializer zum Instanziieren von Nutzerkonten.
+|NutzerRepository|Ein Repository-Interface, um Nutzer zu verwalten.
 |===
 
 === Inventar 
+image:models/design/BausteinsichtInventar.png[block view inventory]
 
 [options="header"]
 |===
@@ -152,6 +161,7 @@
 |===
 
 === Bestellung 
+image:models/design/BausteinsichtBestellung.png[block view order]
 
 [options="header"]
 |===
