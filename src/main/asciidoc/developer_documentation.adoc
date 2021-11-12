@@ -12,8 +12,8 @@
 * Aufgabenstellung:
 ** 
 * Qualitätsziele
-** Die folgenden Beschreibungen sind abgeleitet von der ISO/IEC 25010 Software Quality Model.
-Wartbarkeit: Grad, der angibt, wie effektiv und effizient ein Produkt oder ein System modifiziert werden kann, um es zu verbessern, zu korrigieren oder an veränderte Umgebungsbedingungen und Anforderungen anzupassen.
+** Die folgenden Beschreibungen sind abgeleitet von der _ISO/IEC 25010 Software Quality Model_.
+** Wartbarkeit: Grad, der angibt, wie effektiv und effizient ein Produkt oder ein System modifiziert werden kann, um es zu verbessern, zu korrigieren oder an veränderte Umgebungsbedingungen und Anforderungen anzupassen.
 ** Bedienbarkeit: Grad, der angibt wie gut ein Produkt oder System von bestimmten Benutzern verwendet werden kann, um bestimmte Ziele mit Effektivität, Effizienz und Zufriedenheit in einem bestimmten Nutzungskontext zu erreichen.
 ** Sicherheit: Grad, der angibt wie gut ein Produkt oder System Informationen und Daten schützt, und dafür sorgt, dass Personen nur den Zugriff haben, der ihrer Berechtigungsstufe entspricht.
 ** Die folgende Tabelle  zeigt die zu erreichenden Qualitätsziele im System und ihre Priorität: 1 = Nicht wichtig … 5 = Am wichtigsten
