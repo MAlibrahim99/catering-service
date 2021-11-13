@@ -22,7 +22,19 @@
 
 == Einführung und Ziele
 === Aufgabenstellung:
-*
+Ein altes deutsches Sprichwort besagt: „Essen und Trinken hält Leib und Seele zusammen“. Das ist auch das Motto von Hannes Wurst, der seinen einst kleinen Imbissstand zu einem renommierte Cateringservice Mampf mit vielen Angestellten ausgebaut hat. Das Ziel dieser Software ist es, alle Abrechnungs-, Bestell- und Verwaltungsaufgaben zusammenzuführen und somit zu erleichtern.
+
+Der Cateringservice Mampf bietet verschiedenen Nutzern unterschiedliche Interaktionsmöglichkeiten. Jedem Besucher der Website ist es möglich die Angebote des Cateringservice inklusive aller Details und Preise einzusehen. Es wird zwischen den Produkten _Eventcatering_, _Partyservice_, _Mobile Breakfast_ und _Rent-a-Cook_ unterschieden. Die verschiedenen Ressourcen _(Optiontype)_ werden im Inventar _(Inventory)_ mit ihrer verfügbaren Quantität _(Quantity)_ gespeichert. Wenn eine Bestellung aufgegeben wird, wird die Anzahl der verfügbaren Ressourcen im Inventar entsprechend angepasst.
+
+Wenn ein Nutzer sich für ein Angebot entschieden hat, muss er sich zunächst registrieren _(register)_ um eine Bestellung aufgeben zu können. Um dabei Sicherheit zu garantieren, muss sich jeder Nutzer mit einem Namen _(name)_, einer E-Mail _(email)_ und einem Passwort _(password)_ registrieren, wobei die verwendete E-Mail einzigartig sein muss. Der angemeldete Nutzer _(Customer)_ kann nun im Bestellformular alle gewünschten Details angeben. Bestätigt der Kunde seine Angaben durch “Kaufen” _(buy)_, wird eine neue Bestellung _(Order)_ registriert. Sie enthält alle ausgewählten Optionen _(OrderLine)_ inklusive Anzahl und Preis. Sollten nicht genügend Ressourcen im Inventar vorhanden sein, erhält der Administrator eine Benachrichtigung, mit einer Aufforderung das Inventar aufzufüllen und der Kunde erhält eine Nachricht, die seine Bestellung bestätigt. Sollte die fehlende Ressource vom Typ PERSONAL sein, wird die Bestellung abgebrochen und der Kunde wird gebeten einen anderen Termin auswählen.
+
+Solange die Bestellung nicht abgeschlossen ist, wird ihr der Status _(OrderStatus)_ “aktiv” zugeschrieben. Sollte der Kunde seine Bestellung stornieren, so wird der Status auf “storniert” angepasst. Erst nachdem der Termin der Bestellung abgelaufen ist, wird sie als “abgeschlossen” markiert.
+Neben den für alle Nutzer zugänglichen Funktionalitäten bietet das System für Personal _(Staff)_ und Administrator _(Admin)_ gesonderten Zugang, der die Verwaltung und das Management des Cateringservice erlaubt. Somit  kann der Administrator alle Bestellungen, Angebote und Ressourcen verwalten, sowie Kunden _(Kundenliste)_ und Mitarbeiter _(Personalliste)_ im Überblick behalten. Zusätzlich kann er in der Einkommensübersicht die monatlichen bzw. jährlichen Einnahmen, die Verteilung der bestellten Angebotstypen und die Anteile der aktiven, abgeschlossenen und stornierten Bestellungen einsehen.
+
+Jede aufgegebene Bestellung wird  in der _Bestellliste_ und im _Kalender_ angezeigt. Diese sind nur durch Nutzer einsehbar, die mit einem Nutzeraccount _(UserAccount)_ angemeldet sind, dem sie Rolle STAFF oder ADMIN zugeordnet ist. Der Nutzerfreundlichkeit halber soll es jedem möglich sein, Bestelldetails einzusehen. Für den Kunden im Bestellverlauf, für Personal und Administrator über _Bestellliste/Kalender_. 
+Um Sicherheit zu gewährleisten, hat jeder Mitarbeiter einen eigenen Account _(UserAccount)_ der vom Administrator erstellt wird _(register)_ und gegebenenfalls gelöscht werden kann.
+
+Alles in allem wollen wir ein sicheres System, welches die Verwaltung aller Bestellungen, Ressourcen, Kunden und Mitarbeiter erlaubt. So soll der Bestellprozess, und alles damit Verbundene, organisiert werden können. Dabei setzen wir auf eine einfache, unmissverständliche Benutzeroberfläche, die den Kunden gerne bei Mampf bestellen lässt.
 
 === Qualitätsziele
 * Die folgenden Beschreibungen sind abgeleitet von der _ISO/IEC 25010 Software Quality Model_.
