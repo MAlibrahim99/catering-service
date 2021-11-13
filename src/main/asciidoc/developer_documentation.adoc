@@ -6,10 +6,11 @@
 | Alle Inhalte von der Entwicklerdokumentation wurden gemeinsam in der Gruppe erarbeitet und in einem Google-Document zusammengestellt. Ein Mitglied, dass einige Inhalte auf GitHub hochlädt, repräsentiert nicht unbedingt den Hauptautor dieser Inhalte.
 |===
 
+:numbered:
+
 = Entwicklerdokumentation
 
-
-== Inhaltsverzeichnis: 
+== Inhaltsverzeichnis
 <<Einführung und Ziele>> + 
 <<Randbedingungen>> + 
 <<Kontextabgrenzung>> +
@@ -20,14 +21,16 @@
 
 
 == Einführung und Ziele
-* Aufgabenstellung:
-** 
-* Qualitätsziele
-** Die folgenden Beschreibungen sind abgeleitet von der _ISO/IEC 25010 Software Quality Model_.
-** Wartbarkeit: Grad, der angibt, wie effektiv und effizient ein Produkt oder ein System modifiziert werden kann, um es zu verbessern, zu korrigieren oder an veränderte Umgebungsbedingungen und Anforderungen anzupassen.
-** Bedienbarkeit: Grad, der angibt wie gut ein Produkt oder System von bestimmten Benutzern verwendet werden kann, um bestimmte Ziele mit Effektivität, Effizienz und Zufriedenheit in einem bestimmten Nutzungskontext zu erreichen.
-** Sicherheit: Grad, der angibt wie gut ein Produkt oder System Informationen und Daten schützt, und dafür sorgt, dass Personen nur den Zugriff haben, der ihrer Berechtigungsstufe entspricht.
-** Die folgende Tabelle  zeigt die zu erreichenden Qualitätsziele im System und ihre Priorität: 1 = Nicht wichtig … 5 = Am wichtigsten
+=== Aufgabenstellung:
+*
+
+=== Qualitätsziele
+* Die folgenden Beschreibungen sind abgeleitet von der _ISO/IEC 25010 Software Quality Model_.
+* Wartbarkeit: Grad, der angibt, wie effektiv und effizient ein Produkt oder ein System modifiziert werden kann, um es zu verbessern, zu korrigieren oder an veränderte Umgebungsbedingungen und Anforderungen anzupassen.
+* Bedienbarkeit: Grad, der angibt wie gut ein Produkt oder System von bestimmten Benutzern verwendet werden kann, um bestimmte Ziele mit Effektivität, Effizienz und Zufriedenheit in einem bestimmten Nutzungskontext zu erreichen.
+* Sicherheit: Grad, der angibt wie gut ein Produkt oder System Informationen und Daten schützt, und dafür sorgt, dass Personen nur den Zugriff haben, der ihrer Berechtigungsstufe entspricht.
+* Die folgende Tabelle  zeigt die zu erreichenden Qualitätsziele im System und ihre Priorität: 1 = Nicht wichtig … 5 = Am wichtigsten
+
 [options="header"]
 [cols="1,1,1,1,1,1,3]
 |===
@@ -38,21 +41,23 @@
 |===
 
 == Randbedingungen
-* Hardware-Vorgaben
-** Server
-** Computer
-** Tastatur
-** Maus
-* Software-Vorgaben
-** Die folgende Java Version ist zum Ausführen der Anwendung erforderlich:
-*** Java 11
-** Die folgenden Browser sind notwendig, um die Anwendung zu nutzen:
-*** Google Chrome
-*** Mozilla Firefox
-* Vorgaben zum Betrieb des Software
-** Die Software wird als Website vom Cateringservice Mampf betrieben, um ihre verschiedenen Angebote (...) an Privatpersonen und Firmen zu vermieten. Sie soll über einen Server laufen und im Internetbrowser für Kunden zur verfügung stehen.
-** Die Hauptnutzer der Software sind private Haushalte und Firmen (customers), die sich grundlegend mit der Navigation von Webseiten auskennen, sowie Personal und Administrator, welche ebenfalls nur grundlegendes technisches Vorwissen besitzen.
-** Das System soll ohne technische Wartung auskommen.
+=== Hardware-Vorgaben
+* Server
+* Computer
+* Tastatur
+* Maus
+
+=== Software-Vorgaben
+* Die folgende Java Version ist zum Ausführen der Anwendung erforderlich:
+** Java 11
+* Die folgenden Browser sind notwendig, um die Anwendung zu nutzen:
+** Google Chrome
+** Mozilla Firefox
+
+=== Vorgaben zum Betrieb der Software
+* Die Software wird als Website vom Cateringservice Mampf betrieben, um ihre verschiedenen Angebote (...) an Privatpersonen und Firmen zu vermieten. Sie soll über einen Server laufen und im Internetbrowser für Kunden zur verfügung stehen.
+* Die Hauptnutzer der Software sind private Haushalte und Firmen (customers), die sich grundlegend mit der Navigation von Webseiten auskennen, sowie Personal und Administrator, welche ebenfalls nur grundlegendes technisches Vorwissen besitzen.
+* Das System soll ohne technische Wartung auskommen.
 
 == Kontextabgrenzung
 image:models/design/Kontextdiagramm.png[context diagram]
@@ -85,17 +90,18 @@ image:models/design/TopLevelArchitektur.png[top-level-architecture]
 image:models/design/ServerClientModell.png[server-client-model]
 
 === Entwurfsentscheidungen
-* Verwendete Muster
-** Spring MVC
-* Persistenz 
-** Die Anwendung verwendet ein auf Hibernate-Annotationen basierendes Mapping, um Java-Klassen auf Datenbanktabellen abzubilden. Es wird eine H2 Datenbank benutzt, mit standardmäßig deaktivierter Persistenz. Um persistenten Speicher in der Datenbank zu aktivieren, müssen folgende zwei Zeilen in der Datei “application.properties” einkommentiert werden:
-*** # spring.datasource.url=jdbc:h2:./db/kickstart
-*** # spring.jpa.hibernate.ddl-auto=update
+==== Verwendete Muster
+* Spring MVC
 
-* Benutzeroberfläche
+==== Persistenz 
+* Die Anwendung verwendet ein auf Hibernate-Annotationen basierendes Mapping, um Java-Klassen auf Datenbanktabellen abzubilden. Es wird eine H2 Datenbank benutzt, mit standardmäßig deaktivierter Persistenz. Um persistenten Speicher in der Datenbank zu aktivieren, müssen folgende zwei Zeilen in der Datei “application.properties” einkommentiert werden:
+** # spring.datasource.url=jdbc:h2:./db/kickstart
+** # spring.jpa.hibernate.ddl-auto=update
+
+==== Benutzeroberfläche
 image:models/design/Benutzeroberfläche.png[user interface]
 
-* Verwendung externer Frameworks
+=== Verwendung externer Frameworks
 
 [options="header"]
 |===
