@@ -1,45 +1,93 @@
 = Test-Plan
+:project_name: Cateringservice
+== __{project_name}__
+:toc:
+:toc-title: Inhaltsverzeichnis
+[options="header"]
+[cols="1, 1, 2, 4"]
+|===
+| Status      | Bearbeitungsdatum   | Autoren |  Vermerk
+| In Arbeit   | 13.11.2021          | Dan Nguyen, +
+Konrad Schneider, +
+Lennart Obermüller, +
+Lisa-Marie Müller, +
+Mohamad Alibrahim, +
+Rosa Splittgerber
+| Alle Inhalte vom Testplan wurden gemeinsam in der Gruppe erarbeitet und in einem Google-Document zusammengestellt. Ein Mitglied, das einige Inhalte auf GitHub hochlädt, repräsentiert nicht unbedingt den Hauptautor dieser Inhalte.
+|===
 
-Dieser Testplan stellt eine vereinfachte Version der IEEE 829-1998 Vorlage dar.
+
 
 == Einführung
-Wozu dient das Dokument? Zielgruppe?
+Dieses Dokument dient der Dokumentation und frühzeitigen Erkennung möglicher Probleme, mit dem Ziel diese zu beheben, sodass die Funktionalitäten des Programms nicht behindert oder eingeschränkt werden. Der Test-Plan umfasst sämtliche Tests der Software und ist zur Information für Entwickler gedacht.
+
 
 == Aufbau der Testbezeichner
-Nach welchem Schema sind die Tests benannt?
-
-*Bsp.*
-
-*U - Unit Test, I - Integrationstest*
-
-*U-1, U-2, I-1*
+*U - Unit Test, I - Integrationstest* +
+*ID = [Nummer Test-Gegenstand][Nummer Test][Art des Tests]* +
+*Bsp: 10U, 11U, 20I*
 
 == Test Gegenstände
+. Katalog (Package catering.catalog)
+. Nutzer (Package catering.nutzer)
+. Inventar (Package catering.inventar)
+. Bestellung (Package catering.order)
 
 == Zu testende Funktionalitäten
 
+* Katalog:
+    ** Preise bearbeiten
+* Nutzer:
+    ** Registrierung als Kunde oder Personal
+    ** Anmeldung
+    ** Abmeldung
+    ** Konto löschen
+    ** Profil bearbeiten
+* Inventar:
+    ** Ressourcenverwendung beim Kauf
+    ** Inventar Bearbeiten
+* Bestellung:
+    ** Kostenberechnung
+    ** Abgleich der Ressourcen im Inventar
+    ** Abgleich des verfügbaren Personals zu einem Termin
+    ** Speichern der Bestellung (Bestellverlauf)
+
 == Nicht zu testende Funktionalitäten
-z.B. Bibliotheken von Drittanbietern (eigene Tests beschränken sich auf Schnittstelle, bzw. Zusammenspiel).
+
+[options="header"]
+[cols="4, 4"]
+|===
+|Funktionalität | Grund
+|Funktionen des Salespoint Framework | externes Framework
+|Funktionen des Spring Framework     | externes Framework
+|Korrektheit der Navigation    | Navigation trivial, niedriges Risiko
+|===
 
 == Herangehensweise
-*Bsp.:*
-
-*Klassen werden mit JUnit getestet.*
-
-*Integrationstest nach Bottom-Up Prinzip*
+* Es werden vollständige Komponenten sowie einzelne Funktionen getestet
+* Es wird nur die Software unabhängig von der Hardware getestet
+* Klassen und deren Funktionen werden mit JUnit getestet.
+* Integrationstest nach Bottom-Up Prinzip
 
 == Umgebungsvoraussetzungen
-* Wird spezielle Hardware benötigt?
-* Welche Daten müssen bereitgestellt werden? Wie werden die Daten bereitgestellt?
-* Wird zusätzliche Software für das Testen benötigt?
-* Wie kommuniziert die Software während des Testens? Internet? Netzwerk?
+* Keine besonderen Hardware-Voraussetzungen
+* Mockdaten z.B. Inventarinhalte, Nutzerdaten Bestellungsliste werden in Testklassen bereitgestellt
+* Keine zusätzliche Software wird für das Testen benötigt
+* Testen wird lokal auf dem Entwicklerrechner ausgeführt
+
 
 == Testfälle und Verantwortlichkeit
 Jede testbezogene Aufgabe muss einem Ansprechpartner zugeordnet werden.
 
 // See http://asciidoctor.org/docs/user-manual/#tables
-[options="headers"]
+[options="header"]
 |===
 |ID |Anwendungsfall |Vorbedingungen |Eingabe |Ausgabe
+|20U  |UC00 | Nutzer ist nicht angemeldet | Falsches Passwort     |Fehler
+|…      |…              |…              |…       |…
+|…  |…              |…              |…       |…
+|…  |…              |…              |…       |…
+|…  |…              |…              |…       |…
+|…  |…              |…              |…       |…
 |…  |…              |…              |…       |…
 |===
