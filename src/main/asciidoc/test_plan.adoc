@@ -3,11 +3,13 @@
 == __{project_name}__
 :toc:
 :toc-title: Inhaltsverzeichnis
+:numbered:
+
 [options="header"]
-[cols="1, 1, 2, 4"]
+[cols="1, 1, 2, 4, 4"]
 |===
-| Status      | Bearbeitungsdatum   | Autoren |  Vermerk
-| In Arbeit   | 13.11.2021          | Dan Nguyen, +
+| Version   | Status      | Bearbeitungsdatum   | Autoren |  Vermerk
+| 0.1       | In Arbeit   | 13.11.2021          | Dan Nguyen, +
 Konrad Schneider, +
 Lennart Obermüller, +
 Lisa-Marie Müller, +
@@ -16,16 +18,14 @@ Rosa Splittgerber
 | Alle Inhalte vom Testplan wurden gemeinsam in der Gruppe erarbeitet und in einem Google-Document zusammengestellt. Ein Mitglied, das einige Inhalte auf GitHub hochlädt, repräsentiert nicht unbedingt den Hauptautor dieser Inhalte.
 |===
 
-
-
 == Einführung
 Dieses Dokument dient der Dokumentation und frühzeitigen Erkennung möglicher Probleme, mit dem Ziel diese zu beheben, sodass die Funktionalitäten des Programms nicht behindert oder eingeschränkt werden. Der Test-Plan umfasst sämtliche Tests der Software und ist zur Information für Entwickler gedacht.
 
 
 == Aufbau der Testbezeichner
 *U - Unit Test, I - Integrationstest* +
-*ID = [Nummer Test-Gegenstand][Nummer Test][Art des Tests]* +
-*Bsp: 10U, 11U, 20I*
+*ID = [Nummer Test-Gegenstand (einstellig)][Nummer Test (zweistellig)][Art des Tests]* +
+*Bsp: 211I, 205U, 301I*
 
 == Test Gegenstände
 . Katalog (Package catering.catalog)
@@ -81,13 +81,195 @@ Jede testbezogene Aufgabe muss einem Ansprechpartner zugeordnet werden.
 
 // See http://asciidoctor.org/docs/user-manual/#tables
 [options="header"]
+[cols="1, 1, 4, 4, 4"]
 |===
 |ID |Anwendungsfall |Vorbedingungen |Eingabe |Ausgabe
-|20U  |UC00 | Nutzer ist nicht angemeldet | Falsches Passwort     |Fehler
-|…      |…              |…              |…       |…
-|…  |…              |…              |…       |…
-|…  |…              |…              |…       |…
-|…  |…              |…              |…       |…
-|…  |…              |…              |…       |…
-|…  |…              |…              |…       |…
+
+|200U
+|UC00
+|Nutzer ist nicht angemeldet
+|Nutzerdaten, die nicht im System sind
+|Fehlermeldung: falsche Anmeldedaten
+
+|201U
+|UC01
+|Nutzer ist nicht angemeldet
+|Nutzerdaten mit unsicherem Passwort
+|Fehlermeldung: Kein sicheres Passwort
+
+|202U
+|UC01
+a|* Nutzer ist nicht angemeldet
+* Nutzer mit E-Mail test@user.mail bereits im System
+|Nutzerdaten mit E-Mail test@user.mail und sicherem Passwort
+|Fehlermeldung: Nutzer existiert bereits
+
+|203U
+|UC01
+a|* Nutzer ist nicht angemeldet
+* Nutzer mit E-Mail test@user.mail noch nicht im System
+|Nutzerdaten mit E-Mail test@user.mail und sicherem Passwort
+|neuer Nutzer mit eingegebenen Nutzerdaten wird angelegt
+
+|204U
+|UC02
+|Nutzer ist angemeldet
+|neue Nutzerdaten
+|Nutzerdaten des aktuell angemeldeten Nutzers werden entsprechend der Eingabe aktualisiert
+
+|205U
+|UC03
+|Nutzer ist angemeldet
+|klicke auf Account löschen
+|Account des aktuell angemeldeten Nutzers wird gelöscht
+
+|100I
+|UC13
+|Administrator (Rolle ADMIN) ist angemeldet
+|Eingabe des neuen Preises für ein Produkt
+|Alter Preis des ausgewählten Produkts wird überschrieben
+
+|400I
+|UC20
+|Nutzer ist angemeldet
+|auf einen Angebotsname klicken
+|Bestellformular mit Optionen für ausgewähltes Angebot wird angezeigt
+
+|401I
+|UC21
+|Kunde (Rolle CUSTOMER) ist angemeldet und befindet sich auf “Bestellverlauf"
+|Bestellung auswählen
+|korrekte Details der gewählten Bestellung werden angezeigt
+
+|402I
+|UC21
+|Personal (Rolle STAFF) ist angemeldet und befindet sich auf “Bestellliste” oder “Kalender”
+|Bestellung auswählen
+|korrekte Details der gewählten Bestellung werden angezeigt
+
+|403I
+|UC22
+|Kunde (Rolle CUSTOMER) ist angemeldet
+|Bestellung mit Termin 1 Tag nach BusinessTime
+|Fehlermeldung: Bestellung zu kurzfristig
+
+|404I
+|UC22
+|Kunde (Rolle CUSTOMER) ist angemeldet
+|Bestellung mit Termin 5 Tage nach BusinessTime, an Termin mit keiner anderen Bestellung
+|Bestellung wird in Bestellliste eingetragen
+
+|405I
+|UC22
+|Kunde (Rolle CUSTOMER) ist angemeldet
+|Bestellung 5 Tage nach BusinessTime, mit mehr benötigtem Personal als verfügbar
+|Fehlermeldung: Cateringservice voll ausgelastet
+
+|406I
+|UC22
+|ausreichend Ressourcen im Inventar vorhanden
+|Bestellung mit Status Paid mit Termin zum Zeitpunkt des Tests
+a|* Bestellung wird als Completed markiert
+* im Inventar werden benötigte Verbrauchsgüter abgezogen
+
+|407I
+|UC22
+|nicht ausreichend Ressourcen im Inventar vorhanden
+|Bestellung mit Status Paid mit Termin zum Zeitpunkt des Tests
+|Status der Bestellung wird auf Canceled gesetzt
+
+|408I
+|UC23
+|Kunde (Rolle CUSTOMER) ist angemeldet und hat keine Bestellungen aufgegeben
+|Nutzer-ID
+|Leere Liste
+
+|409I
+|UC23
+|Kunde (Rolle CUSTOMER) ist angemeldet und hat Bestellungen aufgegeben
+|Nutzer-ID
+|Liste der vom angemeldeten Nutzer aufgegebenen Bestellungen
+
+|410I
+|UC24
+a|* Kunde (Rolle CUSTOMER) ist angemeldet
+* Bestellung von angemeldetem Kunden mit Status Paid und Termin 5 Tage nach BusinessTime ist im System eingetragen
+|Bestellungs-ID
+|Status der Bestellung wird auf Canceled gesetzt
+
+|411I
+|UC24
+a|* Kunde (Rolle CUSTOMER) ist angemeldet
+* Bestellung von angemeldetem Kunden mit Status Paid und Termin 1 Tag nach BusinessTime ist im System eingetragen
+|Bestellungs-ID
+a|* Status der Bestellung wird auf Canceled gesetzt
+* Nutzer zahlt zusätzliche Stornierungsgebühr
+
+|206I
+|UC30
+|Personal (Rolle STAFF) ist angemeldet 
+|klicke auf Bestellliste
+|Liste aller eingegangenen Bestellungen wird angezeigt
+
+|207I
+|UC31
+|Personal (Rolle STAFF) ist angemeldet
+|klicke auf Kalender
+|Liste aktiver Bestellungen in Kalenderform wird angezeigt
+
+|208I
+|UC32
+|Administrator (Rolle ADMIN) ist angemeldet
+|klicke auf Kundenliste
+|Liste aller Nutzer mit Rolle CUSTOMER bestehend aus ID, Name und E-Mail-Adresse wird angezeigt
+
+|209I
+|UC33
+|Administrator (Rolle ADMIN) ist angemeldet
+|klicke auf Personalliste
+|Liste aller Nutzer mit Rolle STAFF bestehend aus ID, Name und E-Mail-Adresse wird angezeigt
+
+|210I
+|UC34
+|Administrator (Rolle ADMIN) ist angemeldet
+|Nutzerdaten mit unsicherem Passwort
+|Fehlermeldung: Kein sicheres Passwort
+
+|211I
+|UC34
+a|* Administrator (Rolle ADMIN) ist angemeldet
+* Nutzer mit E-Mail test@user.mail bereits im System
+|Nutzerdaten mit E-Mail test@user.mail und sicherem Passwort
+|Fehlermeldung: Nutzer existiert bereits
+
+|212I
+|UC34
+a|* Administrator (Rolle ADMIN) ist angemeldet
+* Nutzer mit E-Mail test@user.mail noch nicht im System
+|Nutzerdaten mit E-Mail test@user.mail und sicherem Passwort
+|neuer Nutzer mit eingegebenen Nutzerdaten wird angelegt
+
+|213I
+|UC35
+|Administrator (Rolle ADMIN) ist angemeldet
+|Nutzer-ID
+|Account mit eingegebener Nutzer-ID wird gelöscht
+
+|300I
+|UC36
+|Administrator (Rolle ADMIN) ist angemeldet
+|klicke auf Inventar
+|Liste verfügbarer Ressourcen und angestellten Personals wird angezeigt
+
+|301I
+|UC37
+|Administrator (Rolle ADMIN) ist angemeldet
+|Zulässige Änderung der Quantitäten im Inventar
+|Quantitäten werden geändert
+
+|302I
+|UC37
+|Administrator (Rolle ADMIN) ist angemeldet
+|Vermindern der Quantität einer Ressource um mehr, als aktuell vorhanden
+|Fehlermeldung: Unzulässige Eingabe
 |===
