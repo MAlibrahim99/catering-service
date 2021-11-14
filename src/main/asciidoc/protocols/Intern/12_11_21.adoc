@@ -1,15 +1,15 @@
 = Protokoll Gruppe 27
 
-Treffen am 22.10.2021
+Treffen am 12.11.2021
 
 Ort:      Online (Discord) +
 Beginn:   15:00 Uhr +
 Ende:     17:00 Uhr
 
-__Schriftführer:__ Dan Nguyen
+__Schriftführer:__ Lennart Obermüller
 
-*Nächstes Treffen:*
-26.10.2021, 18:15 Uhr, Online (Discord)
+*Nächstes Treffen:* +
+13.11.2021, 11:00 Uhr, Online (Discord)
 
 __Teilnehmer:__
 //Tabellarisch oder Aufzählung, Kennzeichnung von Teilnehmern mit besonderer Rolle (z.B. Kunde)
@@ -22,12 +22,12 @@ __Teilnehmer:__
 - Rosa Splittgerber
 
 == Bemerkungen
-n.v.
+n.V.
 
 == Ereignisse
-- gemeinsame Erstellung des Use-Case Diagramm
-- gemeinsame Erstellung des Klassendiagramms begonnen
-- Erarbeitung der Akzeptanzfälle begonnen
+- Einführung und Ziele erarbeitet
+- Randbedingungen aus Entwicklerdokumentation erarbeitet
+- Angefangen mit Ausarbeitung Testplan
 
 == Aktueller Stand
-- OOA und Arbeit am Pflichtenheft wurde weiter bearbeitet
+- Überabeiten der Entwicklerdokumentation

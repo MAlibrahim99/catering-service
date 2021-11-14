@@ -15,17 +15,17 @@ __Teilnehmer:__
 //Tabellarisch oder Aufzählung, Kennzeichnung von Teilnehmern mit besonderer Rolle (z.B. Kunde)
 
 - Lennart Obermüller (Scrum Master)
-- Dan Kornelius Nguyen
+- Dan Nguyen
 - Konrad Schneider
 - Lisa-Marie Müller
 - Mohamad Alibrahim
 - Rosa Splittgerber
 
 == Bemerkungen
-n.v.
+n.V.
 
 == Ereignisse
-- 4. und 6. Punkt aus Entwicklerdokumentation bearbeitet
+- Lösungsstrategie und Laufzeitsicht aus Entwicklerdokumentation bearbeitet
 
 == Aktueller Stand
 - Überabeiten der Entwicklerdokumentation
