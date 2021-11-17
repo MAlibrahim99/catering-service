@@ -107,7 +107,7 @@ image:models/design/ServerClientModell.png[server-client-model]
 
 ==== Persistenz 
 * Die Anwendung verwendet ein auf Hibernate-Annotationen basierendes Mapping, um Java-Klassen auf Datenbanktabellen abzubilden. Es wird eine H2 Datenbank benutzt, mit standardmäßig deaktivierter Persistenz. Um persistenten Speicher in der Datenbank zu aktivieren, müssen folgende zwei Zeilen in der Datei “application.properties” einkommentiert werden:
-** # spring.datasource.url=jdbc:h2:./db/kickstart
+** # spring.datasource.url=jdbc:h2:./db/catering
 ** # spring.jpa.hibernate.ddl-auto=update
 
 ==== Benutzeroberfläche
