@@ -1,27 +1,62 @@
-/* CSS RESET */
-
-* {
-	margin: 0;
-	padding: 0;
+#image img {
+    width: 100%;
+    padding-top: 40px;
+    padding-bottom: 40px;
 }
 
-body {
-	margin: 0 auto;
-	width: 940px;
-	font: 13px/22px Helvetica, Arial, sans-serif;
-	background: #FFEDDC;
+.welcome {
+    margin-left: 80px;
+    margin-top: 80px;
 }
 
-h1 {
-	font-size: 3em;
-	line-height: 3.2em;
-	text-align:center;
+.main {
+    margin-left: 80px;
+    margin-top: 35px;
 }
+
+.info{
+    margin-bottom: 70px;
+
+}
+.text{
+    margin-top: 30px;
+    line-height: 220%;
+    text-align : justify;
+}
+
+.offers {
+    background-color: #ec7e7e;
+    color: #933e3e;
+    cursor: pointer;
+    padding: 18px;
+    border: none;
+    text-align: left;
+    outline: none;
+    font-size: 20px;
+    width: 1000px;
+}
+
+.active, .offers:hover {
+    background-color: #f19999;
+}
+
+.content {
+    padding: 18px;
+    display: none;
+    width: 965px;
+    margin-left: 260px;
+    table-layout: fixed;
+}
+
+.abstand{
+    padding-top: 60px;
+    padding-bottom: 60px;
+    margin: 5px;
+    width: 250px;
+}
+
 .underlined-text{
     text-decoration: underline;
-}
-.background-color {
-    background-color:#FFEDDC;
 }
 
 .pt-4-rem {
@@ -39,3 +74,18 @@ h1 {
 .w-input-50{
     width: 50%;
 }
+
+.myDiv {
+	border: 5px outset red;
+	background-color: lightblue;    
+	text-align: center;
+}
+
+.vertical-center {
+	margin: 0;
+	position: absolute;
+	top: 50%;
+	-ms-transform: translateY(-50%);
+	transform: translateY(-50%);
+}
+
