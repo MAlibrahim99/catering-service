@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout}">
+<head>
+    <meta charset="UTF-8">
+    <title>Registrierung</title>
+</head>
+<body>
+<!--<nav th:replace="navigation :: navigation"></nav>-->
+<section layout:fragment="content">
+    <form class="ui form container" th:action="@{/register}" method="post" th:object="${registrationForm}">
+        <h2 class="underlined-text">Registrierung</h2>
+        <div class="field w-input-50">
+            <label for="name">Name:</label>
+            <input type="text" id="name" placeholder="Name eingeben" name="benutzername" required th:field="*{name}">
+            <div class="ui red message"  th:if="${usernameAlreadyExists}" th:text="#{register.name.exists.error}">User name already exists</div>
+            <br/>
+        </div>
+        <div class="field w-input-50">
+            <label for="email">E-Mail:</label>
+            <input type="email" id="email" placeholder="Email eingeben" name="email" required th:field="*{email}">
+            <div class="ui red message"  th:if="${emailAddressAlreadyExists}" th:text="#{register.email.exists.error}">User name already exists</div>
+            <br/>
+        </div>
+        <div class="field w-input-50">
+            <label for="passwort">Passwort:</label>
+            <input type="password" id="passwort" placeholder="Passwort eingeben" name="passwort" required
+                    th:field="*{password}">
+            <!--TODO th:pattern="#{register.password.regexp}" match this regex after development-->
+            <div class="ui red message"  th:if="${#fields.hasErrors('password')}" th:text="#{register.password.unsecure}">User name already exists</div>
+            <br/>
+        </div>
+        <button type="submit" class="ui basic black button">Registrieren</button>
+    </form>
+</section>
+</body>
+</html>
