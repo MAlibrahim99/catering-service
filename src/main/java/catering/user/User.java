@@ -2,12 +2,19 @@ package catering.user;
 
 import org.salespointframework.useraccount.UserAccount;
 
-public class User {
-	// annotate for DB
-	private long id;
-	private String address;
+import javax.persistence.*;
 
+@Entity
+public class User {
+	@Id()
+	@GeneratedValue
+	private long id;
+	@Column
+	private String address;
+	@OneToOne
 	private UserAccount userAccount;
+	@Column
+	private Position position;
 
 	public User() {
 	}
@@ -31,5 +38,13 @@ public class User {
 
 	public UserAccount getUserAccount() {
 		return userAccount;
+	}
+
+	public Position getPosition() {
+		return position;
+	}
+
+	public void setPosition(Position position) {
+		this.position = position;
 	}
 }
