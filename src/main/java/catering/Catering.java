@@ -17,10 +17,20 @@ package catering;
 
 import org.salespointframework.EnableSalespoint;
 import org.salespointframework.SalespointSecurityConfiguration;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.lang.NonNullApi;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
@@ -32,6 +42,7 @@ public class Catering {
 	public static void main(String[] args) {
 		SpringApplication.run(Catering.class, args);
 	}
+
 
 	@Configuration
 	static class MvcConfig implements WebMvcConfigurer {
@@ -45,12 +56,27 @@ public class Catering {
 
 	@Configuration
 	static class WebSecurityConfiguration extends SalespointSecurityConfiguration {
+		@Autowired
+		PasswordEncoder passwordEncoder;
+		@Autowired
+		@Qualifier("springSecurityAuthenticationManagement")
+		UserDetailsService detailsService;
+		@Override
+		protected void configure(AuthenticationManagerBuilder amBuilder) throws Exception {
+			super.configure(amBuilder);
+			DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
+			provider.setPasswordEncoder(passwordEncoder);
+			provider.setUserDetailsService(detailsService);
+			amBuilder.authenticationProvider(provider);
+		}
 
 		@Override
 		protected void configure(HttpSecurity http) throws Exception {
 			http.csrf().disable();  // for lab purposes, that's ok!
-			http.authorizeRequests().antMatchers("/**").permitAll().and()
-					.formLogin().loginPage("/login").loginProcessingUrl("/login").and()
+			http.authorizeRequests().antMatchers("/", "/css/**", "/register").permitAll()
+					.and()
+					.formLogin().loginPage("/login").loginProcessingUrl("/login").permitAll()
+					.failureUrl("/error").and()
 					.logout().logoutUrl("/logout").logoutSuccessUrl("/");
 		}
 	}
