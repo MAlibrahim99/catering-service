@@ -1,0 +1,48 @@
+#logo-name {
+    font-family: Calibri;
+    font-size: 55px;
+    text-align: center;
+}
+a { text-decoration: none;
+    color: #702a2a;}
+nav {
+    height: fit-content;
+    width: 100%;
+    background-color: #f37575;
+    text-align: center;
+
+}
+nav ul {
+    float: center;
+}
+nav a {
+    display: inline-block;
+    margin-top: 25px;
+    margin-right: 25px;
+
+}
+.link {
+    position: relative;
+    display: inline-block;
+    font-size: 21px;
+}
+
+.link .tooltiptext {
+    visibility: hidden;
+    font-size: 20px;
+    z-index: 5;
+    background-color: #f37575;
+    border-radius: 16px;
+    position: absolute;
+}
+
+.link .tooltiptext {
+    width: 160px;
+    top: 100%;
+    left: 50%;
+    margin-left: -100px;
+}
+
+.link:hover .tooltiptext {
+    visibility: visible;
+}

@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8"/>
+
+
+</head>
+<body>
+
+    <div th:fragment="navigation">
+
+        <h1 id="logo-name"><a th:href="@{/}">Cateringservice <em>Mampf</em></a></h1>
+        <nav>
+
+            <a class="link" th:href="@{/register}" th:text="#{nav.register}">Registrierung</a>
+
+            <div class="link"><a th:href="@{/offer}" th:text="#{nav.offer}">Angebot</a>
+                <span class="tooltiptext">
+                    <a th:href="@{/eventcatering}" th:text="#{nav.eventCatalog}">Eventcatering</a>
+                    <a th:href="@{/partyservice}" th:text="#{nav.partyCatalog}">Partyservice</a>
+                    <a th:href="@{/rentacook}" th:text="#{nav.rentacookCatalog}">Rent-A-Cook</a>
+                    <a th:href="@{/mobilebreakfast}" th:text="#{nav.mobilebreakfastCatalog}">MobileBreakfast</a>
+                </span>
+            </div>
+
+            <a class="link" th:href="@{/#}"
+               th:text="#{nav.bestellverlauf}">Bestellverlauf</a>
+
+            <a class="link" th:href="@{/order-list}"
+               th:text="#{nav.orderlist}">Bestellliste</a>
+
+            <a class="link" th:href="@{/calender}"
+               th:text="#{nav.calendar}">Kalender</a>
+
+            <a class="link" th:href="@{/inventory}"
+               th:text="#{nav.inventory}">Inventar</a>
+
+            <a class="link" th:href="@{/customer-list}"
+               th:text="#{nav.customerlist}">Kundenliste</a>
+
+            <a class="link" th:href="@{/staff-list}"
+               th:text="#{nav.stafflist}">Personalliste</a>
+
+            <a class="link" th:href="@{/income-overview-month}"
+               th:text="#{nav.incomeoverview}">Einkommensübersicht</a>
+
+            <a class="link" th:href="@{/profile}"
+               th:text="#{nav.profile}">Profil</a>
+
+
+
+            <a class="link" th:href="@{/login}" th:text="#{nav.login}">Login</a>
+            <form class="link" th:action="@{/logout}" method="post">
+                <button type="submit" class="ui button" th:text="#{nav.logout}">Logout</button>
+            </form>
+
+
+        </nav>
+    </div>
+
+
+
+
+    </div>
+</body>
+</html>

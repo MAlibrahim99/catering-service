@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Cateringservice Mampf</title>
+    <link th:href="@{/resources/css/style.css}" rel="stylesheet" href="../static/resources/css/style.css" type="text/css"/>
+    <link th:href="@{/resources/css/navigation.css}" rel="stylesheet" href="../static/resources/css/navigation.css" type="text/css"/>
+</head>
+<body>
+    <div th:replace="navigation :: navigation"></div>
+
+
+    <div id="image">
+        <img src="/resources/img/index.jpeg" alt="Bild">
+    </div>
+
+    <div class="down">
+        <h1 class="info" align="left" th:text="#{home.welcome}">Herrzlich Wilkommen beim Cateringservice Mampf!</h1>
+        <div>
+            <h2 align="left">„Essen und Trinken hält Leib und Seele zusammen“ -  </h2>
+
+            <article class="text">Mit diesem Motto versorgen wir seit 10 Jahren Events, Familienfeiern und Firmen auf höchstem Niveau. Ob Fingerfood und Getränke zum Meeting oder zusammengestellte kalte Platten zu Geburtstagsfeiern, unser Team sorgt für einen kulinarischen Abend, den ihre Gäste so schnell nicht vergessen werden – und das unkompliziert bei Ihnen zu Hause oder an einer von Ihnen ausgewählten Location.
+            </article>
+        </div>
+    </div>
+
+
+
+    <div class="down">
+        <h2 align="left">Cateringservice Mampf - gutes Essen und mehr</h2>
+
+        <article class="text">
+            hiehowdhwdqofwekqdwpqwd
+        </article>
+
+
+        <div class="img150">
+            <a class="link" th:href="@{/eventcatering}" th:text="#{nav.eventCatalog}">Eventcatering</a>
+            <img  src="/resources/img/event.jpg" width="150" height="150" border="0" alt="Rose 1">
+        </div>
+        <div class="img150">
+            <a class="link" th:href="@{/partyservice}" th:text="#{nav.partyCatalog}">Partyservice</a>
+            <img  src="/resources/img/party.jpg" width="150" height="150" border="0" alt="Rose 2">
+        </div>
+        <div class="img150">
+            <a class="link" th:href="@{/rentacook}" th:text="#{nav.rentacookCatalog}">Rent-A-Cook</a>
+            <img  src="/resources/img/cook.jpg" width="150" height="150" border="0" alt="Rose 1">
+        </div>
+        <div class="img150">
+            <a class="link" th:href="@{/mobilebreakfast}" th:text="#{nav.mobilebreakfastCatalog}">MobileBreakfast</a>
+            <img  src="/resources/img/mobile.jpg" width="150" height="150" border="0" alt="Rose 2">
+        </div>
+    </div>
+
+
+
+</body>
+</html>

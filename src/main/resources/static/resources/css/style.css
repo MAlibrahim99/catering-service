@@ -7,7 +7,7 @@
 
 body {
 	margin: 0 auto;
-	width: 940px;
+	width: 1100px;
 	font: 13px/22px Helvetica, Arial, sans-serif;
 	background: #FFEDDC;
 }
@@ -38,4 +38,30 @@ h1 {
 
 .w-input-50{
     width: 50%;
+}
+
+#image img{
+	width: 100%;
+	padding-top: 30px;
+	padding-bottom: 30px;
+}
+.info {
+	margin-bottom: 35px;
+}
+.down{
+	margin-bottom: 80px;
+}
+.text{
+	font-size: 18px;
+	margin-top: 30px;
+	margin-bottom: 30px;
+	line-height: 220%;
+	text-align : justify;
+}
+.img150
+{
+	float: left;
+	margin-left: 100px;
+	width: 150px;
+	font-size: 0.7em;
 }

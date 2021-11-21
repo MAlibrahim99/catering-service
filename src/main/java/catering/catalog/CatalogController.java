@@ -25,4 +25,9 @@ public class CatalogController {
 	public String index() {
 		return "welcome";
 	}
+
+	@GetMapping("/welcome")
+	public String home() {
+		return "index";
+	}
 }
