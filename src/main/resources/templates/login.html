@@ -10,20 +10,21 @@
 <body>
 <!--<nav th:replace="navigation :: navigation"></nav>-->
 <section layout:fragment="content">
-    <form class="ui form container" th:action="@{/login}" method="post">
+    <form class="ui form container" action="/login" method="post">
         <h2 class="underlined-text">Anmelden:</h2>
         <div class="field w-input-50">
-            <label for="email">Email:</label>
-            <input type="text" id="email" placeholder="Email eingeben" name="email" required>
+            <label for="email" th:text="#{login.username}">Username:</label>
+            <input type="text" id="email" placeholder="" name="username" required>
             <br/>
         </div>
         <div class="field w-input-50">
-            <label for="passwort">Passwort:</label>
-            <input type="password" id="passwort" placeholder="Passwort eingeben" name="password" required>
+            <label for="password" th:text="#{login.password}">Password:</label>
+            <input type="password" id="password" placeholder="Passwort eingeben" name="password" required>
             <br/>
         </div>
-        <button type="submit" class="ui button">Anmelden</button>
+        <button type="submit" class="ui button" th:text="#{login.submit}">Login</button>
     </form>
+
 </section>
 </body>
 </html>
