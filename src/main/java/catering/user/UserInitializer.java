@@ -33,8 +33,8 @@ public class UserInitializer implements DataInitializer {
 
 		List.of(
 				new RegistrationForm("stern", "stern@mampf.de", "123", Position.NONE),
-				new RegistrationForm("muster", "muster@mampf.de", "123", Position.COOK),
-				new RegistrationForm("vogel", "vogel@mampf.de", "123", Position.EXPERIENCED_WAITER)
+				new RegistrationForm("muster", "muster@mampf.de", "123", Position.NONE),
+				new RegistrationForm("vogel", "vogel@mampf.de", "123", Position.NONE)
 		).forEach(userManagement::createUser);
 	}
 }
