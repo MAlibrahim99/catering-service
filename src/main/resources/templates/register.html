@@ -22,26 +22,47 @@
                     <input type="text" name="last-name" placeholder="Last Name" th:field="*{lastName}" required>
                 </div>
             </div>
-            <div class="ui red message ten wide field"  th:if="${usernameAlreadyExists}" th:text="#{register.name.exists.error}">User name already exists</div>
+            <div class="ui red message ten wide field" th:if="${usernameAlreadyExists}"
+                 th:text="#{register.name.exists.error}">User name already exists
+            </div>
         </div>
 
-        <div class="field">
+        <div class="ten wide field">
             <label>Email Adresse</label>
-            <div class="fields">
-                <div class="ten wide field">
-                    <input type="text" name="Email address" placeholder="Email Address" th:field="*{email}" required>
-                    <div class="ui red message"  th:if="${emailAddressAlreadyExists}" th:text="#{register.email.exists.error}">Email already exists</div>
-                </div>
-            </div>
-            <label>Password</label>
-            <div>
-                <div class="ten wide field">
-                    <input type="text" name="password" placeholder="password" th:field="*{password}"  required> <!--th:pattern="#{register.password.regexp}"-->
-                    <div class="ui red message"  th:if="${#fields.hasErrors('password')}" th:text="#{register.password.unsecure}">Password is not secure enough</div>
-                </div>
+            <input type="text" name="Email address" placeholder="Email Address" th:field="*{email}" required>
+            <div class="ui red message" th:if="${emailAddressAlreadyExists}"
+                 th:text="#{register.email.exists.error}">Email already exists
             </div>
         </div>
-        <button type="submit" class="ui basic black button">Registrieren</button>
+        <div class="ten wide field" sec:authorize="!hasRole('ADMIN')">
+            <label>Password</label>
+            <input type="text" name="password" placeholder="password" th:field="*{password}" required>
+            <!--th:pattern="#{register.password.regexp}"-->
+            <div class="ui red message" th:if="${#fields.hasErrors('password')}"
+                 th:text="#{register.password.unsecure}">Password is not secure enough
+            </div>
+        </div>
+        <!--        Admin kann zusätzlich position-Feld sehen-->
+        <div class="two fields" sec:authorize="hasRole('ADMIN')">
+            <div class="five wide field">
+                <label>Password</label>
+                <input type="text" name="password" placeholder="Password" th:field="*{password}" required>
+                <!--th:pattern="#{register.password.regexp}"-->
+                <div class="ui red message" th:if="${#fields.hasErrors('password')}"
+                     th:text="#{register.password.unsecure}">Password is not secure enough
+                </div>
+            </div>
+            <div class="five wide field">
+                <label>Position</label>
+                <select class="ui search dropdown" name="position" th:field="*{position}" th:default="'COOK'">
+                    <option th:each="position : ${T(catering.user.Position).values()}"
+                        th:value="${position}" th:text="${position}"></option>
+                </select>
+            </div>
+        </div>
+
+        <button sec:authorize="!hasRole('ADMIN')" type="submit" name="action" value="register-user" class="ui basic black button">Register</button>
+        <button sec:authorize="hasRole('ADMIN')" type="submit" name="action" value="register-staff" class="ui basic black button">Register Staff</button>
     </form>
 </section>
 </body>

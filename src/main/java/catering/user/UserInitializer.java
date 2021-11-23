@@ -1,6 +1,5 @@
 package catering.user;
 
-import org.h2.engine.User;
 import org.salespointframework.core.DataInitializer;
 import org.salespointframework.useraccount.Password;
 import org.salespointframework.useraccount.Role;

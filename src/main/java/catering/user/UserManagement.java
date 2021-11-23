@@ -3,10 +3,13 @@ package catering.user;
 import org.salespointframework.useraccount.*;
 import org.salespointframework.useraccount.Password.UnencryptedPassword;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.data.util.Streamable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.function.Predicate;
 
 @Service
@@ -35,42 +38,52 @@ public class UserManagement {
 		UserAccount userAccount = accountManagement.create(form.getUsername(), password, form.getEmail(), roles);
 		userAccount.setFirstname(form.getFirstName());
 		userAccount.setLastname(form.getLastName());
+
+		if(Arrays.asList(roles).contains(CUSTOMER_ROLE)) {//wenn Nutzer Kundenrolle hat, dann hat er keine Position
 			return users.save(new User(userAccount, "Sie haben noch keine Adresse gegeben"));
+		}return  users.save(new User(userAccount, "Sie haben noch keine Adresse gegeben", form.getPosition()));
 	}
 
-	public User createStaff(RegistrationForm form){
-		if(form == null){
-			throw new IllegalArgumentException("Staff can not be created with value null of RegistrationForm");
+	public boolean deleteUser(long id){
+		if(id < 0 || !users.existsById(id)){
+			return false;
 		}
-		return this.createUser(form, STAFF_ROLE);
+		users.deleteById(id);
+		return true;
 	}
 
-	public boolean deleteUserAccount(UserAccountIdentifier id){
-		if(id ==null){
-			throw new NullPointerException("UserAccountIdentifier can not be null");
-		}
-		if(accountManagement.get(id).isPresent()){
-			accountManagement.delete(accountManagement.get(id).get());
-			return true;
-		}
-		return false;
-	}
-
-	public User findByUsername(String id){
-		if(id == null){
+	public User findByUsername(String username){
+		if(username == null){
 			throw new NullPointerException("Id can not be null");
 		}
-		if(id.isEmpty()){
+		if(username.isEmpty()){
 			throw new IllegalArgumentException("Id can not be empty");
 		}
-			ArrayList<User> allUsers = (ArrayList<User>) users.findAll();
-			User user;
+			List<User> allUsers = users.findAll().toList();
 			for(User u: allUsers){
-				if(u.getUserAccount().getUsername().equals(id)){
+				if(u.getUserAccount().getUsername().equals(username)){
 					return u;
 				}
 			}
 			return null;
+	}
+
+	public Streamable<User> findAllByRole(String role){
+		if(role == null){
+			throw new NullPointerException("Role can not be null");
+		}
+		if(role.isEmpty()){
+			throw new NullPointerException("Role can not be null");
+		}
+		Role userRole = Role.of(role);
+		List<User> allUsers = (List<User>) users.findAll();
+		List<User> filteredUsers = new ArrayList<>();
+		for(User user: allUsers){ // wenn es Konten mit der gegebenen Rolle gibt, dann füge sie in die Liste
+			if(user.getUserAccount().getRoles().stream().findFirst().isPresent()){
+				filteredUsers.add(user);
+			}
+		}
+		return Streamable.of(filteredUsers);
 	}
 
 	public boolean usernameAlreadyExists(String username){
