@@ -2,7 +2,6 @@ package catering.order;
 import org.salespointframework.inventory.QInventoryItem;
 import org.salespointframework.order.*;
 import org.springframework.validation.Errors;
-import videoshop.catalog.Disc;
 
 import java.util.Optional;
 
@@ -24,8 +23,6 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 
 public class OrderController {
 
-@Controller
-@PreAuthorize("isAuthenticated()")
 
 private final OrderManagement<Order> orderManagement;
 

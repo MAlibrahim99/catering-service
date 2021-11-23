@@ -70,8 +70,6 @@ class order extends Order {
         //if "Angebot" --> Gesamtkosten = "Grundpreis von Angebot" + Extras
         if (option == 1){
             SumCost = cost1 + guestcount * 50 + mealcount * 8 + decocount * 5 + tablewarecount * 10;
-            MonetaryAmount test = MonetaryAmount.value(SumCost);
-            addChargeLine(SumCost, "test" );
             return SumCost;
             }
 
