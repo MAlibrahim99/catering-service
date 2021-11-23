@@ -1,0 +1,62 @@
+body {
+    font-family: Arial;
+    margin: 0 auto;
+    background: #f5e9dc;
+}
+
+#logo-name {
+    font-family: Calibri;
+    font-size: 55px;
+    text-align: center;
+    margin: 35px;
+}
+
+a { text-decoration: none;
+    color: #933e3e;}
+nav {
+    height: fit-content;
+    width: 100%;
+    background-color: #ec7e7e;
+    text-align: center;
+
+}
+nav ul {
+    float: center;
+}
+nav a {
+    display: inline-block;
+    margin-top: 25px;
+    margin-right: 25px;
+
+}
+.tooltip {
+    position: relative;
+    display: inline-block;
+    font-size: 21px;
+
+}
+
+/* Tooltip text */
+.tooltip .tooltiptext {
+    visibility: hidden;
+    font-size: 20px;
+    z-index: 5;
+    background-color: #ec7e7e;
+    border-radius: 16px;
+
+
+    /* Position the tooltip text - see examples below! */
+    position: absolute;
+
+}
+
+.tooltip .tooltiptext {
+    width: 160px;
+    top: 100%;
+    left: 50%;
+    margin-left: -100px;
+}
+
+.tooltip:hover .tooltiptext {
+    visibility: visible;
+}
