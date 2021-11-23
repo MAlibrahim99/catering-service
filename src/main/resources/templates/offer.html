@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+
+<head>
+    <meta charset="UTF-8">
+    <link th:href="@{/resources/css/style.css}" rel="stylesheet" href="../static/resources/css/style.css" type="text/css"/>
+    <link th:href="@{/resources/css/navigation.css}" rel="stylesheet" href="../static/resources/css/navigation.css" type="text/css"/>
+</head>
+<body>
+    <div th:replace="navigation :: navigation"></div>
+    <section layout:fragment="content">
+        <div class="image">
+            <img src="/resources/img/offer.jpeg" alt="Bild">
+        </div>
+
+        <h1 class="info" align="left" th:text="#{nav.offer}">Angebot</h1>
+
+
+            <div class="down">
+                <a th:href="@{/eventcatering}"><h2 class="info-2" align="left" >Eventcatering</h2></a>
+                <article class="text">Unser Cateringservice übernimmt die Verpflegung bei großen Veranstaltungen, egal ob in Form eines Buffetts oder als Galadinner.
+                    <br />Auf Wunsch gestaltet Mampf auch das komplette Event. Neben Speisen und Getränken stellen wir optional Dekoration, Ausrüstung und kompetentes Personal.
+                    <br />Bei der Planung ihres Events wird nicht nur Fokus auf hochwertige und delikate Gerichte gelegt, sondern auch auf die Wirkung bei den Gästen. Planen sie mit uns einen kulinarischen Abend, für den ihre Gäste auch noch Monate danach schwärmen. </article>
+            </div>
+
+            <div class="down">
+                <a th:href="@{/partyservice}"><h2 class="info-2" align="left" >Partyservice</h2></a>
+                <article class="text">Egal ob sie eine kleine Gartenparty unter Freunden feiern oder zu einer größeren Veranstaltung einladen; von Hochzeiten und Beerdigungen bis zu Omas 75sten Geburtstag; der Partyservice von Mampf beliefert ihre privaten Feierlichkeiten mit warmen Gerichten, kalten Platten und Desserts.
+                    <br />Genießen sie neben den Angeboten für formellere Angelegenheiten doch auch unsere Sonderaktionen wie den Sushi-Abend für 10 Personen.</article>
+            </div>
+
+            <div class="down">
+                <a th:href="@{/rentacook}"><h2 class="info-2" align="left" >Rent-a-cook</h2></a>
+                <article class="text">Wenn sie bei privaten Feierlichkeiten weder auf eine persönliche Atmosphäre noch auf professionell hergerichtete Speisen verzichten möchten, können sie einen unserer Köche direkt zu sich bestellen.
+                    <br />Sie müssen sich weder um die zubereitung der Gerichte kümmern, noch um das servieren, so haben sie genügend Zeit, um sich Ihren Gästen zu widmen. </article>
+            </div>
+
+            <div class="down">
+                <a th:href="@{/mobilebreakfast}"><h2 class="info-2" align="left" >Mobile Breakfast</h2></a>
+                <article class="text">Dieses Angebot richtet sich speziell an kleinere Firmen ohne eigene Kantine. Bei unserem mobilen Frühstücksservice wird ihren Mitarbeitern zu festgelegten Zeiten eine Auswahl an Frühstückangeboten bereitsgestellt. Neben Getränken wie Kaffee und verschiedensten Teesorten, kann man im vorhinein  aus verschiedenen belegten Brötchen und Müslivarianten auswählen.
+                    <br />Die Firmen können diesen Service monatsweise in Auftrag geben. </article>
+            </div>
+
+    </section>
+</body>
+</html>

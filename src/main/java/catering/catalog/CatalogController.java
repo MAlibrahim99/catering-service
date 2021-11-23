@@ -27,7 +27,30 @@ public class CatalogController {
 	}
 
 	@GetMapping("/welcome")
-	public String home() {
+	public String start() {
 		return "index";
 	}
+
+	@GetMapping("/offer")
+	public String offer() {
+		return "offer";
+	}
+
+	@GetMapping("/eventcatering")
+	public String event() {
+		return "catalog";
+	}
+	@GetMapping("/partyservice")
+	public String party() {
+		return "catalog";
+	}
+	@GetMapping("/rentacook")
+	public String cook() {
+		return "catalog";
+	}
+	@GetMapping("/mobilebreakfast")
+	public String mobile() {
+		return "catalog";
+	}
+
 }

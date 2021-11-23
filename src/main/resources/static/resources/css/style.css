@@ -40,28 +40,37 @@ h1 {
     width: 50%;
 }
 
-#image img{
+.image img{
 	width: 100%;
 	padding-top: 30px;
 	padding-bottom: 30px;
 }
 .info {
+	font-size: 32px;
 	margin-bottom: 35px;
+	color: #943f3f;
+}
+.info-2{
+	font-size: 22px;
+	color: #943f3f;
 }
 .down{
 	margin-bottom: 80px;
 }
 .text{
-	font-size: 18px;
+	font-size: 17px;
 	margin-top: 30px;
 	margin-bottom: 30px;
 	line-height: 220%;
 	text-align : justify;
+	color: #000000;
 }
 .img150
 {
 	float: left;
 	margin-left: 100px;
+	margin-top: 30px;
+	margin-bottom: 30px;
 	width: 150px;
 	font-size: 0.7em;
 }

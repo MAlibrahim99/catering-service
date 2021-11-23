@@ -11,7 +11,7 @@
 
     <div th:fragment="navigation">
 
-        <h1 id="logo-name"><a th:href="@{/}">Cateringservice <em>Mampf</em></a></h1>
+        <h1 id="logo-name"><a th:href="@{/welcome}">Cateringservice <em>Mampf</em></a></h1>
         <nav>
 
             <a class="link" th:href="@{/register}" th:text="#{nav.register}">Registrierung</a>
@@ -25,7 +25,7 @@
                 </span>
             </div>
 
-            <a class="link" th:href="@{/#}"
+            <a class="link" th:href="@{order-history}"
                th:text="#{nav.bestellverlauf}">Bestellverlauf</a>
 
             <a class="link" th:href="@{/order-list}"
@@ -58,11 +58,6 @@
 
 
         </nav>
-    </div>
-
-
-
-
     </div>
 </body>
 </html>
