@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout}">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<nav th:replace="navigation :: navigation"></nav>
+<section layout:fragment="content">
+    <h2 class="underlined-text">Profil</h2>
+    <table th:object="${user}">
+        <tr >
+            <td class="p-1-rem">First name:</td>
+            <td th:text="*{userAccount.firstname}" class="p-1-rem"></td>
+        </tr>
+        <tr >
+            <td class="p-1-rem">Last name:</td>
+            <td th:text="*{userAccount.lastname}" class="p-1-rem"></td>
+        </tr>
+        <tr>
+            <td class="p-1-rem">E-Mail:</td>
+            <td th:text="*{userAccount.email}" class="p-1-rem"></td>
+        </tr>
+        <tr>
+            <td class="p-1-rem">Adresse:</td>
+            <td th:text="*{address}" class="p-1-rem">musterStr. 23 <br>12345 Stadt</td>
+        </tr>
+    </table>
+    <br/><br/>
+    <div>
+        <form th:action="@{/edit-profile}" th:object="${user}" method="post" style="display: inline">
+            <input type="hidden" name="name" th:value="*{userAccount.firstname}">
+            <input type="hidden" name="name" th:value="*{userAccount.lastname}">
+            <input type="hidden" name="email" th:value="*{userAccount.email}">
+            <input type="hidden" name="address" th:value="*{address}">
+            <button class="ui black basic button" type="submit">Edit Profile</button>
+        </form>
+        <a th:href="@{/delete-account}" class="ui red basic button">Delete Account</a>
+    </div>
+</section>
+</body>
+</html>

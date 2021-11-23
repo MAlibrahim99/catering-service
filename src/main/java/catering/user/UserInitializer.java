@@ -32,9 +32,9 @@ public class UserInitializer implements DataInitializer {
 		accountManagement.create("Hannes", Password.UnencryptedPassword.of("123"), Role.of("ADMIN"));
 
 		List.of(
-				new RegistrationForm("stern", "stern@mampf.de", "123", Position.NONE),
-				new RegistrationForm("muster", "muster@mampf.de", "123", Position.NONE),
-				new RegistrationForm("vogel", "vogel@mampf.de", "123", Position.NONE)
+				new RegistrationForm("planet", "stern", "stern@mampf.de", "123", Position.NONE),
+				new RegistrationForm("max", "muster", "muster@mampf.de", "123", Position.NONE),
+				new RegistrationForm("ghjk", "vogel", "vogel@mampf.de", "123", Position.NONE)
 		).forEach(userManagement::createUser);
 	}
 }
