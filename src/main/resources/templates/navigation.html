@@ -15,7 +15,7 @@
 
 
             <a class="tooltip" th:href="@{/register}"
-               th:text="#{nav.register}">Registrierung</a>
+               th:text="#{nav.register}" sec:authorize="isAnonymous()">Registrierung</a>
 
             <div class="tooltip"><a th:href="@{/offer}" th:text="#{nav.offer}">Angebot</a>
                 <span class="tooltiptext">
@@ -25,7 +25,6 @@
                     <a th:href="@{/mobilebreakfast}" th:text="#{nav.mobilebreakfastCatalog}">MobileBreakfast</a>
                 </span>
             </div>
-
             <a class="tooltip" th:href="@{/Bestellverlauf}"
                th:text="#{nav.bestellverlauf}">Bestellverlauf</a>
 
@@ -46,15 +45,11 @@
 
             <a class="tooltip" th:href="@{/income-overview-month}"
                th:text="#{nav.incomeoverview}">Einkommensübersicht</a>
-            <a class="tooltip" th:href="@{/profile}" sec:authentication="name"
-               th:text="#{nav.profile}">Profil</a>
+            <a class="tooltip" th:href="@{/profile}" sec:authorize="hasRole('CUSTOMER')" sec:authentication="principal.username"
+               th:text="#{nav.profile}">Profile</a>
 
-            <a class="tooltip" th:href="@{/login}"  th:text="#{nav.login}">Login</a>
-            <form class="tooltip" sec:authorize="isAuthenticated()" th:action="@{/logout}" method="post">
-                <button type="submit" class="ui button" th:text="#{nav.logout}">Logout</button>
-            </form>
-
-
+            <a class="tooltip" sec:authorize="isAnonymous()" th:href="@{/login}"  th:text="#{nav.login}">Login</a>
+            <a class="tooltip" sec:authorize="isAuthenticated()" th:href="@{/logout}"  th:text="#{nav.logout}">Logout</a>
     </nav>
     </div>
 </body>

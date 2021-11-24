@@ -1,6 +1,5 @@
 package catering.user;
 
-import javax.annotation.Nullable;
 import javax.validation.constraints.NotEmpty;
 
 public class RegistrationForm {
@@ -12,13 +11,17 @@ public class RegistrationForm {
 	private final String email;
 	@NotEmpty(message = "Password may not be empty")
 	private final String password;
-	private final Position position;
-
+//	@NotEmpty(message = "Position can not be empty")
+	private Position position ;
 	public RegistrationForm(String firstName,String lastName, String email, String password, Position position) {
 		this.firstName = firstName;
 		this.email = email;
 		this.password = password;
-		this.position = position;
+		if(position == null) {
+			this.position = Position.NONE;
+		}else{
+			this.position = position;
+		}
 		this.lastName = lastName;
 	}
 
@@ -41,6 +44,11 @@ public class RegistrationForm {
 	public Position getPosition() {
 		return position;
 	}
+
+	public void setPosition(Position position) {
+		this.position = position;
+	}
+
 	// gibt die Vor- und Nachname konkatiniert. dies wird als ID fürs Konto benutzt
 	public String getUsername(){
 		return firstName + " " + lastName;

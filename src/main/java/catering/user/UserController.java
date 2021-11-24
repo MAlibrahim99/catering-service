@@ -5,16 +5,9 @@ import org.salespointframework.useraccount.web.LoggedIn;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.security.Principal;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Locale;
 import java.util.Optional;
 
 @Controller
@@ -29,7 +22,9 @@ public class UserController {
 	}
 
 	@PostMapping("/register")
-	public String registerUser(@Valid @ModelAttribute("registrationForm") RegistrationForm form, Model model){
+	public String registerUser(@Valid @ModelAttribute("registrationForm") RegistrationForm form,
+							   @RequestParam(value = "action") String action, Model model){
+		System.out.println("register user coming on");
 		// wenn name oder email bereits besetzt ist, gebe nutzer meldung zurück
 		if(userManagement.usernameAlreadyExists(form.getUsername())){
 			model.addAttribute("usernameAlreadyExists", true);
@@ -41,9 +36,16 @@ public class UserController {
 			return "register";
 		}
 
-		userManagement.createUser(form);
-		model.addAttribute("userName", form.getLastName()); // für Benutzer begrüßen
-		return "welcome";
+		// entweder personal oder normalen Nutzer erstellen
+		switch(action){
+			case "register-staff" : userManagement.createUser(form, UserManagement.STAFF_ROLE);
+				model.addAttribute("userName", form.getLastName());
+				return "redirect:/register";
+			case "register-user" : userManagement.createUser(form, UserManagement.CUSTOMER_ROLE);
+				model.addAttribute("userName", form.getLastName());
+				return "welcome";
+			default: return "register";
+		}
 	}
 
 	@GetMapping("/register")

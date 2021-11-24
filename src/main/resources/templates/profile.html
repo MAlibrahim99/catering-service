@@ -31,6 +31,7 @@
     <br/><br/>
     <div>
         <form th:action="@{/edit-profile}" th:object="${user}" method="post" style="display: inline">
+            <input type="hidden" name="id" th:value="*{id}">
             <input type="hidden" name="name" th:value="*{userAccount.firstname}">
             <input type="hidden" name="name" th:value="*{userAccount.lastname}">
             <input type="hidden" name="email" th:value="*{userAccount.email}">
@@ -42,3 +43,4 @@
 </section>
 </body>
 </html>
+

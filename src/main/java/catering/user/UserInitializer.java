@@ -31,10 +31,17 @@ public class UserInitializer implements DataInitializer {
 		System.out.println("Initializing User accounts");
 		accountManagement.create("Hannes", Password.UnencryptedPassword.of("123"), Role.of("ADMIN"));
 
+		List<RegistrationForm> registrationForms = List.of(
+				new RegistrationForm("planet", "stern", "stern@mampf.de", "123", Position.COOK),
+				new RegistrationForm("max", "muster", "muster@mampf.de", "123", Position.WAITER),
+				new RegistrationForm("ghjk", "vogel", "vogel@mampf.de", "123", Position.EXPERIENCED_WAITER)
+		);
+		registrationForms.forEach(e -> userManagement.createUser(e, UserManagement.STAFF_ROLE));
+
 		List.of(
-				new RegistrationForm("planet", "stern", "stern@mampf.de", "123", Position.NONE),
-				new RegistrationForm("max", "muster", "muster@mampf.de", "123", Position.NONE),
-				new RegistrationForm("ghjk", "vogel", "vogel@mampf.de", "123", Position.NONE)
-		).forEach(userManagement::createUser);
+				new RegistrationForm("user", "1", "user1@f.c", "123", Position.NONE),
+				new RegistrationForm("user", "2", "user2@f.c", "123", Position.NONE),
+				new RegistrationForm("user", "3", "user3@f.c", "123", Position.NONE)
+		).forEach(e -> userManagement.createUser(e, UserManagement.CUSTOMER_ROLE));
 	}
 }
