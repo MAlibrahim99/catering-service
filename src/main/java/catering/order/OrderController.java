@@ -21,6 +21,12 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttributes;
 
+import catering.catalog.ware;
+
+
+@Controller
+//@PreAuthorize("isAuthenticated()")
+@SessionAttributes("cart")
 public class OrderController {
 
 
@@ -31,6 +37,34 @@ private final OrderManagement<Order> orderManagement;
 		Assert.notNull(orderManagement, "OrderManagement must not be null!");
 		this.orderManagement = orderManagement;
 	}
+
+
+	@ModelAttribute("cart")
+	Cart initializeCart(){
+		return new Cart();
+	}
+
+	@PostMapping("/cartadd")
+	String addToCart(@RequestParam("pid") ware ware, int number, @ModelAttribute Cart cart){
+		cart.addOrUpdateItem(ware, 1);
+		return "redirect:/shop";
+	}
+
+	@GetMapping("/orderreview")
+	String orderreview(){
+		return "orderreview";
+	}
+
+	@GetMapping("/orderform")
+	String orderform(){
+		return "orderform";
+	}
+
+	@GetMapping("/test")
+	String testt(){
+		return "test";
+	}
+
+
+
 }
-
-
