@@ -21,12 +21,13 @@ import org.springframework.web.bind.annotation.GetMapping;
 @Controller
 public class CatalogController {
 
-	@GetMapping("/")
-	public String index() {
-		return "welcome";
-	}
 
 	@GetMapping("/welcome")
+	public String index() {
+		return "/welcome";
+	}
+
+	@GetMapping("/")
 	public String start() {
 		return "index";
 	}
