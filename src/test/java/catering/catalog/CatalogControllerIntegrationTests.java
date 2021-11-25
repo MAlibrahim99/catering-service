@@ -38,11 +38,4 @@ class CatalogControllerIntegrationTests {
 				.andExpect(status().isOk())
 				.andExpect(content().string(containsString("Welcome!")));
 	}
-
-	@Test
-	void showsHeadline() throws Exception {
-		mvc.perform(get("/")) //
-				.andExpect(status().isOk())
-				.andExpect(content().string(containsString("Herrzlich Wilkommen beim Cateringservice Mampf!")));
-	}
 }
