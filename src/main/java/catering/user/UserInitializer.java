@@ -29,7 +29,7 @@ public class UserInitializer implements DataInitializer {
 		}
 
 		System.out.println("Initializing User accounts");
-		accountManagement.create("Hannes", Password.UnencryptedPassword.of("123"), Role.of("ADMIN"));
+		accountManagement.create("Hannes", Password.UnencryptedPassword.of("123"),"admin@mampf.de", Role.of("ADMIN"));
 
 		List<RegistrationForm> registrationForms = List.of(
 				new RegistrationForm("planet", "stern", "stern@mampf.de", "123", Position.COOK),
