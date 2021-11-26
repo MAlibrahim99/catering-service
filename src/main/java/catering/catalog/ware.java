@@ -16,23 +16,19 @@ public class ware extends Product{
         EVENTCATERING, PARTYSERVICE, RENTACOOK, MOBILEBREAKFAST;
     }
 
-    private String date;
     private ServiceType type;
+    private String description;
 
     @SuppressWarnings({ "unused", "deprecation" })
 	private ware() {}
 
-    public ware(String name, Money price, ServiceType type){
+    public ware(String name, Money price, String description, ServiceType type){
 
         super(name, price);
-
+        this.description = description;
         this.type = type;
     }
 
-
-    public String getDate(){
-        return date;
-    }
 
     public ServiceType getType(){
         return type;

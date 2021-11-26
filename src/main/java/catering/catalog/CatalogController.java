@@ -15,14 +15,46 @@
  */
 package catering.catalog;
 
+import org.salespointframework.inventory.UniqueInventory;
+import org.salespointframework.inventory.UniqueInventoryItem;
+import org.salespointframework.quantity.Quantity;
+import org.salespointframework.time.BusinessTime;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
 @Controller
 public class CatalogController {
 
+	private static final Quantity NONE = Quantity.of(0);
+
+	private final CateringCatalog catalog;
+	private final UniqueInventory<UniqueInventoryItem> inventory;
+	private final BusinessTime businessTime;
+
+
+	CatalogController(CateringCatalog cateringCatalog, UniqueInventory<UniqueInventoryItem> inventory,
+					  BusinessTime businessTime) {
+
+		this.catalog = cateringCatalog;
+		this.inventory = inventory;
+		this.businessTime = businessTime;
+	}
+
 	@GetMapping("/")
 	public String index() {
 		return "welcome";
 	}
+
+	/*
+	@GetMapping("/test")
+	public String cateringCatalog(Model model) {
+
+		model.addAttribute("catalog", catalog.findAll());
+		model.addAttribute("title", "catalog.title");
+
+		return "test";
+
+	}
+	*/
 }

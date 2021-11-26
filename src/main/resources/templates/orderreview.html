@@ -2,6 +2,44 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 
     <body>
+        <section layout:fragment="content">
+            <!--<div th:unless="${cart.empty}">-->
+            <table class="table">
+                <thead>
+                    <tr>
+                    <th scope="col">Datum</th>
+                    <th scope="col">Kosten</th>
+                    <th scope="col">Details</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="order: ${cart}">
+                        <td th:text="${order.date}">Test1</td>
+                        <td th:text="${order.cost}">Test2</td>
+                        <td th:text="${order.description}">Test3</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>Last Action Hero</td>
+                        <td>10</td>
+                        <td>10 Euro</td>
+                    </tr>
+                    <tr>
+                        <td>Last Action Hero</td>
+                        <td>10</td>
+                        <td>10 Euro</td>
+                    </tr>
+                    <tr>
+                        <td>Last Action Hero</td>
+                        <td>10</td>
+                        <td>10 Euro</td>
+                    </tr>
+                    </tbody>
+                </tbody>
+            </table>    
+            <div th:unless="${cart.empty}"> <!--Möglichkeit über localhost/8080/cart verhindern nicht vergessen-->
+            <h2 th:if="${cart.empty}" th:text="#{cart.empty}">Leer</h2>
+        </section>
 
         <div class="table-responsive">
             <table class="table table-hover align-middle">
@@ -13,11 +51,10 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr th:each="item : ${cart} "> <!--th:each sobald du das füllen kannst remove die dummy data-->
+                    <tr th:each="item : ${cart} ">
                         
                         <td th:text="${item.productName}">productname</td>
-                        <!--schau mal wie man dropdowns in thymeleaf einbindet -->
-                        <!--Anzahl hier-->
+
                         <td th:text="${item.quantity}">
                             <select class="form-select" aria-label="Default select example">
                                 <option selected value="0">1</option>
@@ -29,10 +66,9 @@
                             </select>
                         </td>
                         <td>
-                            <form class="ui form" method="post" th:action="@{/editcart}">
+                            <form class="ui form" method="post" th:action="@{/clearcart}">
                                 <input type="hidden" name="id" value="0" th:value="${item.id}"/>
-                                <input id="number" type="number" name="number" min="0" max="5" step="1" th:value="${item.quantity}"/><br/>
-                                <button type="submit">Update</button>
+                                <button type="submit">Zurück</button>
                             </form>
                         </td>
                         <!--preis hier -->
