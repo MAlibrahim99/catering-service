@@ -5,7 +5,6 @@
 <head>
     <meta http-equiv="content-type" content="text/html; charset=UTF-8"/>
 
-
 </head>
 <body>
 
@@ -14,7 +13,7 @@
         <h1 id="logo-name"><a th:href="@{/}">Cateringservice <em>Mampf</em></a></h1>
         <nav>
 
-            <a class="link" th:href="@{/register}" th:text="#{nav.register}">Registrierung</a>
+            <a class="link" th:href="@{/register}" th:text="#{nav.register}" sec:authorize="isAnonymous()">Registrierung</a>
 
             <div class="link"><a th:href="@{/offer}" th:text="#{nav.offer}">Angebot</a>
                 <span class="tooltiptext">
@@ -46,15 +45,13 @@
             <a class="link" th:href="@{/income-overview-month}"
                th:text="#{nav.incomeoverview}">Einkommensübersicht</a>
 
-            <a class="link" th:href="@{/profile}"
+            <a class="link" th:href="@{/profile}" sec:authorize="hasRole('CUSTOMER')" sec:authentication="principal.username"
                th:text="#{nav.profile}">Profil</a>
 
 
 
-            <a class="link" th:href="@{/login}" th:text="#{nav.login}">Login</a>
-            <form class="link" th:action="@{/logout}" method="post">
-                <button type="submit" class="ui button" th:text="#{nav.logout}">Logout</button>
-            </form>
+            <a class="link" sec:authorize="isAnonymous()" th:href="@{/login}" th:text="#{nav.login}">Login</a>
+            <a class="link" sec:authorize="isAuthenticated()" th:href="@{/logout}" th:text="#{nav.logout}">Logout</a>
 
 
         </nav>
