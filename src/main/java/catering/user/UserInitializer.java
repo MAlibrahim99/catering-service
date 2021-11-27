@@ -1,5 +1,6 @@
 package catering.user;
 
+import catering.user.forms.RegistrationForm;
 import org.salespointframework.core.DataInitializer;
 import org.salespointframework.useraccount.Password;
 import org.salespointframework.useraccount.Role;

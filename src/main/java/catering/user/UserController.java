@@ -1,5 +1,7 @@
 package catering.user;
 
+import catering.user.forms.RegistrationForm;
+import org.salespointframework.useraccount.Role;
 import org.salespointframework.useraccount.UserAccount;
 import org.salespointframework.useraccount.web.LoggedIn;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -8,6 +10,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
 import java.util.Optional;
 
 @Controller
@@ -63,6 +66,20 @@ public class UserController {
 			return "profile";
 		}
 		return "login";
+	}
+
+	@GetMapping("/staff")
+	@PreAuthorize(value="isAuthenticated()")
+	public String showStaffList(@LoggedIn UserAccount account, Model model){
+		if(account.hasRole(Role.of("ADMIN"))){
+			// finde alle personal mit Positionen(Cook, EXPERIENCED_WAITER; WAITER)
+			Iterable<User> staff = userRepository.getUserByPositionIn(List.of(Position.COOK, Position.EXPERIENCED_WAITER,
+			Position.WAITER));
+			model.addAttribute("allStaff", staff);
+			return "staff-list";
+		}else{
+			return "access-denied";
+		}
 	}
 
 	@GetMapping("/test")

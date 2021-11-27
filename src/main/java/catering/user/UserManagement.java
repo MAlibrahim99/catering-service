@@ -1,5 +1,6 @@
 package catering.user;
 
+import catering.user.forms.RegistrationForm;
 import org.salespointframework.useraccount.*;
 import org.salespointframework.useraccount.Password.UnencryptedPassword;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -76,7 +77,7 @@ public class UserManagement {
 			throw new NullPointerException("Role can not be null");
 		}
 		Role userRole = Role.of(role);
-		List<User> allUsers = (List<User>) users.findAll();
+		List<User> allUsers = (List<User>) users.findAll().toList();
 		List<User> filteredUsers = new ArrayList<>();
 		for(User user: allUsers){ // wenn es Konten mit der gegebenen Rolle gibt, dann füge sie in die Liste
 			if(user.getUserAccount().getRoles().stream().findFirst().isPresent()){
