@@ -4,12 +4,12 @@
       layout:decorate="~{layout}">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Profile</title>
 </head>
 <body>
 <nav th:replace="navigation :: navigation"></nav>
 <section layout:fragment="content">
-    <h2 class="underlined-text">Profil</h2>
+    <h2 class="underlined-text">Profile</h2>
     <table th:object="${user}">
         <tr >
             <td class="p-1-rem">First name:</td>
@@ -24,13 +24,14 @@
             <td th:text="*{userAccount.email}" class="p-1-rem"></td>
         </tr>
         <tr>
-            <td class="p-1-rem">Adresse:</td>
-            <td th:text="*{address}" class="p-1-rem">musterStr. 23 <br>12345 Stadt</td>
+            <td class="p-1-rem">Address:</td>
+            <td th:text="*{address}" class="p-1-rem">musterStr. 23 <br>12345 City</td>
         </tr>
     </table>
     <br/><br/>
     <div>
         <form th:action="@{/edit-profile}" th:object="${user}" method="post" style="display: inline">
+            <input type="hidden" name="id" th:value="*{id}">
             <input type="hidden" name="name" th:value="*{userAccount.firstname}">
             <input type="hidden" name="name" th:value="*{userAccount.lastname}">
             <input type="hidden" name="email" th:value="*{userAccount.email}">
@@ -42,3 +43,4 @@
 </section>
 </body>
 </html>
+

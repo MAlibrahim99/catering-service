@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout}">
+<head>
+    <meta charset="UTF-8">
+    <title>Personalliste</title>
+</head>
+<body>
+<div th:replace="navigation :: navigation"></div>
+<section layout:fragment="content">
+    <h2 class="underlined-text">Staff</h2>
+	<div th:if="${!allStaff.iterator().hasNext()}" class="ui message">
+		<div class="header">
+			Empty List
+		</div>
+		<p>There is currently no accounts. Click on "Add new Staff" to add a new account</p>
+	</div>
+    <table th:if="${allStaff.iterator().hasNext()}" class="ui striped center aligned table">
+        <thead><!--TODO implementeire die Sortierfunktion nach Name, Nachname und Position-->
+        	<tr class="bold">
+				<th>ID</th>
+            	<th>Last Name</th>
+				<th>Name</th>
+				<th>E-Mail Address</th>
+           		<th>Position</th>
+				<th>Actions</th>
+       		 </tr>
+       	</thead>
+       	<tbody>
+	        <tr th:each="staff : ${allStaff}">
+	            <td th:text="${staff.id}">000</td>
+				<td th:text="${staff.userAccount.lastname}">Antoinette</td>
+				<td th:text="${staff.userAccount.firstname}">Marie</td>
+				<td th:text="${staff.userAccount.email}">kuchen@leute.de</td>
+				<td th:text="${staff.position}">Staff position</td>
+	            <th><a th:href="@{/staff/${staff.id}}" class="ui button">Edit/Delete Account</a></th><!--noch nicht implementiert-->
+	        </tr>
+		</tbody>
+    </table>
+	<a th:href="@{/register}" class="ui button">Add new Staff</a>
+</section>
+</body>
+</html>

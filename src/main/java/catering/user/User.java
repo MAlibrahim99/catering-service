@@ -2,11 +2,7 @@ package catering.user;
 
 import org.salespointframework.useraccount.UserAccount;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.OneToOne;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Entity
 public class User {
@@ -17,7 +13,7 @@ public class User {
 	private UserAccount userAccount;
 	@Column
 	private String address;
-	@Column
+	@Enumerated(EnumType.STRING)
 	private Position position;
 
 	public User() {
@@ -29,11 +25,10 @@ public class User {
 	}
 
 	public User(UserAccount userAccount, String address, Position position) {
+		this(userAccount, address);
 		if(position == null){
 			throw new NullPointerException("Position can not be set assigned to null");
 		}
-		this.address = address;
-		this.userAccount = userAccount;
 		this.position = position;
 	}
 
