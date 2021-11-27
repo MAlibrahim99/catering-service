@@ -1,5 +1,9 @@
 <!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<html xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout}">
 	<head>
 		<meta http-equiv="content-type" content="text/html; charset=UTF-8" />
 		<link rel="stylesheet" type="text/css" th:href="@{/resources/css/style.css}" />
@@ -7,5 +11,9 @@
 	</head>
 	<body>
 		<h1>Welcome!</h1>
+        <nav th:replace="navigation :: navigation"></nav>
+        <section layout:fragment="content">
+            <p>Welcome!</p>
+        </section>
 	</body>
 </html>

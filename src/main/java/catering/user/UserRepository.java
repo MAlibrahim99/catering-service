@@ -1,4 +1,7 @@
 package catering.user;
 
-public interface UserRepository {
+import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.util.Streamable;
+
+public interface UserRepository extends CrudRepository<User, Long> {
 }

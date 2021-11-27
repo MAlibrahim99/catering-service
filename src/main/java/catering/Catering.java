@@ -20,23 +20,43 @@ import org.salespointframework.SalespointSecurityConfiguration;
 import org.springframework.boot.SpringApplication;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @EnableSalespoint
 public class Catering {
+	private static final String LOGIN_ROUTE = "/login";
+	private static final String CONTEXT_ROOT = "/";
+	private static final String[] ACCESS_WITHOUT_AUTH = {CONTEXT_ROOT, LOGIN_ROUTE, "/register", "/catalog", "/offer",
+			"/eventcatering", "/partyservice", "/rentacook", "/mobilebreakfast", "/index" ,"/webjars/**"};
 
 	public static void main(String[] args) {
 		SpringApplication.run(Catering.class, args);
 	}
 
 	@Configuration
+	static class MvcConfig implements WebMvcConfigurer {
+
+		public void addViewControllers(ViewControllerRegistry registry) {
+			registry.addViewController(LOGIN_ROUTE).setViewName("login");
+			registry.addViewController(CONTEXT_ROOT).setViewName("welcome");
+		}
+	}
+
+	@Configuration
 	static class WebSecurityConfiguration extends SalespointSecurityConfiguration {
+
 
 		@Override
 		protected void configure(HttpSecurity http) throws Exception {
 			http.csrf().disable();  // for lab purposes, that's ok!
-			http.authorizeRequests().antMatchers("/**").permitAll().and()
-					.formLogin().loginProcessingUrl("/login").and()
-					.logout().logoutUrl("/logout").logoutSuccessUrl("/");
+			http.authorizeRequests()
+					.antMatchers(ACCESS_WITHOUT_AUTH).permitAll()
+					.anyRequest().authenticated().and()
+					.formLogin().loginPage(LOGIN_ROUTE).loginProcessingUrl(LOGIN_ROUTE).permitAll()
+					.defaultSuccessUrl(CONTEXT_ROOT, true).and()
+//					.failureUrl("/error").and()
+					.logout().logoutUrl("/logout").logoutSuccessUrl(CONTEXT_ROOT);
 		}
 	}
 }
