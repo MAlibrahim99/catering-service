@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout}">
+	<head>
+		<meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+		<title>Kundenliste</title>
+	</head>
+    <body>
+        <section layout:fragment="content">
+        <h2 class="underlined-text">Kundenliste</h2>
+        	<table  class="ui celled table">
+        		<thead>
+        			<tr class="bold">
+	        			 <th>Name</th>
+	        			 <th>Email</th>
+	        			 <th>ID</th>
+	        		</tr>
+	        	</thead>
+	        	<tbody>
+	        		<tr th:each= "customers : ${allCustomers}">
+		        		<td th:text="${customer.userAccount.id}">Kunde</td>
+	                    <td th:text="${customer.userAccount.email}">test@kunde.de</td>
+	                    <td th:text="${customer.id}">0001</td>
+                    </tr>
+                </tbody>
+            </table>
+         </section>
+    </body>
+</html>
