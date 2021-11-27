@@ -24,7 +24,7 @@ public class CatalogController {
 
 	@GetMapping("/welcome")
 	public String index() {
-		return "/welcome";
+		return "welcome";
 	}
 
 	@GetMapping("/")
