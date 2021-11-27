@@ -12,14 +12,16 @@
         	<table  class="ui celled table">
         		<thead>
         			<tr class="bold">
-	        			 <th>Name</th>
+	        			 <th>Nachname</th>
+	        			 <th>Vorname</th>
 	        			 <th>Email</th>
 	        			 <th>ID</th>
 	        		</tr>
 	        	</thead>
 	        	<tbody>
 	        		<tr th:each= "customers : ${allCustomers}">
-		        		<td th:text="${customer.userAccount.id}">Kunde</td>
+		        		<td th:text="${customer.userAccount.lastname}">Kunde</td>
+		        		<td th:text="${customer.userAccount.firstname}">Test<td>
 	                    <td th:text="${customer.userAccount.email}">test@kunde.de</td>
 	                    <td th:text="${customer.id}">0001</td>
                     </tr>
