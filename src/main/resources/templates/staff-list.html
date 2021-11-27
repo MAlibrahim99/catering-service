@@ -34,7 +34,8 @@
 				<td th:text="${staff.userAccount.firstname}">Marie</td>
 				<td th:text="${staff.userAccount.email}">kuchen@leute.de</td>
 				<td th:text="${staff.position}">Staff position</td>
-	            <th><a th:href="@{/staff/${staff.id}}" class="ui button">Edit/Delete Account</a></th><!--noch nicht implementiert-->
+	            <th><a th:href="@{/profile/{username}(username=${staff.userAccount.username})}"
+					   class="ui button">Edit/Delete Account</a></th>
 	        </tr>
 		</tbody>
     </table>

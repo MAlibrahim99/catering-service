@@ -57,12 +57,14 @@ public class UserController {
 		return "register";
 	}
 
-	@GetMapping("/profile")
-	public String sendProfilePage(@LoggedIn Optional<UserAccount> account, Model model){
-		System.out.println("Profile info: " + account.isPresent());
-		account.ifPresent(userAccount -> System.out.println(userAccount.getUsername()));
+	@GetMapping("/profile/{user-name}")
+	@PreAuthorize(value="hasAnyRole('CUSTOMER', 'ADMIN')")
+	public String sendProfilePage(@PathVariable("user-name") String accountId, @LoggedIn Optional<UserAccount> account, Model model){
+		System.out.println("User id: " + accountId);
+//		account.ifPresent(userAccount -> System.out.println(userAccount.getUsername()));
 		if(account.isPresent()){
-			model.addAttribute("user", userManagement.findByUsername(account.get().getUsername()));
+//			model.addAttribute("user", userManagement.findByUsername(account.get().getUsername()));
+			model.addAttribute("user", userManagement.findByUsername(accountId));
 			return "profile";
 		}
 		return "login";
