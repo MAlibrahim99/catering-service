@@ -16,6 +16,7 @@
 package catering.catalog;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
 @Controller
@@ -26,6 +27,9 @@ public class CatalogController {
 	public String index() {
 		return "/welcome";
 	}
+
+
+
 
 	@GetMapping("/")
 	public String start() {
@@ -38,19 +42,36 @@ public class CatalogController {
 	}
 
 	@GetMapping("/eventcatering")
-	public String event() {
+	public String event(Model model) {
+		String picture = "/resources/img/event-detail.jpg";
+		model.addAttribute("picture", picture);
+		String headline = "Eventcatering";
+		model.addAttribute("headline", headline);
 		return "catalog";
 	}
 	@GetMapping("/partyservice")
-	public String party() {
+	public String party(Model model) {
+		String picture = "/resources/img/party-detail.jpg";
+		model.addAttribute("picture", picture);
+
+		String headline = "Partyservice";
+		model.addAttribute("headline", headline);
 		return "catalog";
 	}
 	@GetMapping("/rentacook")
-	public String cook() {
+	public String cook(Model model) {
+		String picture = "/resources/img/cook-detail.jpg";
+		model.addAttribute("picture", picture);
+		String headline = "Rent-A-Cook";
+		model.addAttribute("headline", headline);
 		return "catalog";
 	}
 	@GetMapping("/mobilebreakfast")
-	public String mobile() {
+	public String mobile(Model model) {
+		String picture = "/resources/img/mobile-detail.jpg";
+		model.addAttribute("picture", picture);
+		String headline = "Mobile Breakfast";
+		model.addAttribute("headline", headline);
 		return "catalog";
 	}
 
