@@ -46,7 +46,7 @@ public class UserController {
 				return "redirect:/register";
 			case "register-user" : userManagement.createUser(form, UserManagement.CUSTOMER_ROLE);
 				model.addAttribute("userName", form.getLastName());
-				return "welcome";
+				return "index";
 			default: return "register";
 		}
 	}
