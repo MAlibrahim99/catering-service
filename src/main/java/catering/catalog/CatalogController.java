@@ -25,13 +25,8 @@ public class CatalogController {
 		this.catalog = catalog;
 	}
 
-	@GetMapping("/welcome")
-	public String index() {
-		return "welcome";
-	}
-
 	@GetMapping("/")
-	public String start() {
+	public String index() {
 		return "index";
 	}
 
