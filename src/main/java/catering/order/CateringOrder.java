@@ -1,6 +1,6 @@
 package catering.order;
 
-import catering.user.Positions;
+import catering.user.Position;
 import catering.user.User;
 
 import org.salespointframework.order.Order;
@@ -32,7 +32,7 @@ public class CateringOrder extends Order {
 		this.completionDate = completionDate;
 		this.address = address;
 
-		for (pos : Position) {
+		for (Position pos : Position.values()) {
 			this.allocPositions.put(pos, 0);
 		}
 	}
@@ -44,7 +44,7 @@ public class CateringOrder extends Order {
 		this.completionDate = completionDate;
 		this.address = address;
 
-		for (pos : Position) {
+		for (Position pos : Position.values()) {
 			this.allocPositions.put(pos, 0);
 		}
 	}
