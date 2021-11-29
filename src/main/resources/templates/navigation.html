@@ -45,8 +45,8 @@
             <a class="link" th:href="@{/income-overview-month}"
                th:text="#{nav.incomeoverview}">Einkommensübersicht</a>
 
-            <a class="link" th:href="@{/profile}" sec:authorize="hasRole('CUSTOMER')" sec:authentication="principal.username"
-               th:text="#{nav.profile}">Profil</a>
+            <a class="tooltip" th:href="@{/profile/{username}(username=${#authentication.name})}" sec:authorize="hasRole('CUSTOMER')"
+               th:text="#{nav.profile}">Profile</a>
 
 
 

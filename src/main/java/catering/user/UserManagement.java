@@ -21,7 +21,7 @@ public class UserManagement {
 	private final UserAccountManagement accountManagement;
 	public static final Role CUSTOMER_ROLE = Role.of("CUSTOMER");
 	public static final Role STAFF_ROLE = Role.of("STAFF");
-//	public static final Role ADMIN_ROLE = Role.of("ADMIN");
+	public static final Role ADMIN_ROLE = Role.of("ADMIN");
 
 	public UserManagement(UserRepository users, @Qualifier("persistentUserAccountManagement") UserAccountManagement accountManagement) {
 		if(users == null || accountManagement == null){
