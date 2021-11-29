@@ -1,4 +1,6 @@
 package catering.order;
+import java.time.LocalDate;
+
 import javax.money.Monetary;
 import javax.money.MonetaryAmount;
 import javax.persistence.Entity;
@@ -21,19 +23,14 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttributes;
 
-class order extends Order {
+class order {
     
-	private int guests;
+    private int extra1;
+    private int extra2;
+    private LocalDate date;
+    private String location;
     
-	private int meals;
 
-	private int tableware;
-
-	private int deco;
-
-    private  String date;
-    private String place;
-    private OptionType type;
 
     private int Cost = 100;
     private int SumCost;
@@ -47,18 +44,14 @@ class order extends Order {
     private int waiter = 500;
     private int chefs = 100;
 
-    public static enum OptionType{
-        EVENTCATERING, PARTYSERVICE, RENTACOOK, MOBILEBREAKFAST;
-    }
+    
 
-    public order(int guests, int meals, int tableware, int deco, String date, OptionType type){
+    public order(int extra1, int extra2, LocalDate date, String location){
         
-        this.guests = guests;
-        this.meals = meals;
-        this.tableware = tableware;
-        this.deco = deco;
+        this.extra1 = extra1;
+        this.extra2 = extra2;
         this.date = date;
-        this.type = type;
+        this.location = location;
     }
     
     public order(){
@@ -174,28 +167,21 @@ class order extends Order {
 
 
 
-    public int getGuests(){
-        return guests;
+    public int getExtra1(){
+        return extra1;
     }
 
-    public int getMeals(){
-        return meals;
+    public int getExtra2(){
+        return extra2;
     }
 
-    public int getTableware(){
-        return tableware;
-    }
 
-    public int getDeco(){
-        return deco;
-    }
-
-    public String getDate(){
+    public LocalDate getDate(){
         return date;
     }
 
-    public String getPlace(){
-        return place;
+    public String getLocation(){
+        return location;
     }
 }
 

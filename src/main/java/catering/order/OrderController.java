@@ -3,6 +3,7 @@ import org.salespointframework.inventory.QInventoryItem;
 import org.salespointframework.order.*;
 import org.springframework.validation.Errors;
 
+import java.time.LocalDate;
 import java.util.Optional;
 
 import org.javamoney.moneta.Money;
@@ -12,6 +13,7 @@ import org.salespointframework.payment.Cash;
 import org.salespointframework.quantity.Quantity;
 import org.salespointframework.useraccount.UserAccount;
 import org.salespointframework.useraccount.web.LoggedIn;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -23,6 +25,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import static org.salespointframework.core.Currencies.*;
 
+import catering.catalog.CateringCatalog;
 import catering.catalog.ware;
 import catering.catalog.ware.ServiceType;
 
@@ -35,10 +38,14 @@ public class OrderController {
 
 private final OrderManagement<Order> orderManagement;
 
-	OrderController(OrderManagement<Order> orderManagement) {
+	private final CateringCatalog cCatalog;
+
+	OrderController(OrderManagement<Order> orderManagement, CateringCatalog cCatalog) {
+
 
 		Assert.notNull(orderManagement, "OrderManagement must not be null!");
 		this.orderManagement = orderManagement;
+		this.cCatalog = cCatalog;
 	}
 
 	
@@ -46,7 +53,11 @@ private final OrderManagement<Order> orderManagement;
 	
 	@ModelAttribute("cart")
 	Cart initializeCart(){
-		return new Cart();
+		Cart cart = new Cart();
+		for (ware ware1 : cCatalog.findByName("Eventcatering")){
+		cart.addOrUpdateItem(ware1, 1);
+		}
+		return /*new Cart()*/ cart;
 	}
 
 	@PostMapping("/cartadd1")
@@ -61,10 +72,31 @@ private final OrderManagement<Order> orderManagement;
 		return "redirect:/orderreview";
 	}
 
+
 	@PostMapping("/cartadd3")
-	String addToCart3(@RequestParam("pid") ware ware, @RequestParam("number") int number, @ModelAttribute Cart cart){
+	//String addToCart3(Model model, @RequestParam("pid") ware ware, @RequestParam("number") int number, @ModelAttribute Cart cart , @RequestParam("date") LocalDate date){
+	String addToCart3(Model model, @RequestParam("pid") ware ware, @RequestParam("number") int number, @ModelAttribute Cart cart){
+		cart.clear();
+		int guestcount = number / 5;
+		if (guestcount == 0){
+			guestcount = 1;
+		}
+		int chefcount = guestcount * 3;
+        int waitercount = guestcount *3;
+		
+		/*if (chefcount <= chefs && waitercount <= waiter){               //Funktion aus Inventar für Personal benötigt
+			System.out.println("Bestellung wird aufgegeben");           // return hinzufügen 
+			return "orderrewview";
+		}
+		else{
+			System.out.println("Bestellung kann nicht aufgegeben werden");
+			return "redirect:/orderform3";
+
+		*/
 		cart.addOrUpdateItem(ware, Quantity.of(number));
-		return "redirect:/orderreview";
+		//model.addAttribute("date", date);
+		
+		return "orderreview";
 	}
 
 	@PostMapping("/cartadd4")
@@ -89,7 +121,9 @@ private final OrderManagement<Order> orderManagement;
 	}
 
 	@GetMapping("/orderform3")
-	String orderform3(){
+	String orderform3(Model model, order order3){
+		model.addAttribute("catalog", cCatalog);
+		model.addAttribute("order", order3);
 		return "orderform3";
 	}
 
@@ -134,9 +168,7 @@ private final OrderManagement<Order> orderManagement;
 		return "orderform5";
 	}
 
-
 	
-
 
 
 }

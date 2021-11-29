@@ -33,6 +33,12 @@ public class ware extends Product{
     public ServiceType getType(){
         return type;
     }
+
+    public String getDescription(){
+        return description;
+    }
+    
+
     
 }
 

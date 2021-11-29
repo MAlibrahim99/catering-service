@@ -10,7 +10,7 @@
             <div class="ui card" th:each="ware : ${catalog}">
                 <div>
                 <h3>TEST</h3>
-                <h3 class="card-title" th:href="@{/ware/{id}(id=${ware.id})}" th:text="${ware.name}">MobileBreakfast</h3>
+                <h3 class="card-title" th:text="${ware.name}">MobileBreakfast</h3>
                 <hr>
                 <p class="card-text" th:text="${ware.description}">This is a desctiptive text telling you why you would wanna buy this book this should be limited as noone likes to read essays.</p>
                 <hr>
