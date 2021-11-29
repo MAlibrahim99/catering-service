@@ -68,7 +68,7 @@ public class UserController {
 		return "login";
 	}
 
-	@GetMapping("/staff")
+	@GetMapping("/staff-list")
 	@PreAuthorize(value="isAuthenticated()")
 	public String showStaffList(@LoggedIn UserAccount account, Model model){
 		if(account.hasRole(Role.of("ADMIN"))){
