@@ -1,6 +1,5 @@
 package catering.order;
 
-import catering.user.Position;
 import catering.user.User;
 
 import org.salespointframework.order.Order;
@@ -11,17 +10,18 @@ import org.salespointframework.useraccount.UserAccount;
 import org.springframework.util.Assert;
 
 import javax.persistence.Entity;
+import javax.persistence.OneToMany;
+import javax.persistence.CascadeType;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 
 @Entity
 public class CateringOrder extends Order {
 
+	@OneToMany(cascade = {CascadeType.ALL})
 	private List<User> allocStaff;
-	private Map<Position, Integer> allocPositions;
 	private LocalDateTime completionDate;
 	private String address;
 
@@ -31,10 +31,6 @@ public class CateringOrder extends Order {
 		this.allocStaff = new ArrayList<>();
 		this.completionDate = completionDate;
 		this.address = address;
-
-		for (Position pos : Position.values()) {
-			this.allocPositions.put(pos, 0);
-		}
 	}
 
 	public CateringOrder(UserAccount userAccount, PaymentMethod paymentMethod, LocalDateTime completionDate, String address) {
@@ -43,10 +39,6 @@ public class CateringOrder extends Order {
 		this.allocStaff = new ArrayList<>();
 		this.completionDate = completionDate;
 		this.address = address;
-
-		for (Position pos : Position.values()) {
-			this.allocPositions.put(pos, 0);
-		}
 	}
 
 	public List<User> getAllocStaff() {
@@ -56,13 +48,13 @@ public class CateringOrder extends Order {
 	public void addToAllocStaff(User user) {
 		Assert.isTrue(user.getUserAccount().hasRole(Role.of("STAFF")), "User must have Role STAFF");
 		this.allocStaff.add(user);
-
-		Integer amount = allocPositions.get(user.getPosition());
-		amount += 1;
-		allocPositions.put(user.getPosition(), amount);
 	}
 
-	public Map<Position, Integer> getAllocPositions() {
-		return allocPositions;
+	public LocalDateTime getCompletionDate() {
+		return completionDate;
+	}
+
+	public String getAddress() {
+		return address;
 	}
 }
