@@ -80,39 +80,6 @@ public class CatalogController {
 
 
 
-	@PreAuthorize("hasRole('ADMIN')")
-	@GetMapping("/edit/{service}")
-	public String getPrices(@PathVariable String service, Model model) {
-		Assert.isTrue((service.equals("eventcatering") || service.equals("partyservice") || service.equals("mobilebreakfast")), "Service must be valid");
 
-		Streamable<Option> optionStreamable = catalog.findByCategory(service);
-
-		List<OptionFormitem> optionFormitemList = new ArrayList<>();
-		for (Option option : optionStreamable) {
-			optionFormitemList.add(new OptionFormitem(option.getName(), option.getPrice().getNumber().numberValue(Float.class)));
-		}
-
-		PriceEditForm form = new PriceEditForm();
-		form.setOptionList(optionFormitemList);
-		form.setService(service);
-
-		model.addAttribute("form", form);
-
-		return "edit_prices";
-	}
-
-	@PreAuthorize("hasRole('ADMIN')")
-	@PostMapping("/editPrices")
-	public String editPrices(@ModelAttribute("form") PriceEditForm form, Model model) {
-
-		for (OptionFormitem optionItem : form.getOptionList()) {
-			Option option = catalog.findByName(optionItem.getName()).stream().findFirst().get();
-			option.setPrice(Money.of(optionItem.getPrice(), EURO));
-
-			catalog.save(option);
-		}
-
-		return "redirect:/" + form.getService();
-	}
 
 }
