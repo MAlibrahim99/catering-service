@@ -75,7 +75,7 @@ private final OrderManagement<Order> orderManagement;
 
 	@PostMapping("/cartadd3")
 	//String addToCart3(Model model, @RequestParam("pid") ware ware, @RequestParam("number") int number, @ModelAttribute Cart cart , @RequestParam("date") LocalDate date){
-	String addToCart3(Model model, @RequestParam("pid") ware ware, @RequestParam("number") int number, @ModelAttribute Cart cart){
+	String addToCart3(Model model, @RequestParam("pid") ware ware, @RequestParam("number") int number, @ModelAttribute Cart cart, @ModelAttribute ("order") order ord3){
 		cart.clear();
 		int guestcount = number / 5;
 		if (guestcount == 0){
@@ -83,6 +83,7 @@ private final OrderManagement<Order> orderManagement;
 		}
 		int chefcount = guestcount * 3;
         int waitercount = guestcount *3;
+		System.out.println(ord3.toString());
 		
 		/*if (chefcount <= chefs && waitercount <= waiter){               //Funktion aus Inventar für Personal benötigt
 			System.out.println("Bestellung wird aufgegeben");           // return hinzufügen 
@@ -124,6 +125,7 @@ private final OrderManagement<Order> orderManagement;
 	String orderform3(Model model, order order3){
 		model.addAttribute("catalog", cCatalog);
 		model.addAttribute("order", order3);
+		
 		return "orderform3";
 	}
 

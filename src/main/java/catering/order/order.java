@@ -13,6 +13,7 @@ import org.salespointframework.payment.Cash;
 import org.salespointframework.quantity.Quantity;
 import org.salespointframework.useraccount.UserAccount;
 import org.salespointframework.useraccount.web.LoggedIn;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -27,6 +28,8 @@ class order {
     
     private int extra1;
     private int extra2;
+    
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate date;
     private String location;
     
@@ -182,6 +185,26 @@ class order {
 
     public String getLocation(){
         return location;
+    }
+
+    public String toString(){
+        return extra1 + " " + extra2 + " " + date + " " + location;
+    }
+
+    public void setLocation(String location) {
+        this.location = location;
+    }
+
+    public void setDate(LocalDate date){
+        this.date = date;
+    }
+
+    public void setExtra1(int extra1){
+        this.extra1 = extra1;
+    }
+
+    public void setExtra2(int extra2){
+        this.extra2 = extra2;
     }
 }
 
