@@ -1,26 +1,44 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
-      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout}">
 <head>
     <meta charset="UTF-8">
-    <link th:href="@{/resources/css/style.css}" rel="stylesheet" href="../static/resources/css/style.css" type="text/css"/>
-    <link th:href="@{/resources/css/navigation.css}" rel="stylesheet" href="../static/resources/css/navigation.css" type="text/css"/>
+
 </head>
 <body>
     <div th:replace="navigation :: navigation"></div>
 
-    <div class="image">
-        <img th:src="@{${picture}}"/>
-    </div>
+    <section layout:fragment="content">
+        <div class="image">
+            <img th:src="@{${picture}}"/>
+        </div>
 
-    <h1 class="info-3" align="left" th:text="${headline}">Überschrift</h1>
-
-
-
-
-    <article class="info-2" th:text="${greeting}">Hello!</article>
+        <h1 class="info-3" align="left" th:text="${headline}">Überschrift</h1>
 
 
+
+
+
+        <div class="ui four column grid">
+            <div class="ui cards">
+                <div class="ui card" th:each="option : ${catalog}">
+                    <div th:text="${option.name}"> test hi</div>
+                    <div>
+                        <a class="header" th:href="@{/option/{id}(id=${option.id})}" th:text="${option.name}">Käseplatte</a>
+                    </div>
+
+
+
+                    <div class="content">
+                        <div class="description" th:text="${{option.price}}">9.99 €</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </section>
 
 </body>
 </html>
