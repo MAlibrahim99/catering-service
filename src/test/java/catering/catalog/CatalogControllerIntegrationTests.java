@@ -14,6 +14,14 @@ import org.springframework.test.web.servlet.MockMvc;
 @SpringBootTest
 @AutoConfigureMockMvc
 class CatalogControllerIntegrationTests {
+	@Autowired
+	MockMvc mvc;
 
+	@Test
+	void showsHeadline() throws Exception {
+		mvc.perform(get("/eventcatering")) //
+				.andExpect(status().isOk())
+				.andExpect(content().string(containsString("Eventcatering")));
+	}
 
 }

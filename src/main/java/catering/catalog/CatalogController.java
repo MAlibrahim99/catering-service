@@ -1,7 +1,5 @@
 package catering.catalog;
 
-import catering.catalog.OptionType;
-
 import static org.salespointframework.core.Currencies.EURO;
 
 import com.mysema.commons.lang.Assert;
@@ -13,10 +11,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-
-import org.salespointframework.inventory.InventoryItem;
-import org.salespointframework.inventory.UniqueInventory;
-import org.salespointframework.inventory.UniqueInventoryItem;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -57,9 +51,10 @@ public class CatalogController {
 	public String party(Model model) {
 		String picture = "/resources/img/party-detail.jpg";
 		model.addAttribute("picture", picture);
-
 		String headline = "Partyservice";
 		model.addAttribute("headline", headline);
+
+		model.addAttribute("catalog", catalog.findByCategory("partyservice"));
 		return "catalog";
 	}
 	@GetMapping("/rentacook")
@@ -68,6 +63,8 @@ public class CatalogController {
 		model.addAttribute("picture", picture);
 		String headline = "Rent-A-Cook";
 		model.addAttribute("headline", headline);
+
+		model.addAttribute("catalog", catalog.findByCategory("rentacook"));
 		return "catalog";
 	}
 	@GetMapping("/mobilebreakfast")
@@ -76,6 +73,8 @@ public class CatalogController {
 		model.addAttribute("picture", picture);
 		String headline = "Mobile Breakfast";
 		model.addAttribute("headline", headline);
+
+		model.addAttribute("catalog", catalog.findByCategory("mobilebreakfast"));
 		return "catalog";
 	}
 
