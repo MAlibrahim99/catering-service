@@ -4,6 +4,7 @@ import org.salespointframework.order.*;
 import org.springframework.validation.Errors;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Optional;
 
 import org.javamoney.moneta.Money;
@@ -53,21 +54,38 @@ private final OrderManagement<Order> orderManagement;
 	
 	@ModelAttribute("cart")
 	Cart initializeCart(){
-		Cart cart = new Cart();
+		/*Cart cart = new Cart();
 		for (ware ware1 : cCatalog.findByName("Eventcatering")){
 		cart.addOrUpdateItem(ware1, 1);
 		}
-		return /*new Cart()*/ cart;
+		return /*new Cart() cart;*/
+		return new Cart();
 	}
 
 	@PostMapping("/cartadd1")
-	String addToCart1(@RequestParam("pid") ware ware, @RequestParam("number") int number, @ModelAttribute Cart cart){
+	String addToCart1(@RequestParam("pid") ware ware, @RequestParam("number") int number, @ModelAttribute Cart cart, @ModelAttribute ("order") order ord1){
+		cart.clear();
+		int guestcount = number / 10;
+		if (guestcount == 0){
+			guestcount = 1;
+		}
+		int chefcount = guestcount * 4;
+        int waitercount = guestcount * 5;
+		System.out.println(ord1.toString());
 		cart.addOrUpdateItem(ware, Quantity.of(number));
 		return "redirect:/orderreview";
 	}
 
 	@PostMapping("/cartadd2")
-	String addToCart2(@RequestParam("pid") ware ware, @RequestParam("number") int number, @ModelAttribute Cart cart){
+	String addToCart2(@RequestParam("pid") ware ware, @RequestParam("number") int number, @ModelAttribute Cart cart, @ModelAttribute ("order") order ord2){
+		cart.clear();
+		int guestcount = number / 10;
+		if (guestcount == 0){
+			guestcount = 1;
+		}
+		int chefcount = guestcount * 3;
+        int waitercount = guestcount * 4;
+		System.out.println(ord2.toString());
 		cart.addOrUpdateItem(ware, Quantity.of(number));
 		return "redirect:/orderreview";
 	}
@@ -81,8 +99,8 @@ private final OrderManagement<Order> orderManagement;
 		if (guestcount == 0){
 			guestcount = 1;
 		}
-		int chefcount = guestcount * 3;
-        int waitercount = guestcount *3;
+		int chefcount = guestcount * 2;
+        int waitercount = guestcount * 2;
 		System.out.println(ord3.toString());
 		
 		/*if (chefcount <= chefs && waitercount <= waiter){               //Funktion aus Inventar für Personal benötigt
@@ -91,7 +109,7 @@ private final OrderManagement<Order> orderManagement;
 		}
 		else{
 			System.out.println("Bestellung kann nicht aufgegeben werden");
-			return "redirect:/orderform3";
+			return "redirect:/rentacookform";
 
 		*/
 		cart.addOrUpdateItem(ware, Quantity.of(number));
@@ -101,7 +119,15 @@ private final OrderManagement<Order> orderManagement;
 	}
 
 	@PostMapping("/cartadd4")
-	String addToCart4(@RequestParam("pid") ware ware, @RequestParam("number") int number, @ModelAttribute Cart cart){
+	String addToCart4(@RequestParam("pid") ware ware, @RequestParam("number") int number, @ModelAttribute Cart cart, @ModelAttribute ("order") order ord4){
+		cart.clear();
+		int guestcount = number / 3;
+		if (guestcount == 0){
+			guestcount = 1;
+		}
+		int chefcount = 1;
+        int waitercount = guestcount;
+		System.out.println(ord4.toString());
 		cart.addOrUpdateItem(ware, Quantity.of(number));
 		return "redirect:/orderreview";
 	}
@@ -111,27 +137,41 @@ private final OrderManagement<Order> orderManagement;
 		return "orderreview";
 	}
 
-	@GetMapping("/orderform1")
-	String orderform1(){
-		return "orderform1";
+	@GetMapping("/eventcateringform")
+	String eventcateringform(Model model, order order1){
+		model.addAttribute("catalog", cCatalog.findByType(ServiceType.EVENTCATERING));
+		model.addAttribute("order", order1);
+		return "eventcateringform";
 	}
 
-	@GetMapping("/orderform2")
-	String orderform2(){
-		return "orderform2";
+	@GetMapping("/partyserviceform")
+	String partyserviceform(Model model, order order2){
+		model.addAttribute("catalog", cCatalog.findByType(ServiceType.PARTYSERVICE));
+		model.addAttribute("order", order2);
+		return "partyserviceform";
 	}
 
-	@GetMapping("/orderform3")
-	String orderform3(Model model, order order3){
-		model.addAttribute("catalog", cCatalog);
+	@GetMapping("/rentacookform")
+	String rentacookform(Model model, order order3){
+		//ArrayList<ware> list1 = new ArrayList<>();
+		/*for(ware w : cCatalog.findAll()){
+			if(w.getName().contains("Rent a cook")){
+				list1.add(w);
+			}
+		}*/
+		model.addAttribute("catalog", cCatalog.findByType(ServiceType.RENTACOOK));
 		model.addAttribute("order", order3);
+		//model.addAttribute("catalog", list1);
+		//model.addAttribute("catalog", cCatalog);
 		
-		return "orderform3";
+		return "rentacookform";
 	}
 
-	@GetMapping("/orderform4")
-	String orderform4(){
-		return "orderform4";
+	@GetMapping("/mobilebreakfastform")
+	String mobilebreakfastform(Model model, order order4){
+		model.addAttribute("catalog", cCatalog.findByType(ServiceType.MOBILEBREAKFAST));
+		model.addAttribute("order", order4);
+		return "mobilebreakfastform";
 	}
 
 	@PostMapping("/checkout")
@@ -150,14 +190,32 @@ private final OrderManagement<Order> orderManagement;
 			cart.clear();
 
 			return "redirect:/";
-		}).orElse("redirect:/cart");
+		}).orElse("redirect:/");
 
 	}
 
 	@PostMapping("/clearcart")
 	String clear(@ModelAttribute Cart cart){
+		for (CartItem ci : cart){
+			if (ci.getProductName().contains("Rent a cook")){
+				cart.clear();
+				return "redirect:/rentacookform";
+			}
+			else if (ci.getProductName().contains("Eventcatering")){
+				cart.clear();
+				return "redirect:/eventcateringform";
+			}
+			else if (ci.getProductName().contains("PartyService")){
+				cart.clear();
+				return "redirect:/partyserviceform";
+			}
+			else if (ci.getProductName().contains("Mobilebreakfast")){
+				cart.clear();
+				return "redirect:/mobilebreakfastform";
+			}
+		}
 		cart.clear();
-	return "orderform";
+		return "redirect:/";
 	}
 
 	@GetMapping("/test")

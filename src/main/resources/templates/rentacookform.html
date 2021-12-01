@@ -7,7 +7,8 @@
     <body>
         <section layout:fragment="content">
         	<h2 class="underlined-text">RentACook Bestellformular</h2>
-            <div class="ui card" th:each="ware : ${catalog.findAll()}">
+            <!--<div class="ui card" th:each="ware : ${catalog.findbyType(ServiceType.RENTACOOK)}">-->
+                <div class="ui card" th:each="ware : ${catalog}">
                 <div>
                 <h3 class="card-title" th:href="@{/ware/{id}(id=${ware.id})}" th:text="${ware.name}">RentACook</h3>
                 <hr>
