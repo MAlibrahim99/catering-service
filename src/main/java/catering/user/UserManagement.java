@@ -56,7 +56,7 @@ public User updateUser(ProfileForm data, User user) {
 		userAccount.setLastname(data.getLastName());
 		userAccount.setEmail(data.getEmail());
 		user.setAddress(data.getAddress());
-		return users.save(new User(userAccount, data.getAddress()));
+		return users.save(user);
 	}
 	
 	
