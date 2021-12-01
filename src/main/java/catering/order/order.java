@@ -28,6 +28,7 @@ class order {
     
     private int extra1;
     private int extra2;
+    private String time;
     
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate date;
@@ -49,11 +50,12 @@ class order {
 
     
 
-    public order(int extra1, int extra2, LocalDate date, String location){
+    public order(int extra1, int extra2, LocalDate date, String time, String location){
         
         this.extra1 = extra1;
         this.extra2 = extra2;
         this.date = date;
+        this.time = time;
         this.location = location;
     }
     
@@ -183,12 +185,17 @@ class order {
         return date;
     }
 
+
+    public String getTime(){
+        return time;
+    }
+
     public String getLocation(){
         return location;
     }
 
     public String toString(){
-        return extra1 + " " + extra2 + " " + date + " " + location;
+        return extra1 + " " + extra2 + " " + date + " " + time + " " + location;
     }
 
     public void setLocation(String location) {
@@ -197,6 +204,10 @@ class order {
 
     public void setDate(LocalDate date){
         this.date = date;
+    }
+
+    public void setTime(String time){
+        this.time = time;
     }
 
     public void setExtra1(int extra1){

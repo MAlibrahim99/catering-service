@@ -16,18 +16,25 @@
                 <hr>
                 <h4 class="card-text" th:text="${ware.price}">Grundpreis: 50,00€</h4>
                 <hr>
-                <form class="ui form" method="post" th:action="@{/cartadd4}">
+                <form class="ui form" method="post" th:action="@{/cartadd4}" th:object="${order}">
                     <input type="hidden" name="pid" value="0" th:value="${ware.id}"/>   <!--ware.id = ServiceType-->
                     <label for="number">Anzahl der Gäste:</label><br/>
                     <input type="number" name="number" min="1" max="100" step="1" value="0" th:value="1"><br/><br/>
                     <label for="extra1">Anzahl der Extra1:</label><br/>
-                    <input id="extra1" type="number" name="extra2" required min="0" max="10" step="1" value="0"/><br/><br/>
-                    <label for="extra2">Anzahl der Extra2:</label><br/>
-                    <input id="extra2" type="number" name="extra2" required min="0" max="10" step="1" value="0"/><br/><br/>
-                    <label for="date">Datum:</label><br/>
-                    <input id="date" type="date" name="date"/><br/><br/>
-                    <label for="location">Veranstaltungsort</label><br/>
-                    <input type="text" name="location"><br/><br/>
+                        <input id="extra1" type="number" name="extra2" min="0" max="10" step="1" value="0" required th:field="*{extra1}"/><br/><br/>
+                        <label for="extra2">Anzahl der Extra2:</label><br/>
+                        <input id="extra2" type="number" name="extra2" min="0" max="10" step="1" value="0" required th:field="*{extra2}"/><br/><br/>
+                        <label for="date">Datum:</label><br/>
+                        <input id="date" type="date" name="date" required th:field="*{date}"/><br/><br/>
+                        <p>Zeitraum:</p>
+                        <input type="radio" id="frühs" name="time" value="Frühs" required th:field="*{time}">
+                        <label for="Frühs">Frühs</label><br/>
+                        <input type="radio" id="mittag" name="time" value="Mittag" required th:field="*{time}">>
+                        <label for="Mittag">Mittag</label><br/>
+                        <input type="radio" id="abends" name="time" value="Abends" required th:field="*{time}">>
+                        <label for="Abends">Abends</label><br/><br/>
+                        <label for="location">Veranstaltungsort</label><br/>
+                        <input type="text" name="location" required th:field="*{location}"/><br/><br/>
                     <button class="btn btn-outline-primary" type="submit" th:text="#{shop.addToBasket}"> Kaufen</button>
                 </form>
                 </div>
