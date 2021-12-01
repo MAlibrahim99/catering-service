@@ -33,7 +33,8 @@
 					<!--Stornierenform-->
 					<form th:if="${order.orderStatus.toString().equals('OPEN') || order.orderStatus.toString().equals('PAID')}"
 							th:action="@{/cancel-order}" method="get" th:object="${orderForm}"
-							style="display: inline;">
+							style="display: inline;"
+							onsubmit="return confirm('Möchen Sie Diese Bestellung stornieren?')">
 						<input type="hidden" th:value="${orderForm}">
 						<input type="hidden" name="orderId" th:value="${order.id}">
 						<button type="submit" class="ui red basic button">Bestellung stornieren</button>
