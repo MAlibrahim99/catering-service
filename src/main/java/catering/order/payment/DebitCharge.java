@@ -1,4 +1,4 @@
-package catering.order;
+package catering.order.payment;
 
 import org.salespointframework.payment.PaymentMethod;
 

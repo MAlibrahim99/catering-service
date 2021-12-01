@@ -1,5 +1,6 @@
 package catering.order;
 
+import catering.order.payment.DebitCharge;
 import catering.user.UserManagement;
 import org.salespointframework.core.DataInitializer;
 import org.salespointframework.order.OrderManagement;
