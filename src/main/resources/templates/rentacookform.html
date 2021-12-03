@@ -20,6 +20,10 @@
                     <input type="hidden" name="pid" value="0" th:value="${ware.id}"/>   <!--ware.id = ServiceType-->
                     <label for="number">Anzahl der Gäste:</label><br/>
                     <input type="number" name="number" min="1" max="100" step="1" value="0" th:value="1"><br/><br/>
+                    <div class="ui card" th:each="option : ${catalog}">
+                        <label for="option" th:text="${option.name}">Option</label> <br/>
+                        <input name="option" type="number" min="0" max="10" step="1" value="0"><br/><br/>
+                    </div>
                         <label for="extra1">Anzahl der Extra1:</label><br/>
                         <input id="extra1" type="number" name="extra2" min="0" max="10" step="1" value="0" required th:field="*{extra1}"/><br/><br/>
                         <label for="extra2">Anzahl der Extra2:</label><br/>

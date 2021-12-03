@@ -3,6 +3,7 @@ import org.salespointframework.inventory.QInventoryItem;
 import org.salespointframework.order.*;
 import org.springframework.validation.Errors;
 
+import java.lang.StackWalker.Option;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Optional;
@@ -27,6 +28,7 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 import static org.salespointframework.core.Currencies.*;
 
 import catering.catalog.CateringCatalog;
+import catering.catalog.OptionCatalog;
 import catering.catalog.ware;
 import catering.catalog.ware.ServiceType;
 
@@ -40,13 +42,15 @@ public class OrderController {
 private final OrderManagement<Order> orderManagement;
 
 	private final CateringCatalog cCatalog;
+	private final OptionCatalog catalog;
 
-	OrderController(OrderManagement<Order> orderManagement, CateringCatalog cCatalog) {
+	OrderController(OrderManagement<Order> orderManagement, CateringCatalog cCatalog, OptionCatalog catalog) {
 
 
 		Assert.notNull(orderManagement, "OrderManagement must not be null!");
 		this.orderManagement = orderManagement;
 		this.cCatalog = cCatalog;
+		this.catalog = catalog;
 	}
 
 	
@@ -153,10 +157,10 @@ private final OrderManagement<Order> orderManagement;
 
 	@GetMapping("/rentacookform")
 	String rentacookform(Model model, order order3){
-		//ArrayList<ware> list1 = new ArrayList<>();
-		/*for(ware w : cCatalog.findAll()){
-			if(w.getName().contains("Rent a cook")){
-				list1.add(w);
+		/*ArrayList<Option> list1 = new ArrayList<>();
+		for(Option o : catalog.findAll()){
+			if(o.getName().contains("Rent a cook")){
+				list1.add(o);
 			}
 		}*/
 		model.addAttribute("catalog", cCatalog.findByType(ServiceType.RENTACOOK));
@@ -170,6 +174,7 @@ private final OrderManagement<Order> orderManagement;
 	@GetMapping("/mobilebreakfastform")
 	String mobilebreakfastform(Model model, order order4){
 		model.addAttribute("catalog", cCatalog.findByType(ServiceType.MOBILEBREAKFAST));
+		model.addAttribute("option", catalog.findByCategory("mobilebreakfast"));
 		model.addAttribute("order", order4);
 		return "mobilebreakfastform";
 	}
