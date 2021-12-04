@@ -24,6 +24,8 @@
 	<properties>
 		<java.version>11</java.version>
 		<salespoint.version>7.4.0</salespoint.version>
+
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
 
 	<dependencies>
