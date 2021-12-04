@@ -45,12 +45,12 @@ public class CatalogInitializer implements DataInitializer {
 
 		catalog.save(new Option("Frühstück", Money.of(10, EURO), OptionType.FOOD, new String[] {"mobilebreakfast"}));
 		catalog.save(new Option("Kaffee", Money.of(15, EURO), OptionType.FOOD, new String[] {"mobilebreakfast"}));
-		catalog.save(new Option("Müsli", Money.of(5, EURO), OptionType.FOOD, new String[] {"mobilebreakfast"}));
-		catalog.save(new Option("Blumen", Money.of(5, EURO), OptionType.GOODS, new String[] {"eventcatering"}));
-		catalog.save(new Option("Servietten", Money.of(0.2, EURO), OptionType.GOODS, new String[] {"eventcatering", "partyservice", "mobilebreakfast"}));
+		catalog.save(new Option("Müsli verschiedene Sorten", Money.of(15, EURO), OptionType.FOOD, new String[] {"mobilebreakfast"}));
+		catalog.save(new Option("Blumen", Money.of(5, EURO), OptionType.GOODS, new String[] {"eventcatering", "rentacook"}));
+		catalog.save(new Option("Servietten", Money.of(0.2, EURO), OptionType.GOODS, new String[] {"eventcatering", "partyservice", "mobilebreakfast", "rentacook"}));
 
-		catalog.save(new Option("Dekoration", Money.of(3, EURO), OptionType.EQUIP, new String[] {"eventcatering"}));
-		catalog.save(new Option("Geschirr", Money.of(5, EURO), OptionType.EQUIP, new String[] {"eventcatering", "partyservice", "mobilebreakfast"}));
-		catalog.save(new Option("Tischtücher", Money.of(30, EURO), OptionType.EQUIP, new String[] {"eventcatering"}));
+		catalog.save(new Option("Dekoration", Money.of(3, EURO), OptionType.EQUIP, new String[] {"eventcatering", "rentacook"}));
+		catalog.save(new Option("Geschirr", Money.of(5, EURO), OptionType.EQUIP, new String[] {"eventcatering", "partyservice", "mobilebreakfast", "rentacook"}));
+		catalog.save(new Option("Tischtücher", Money.of(30, EURO), OptionType.EQUIP, new String[] {"eventcatering", "rentacook"}));
 	}
 }
