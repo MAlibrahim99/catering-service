@@ -17,4 +17,10 @@ class CatalogControllerIntegrationTests {
 	@Autowired
 	MockMvc mvc;
 
+	@Test
+	void showsIndexPage() throws Exception {
+		mvc.perform(get("/")) //
+				.andExpect(status().isOk())
+				.andExpect(content().string(containsString("Herrzlich Wilkommen")));
+	}
 }
