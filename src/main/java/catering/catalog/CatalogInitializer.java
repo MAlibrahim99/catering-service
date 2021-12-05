@@ -29,18 +29,6 @@ public class CatalogInitializer implements DataInitializer {
 		}
 
 		// Preis pro 1 Person
-		catalog.save(new Option("Blumen", Money.of(9, EURO), OptionType.GOODS, new String[] {"eventcatering"}));
-		// Preis pro 1 Person
-		catalog.save(new Option("Servietten", Money.of(0.75, EURO), OptionType.GOODS, new String[] {"eventcatering", "partyservice", "mobilebreakfast"}));
-
-		// Preis pro 1 Person
-		catalog.save(new Option("Dekoration", Money.of(4, EURO), OptionType.EQUIP, new String[] {"eventcatering"}));
-		// Preis pro 1 Person
-		catalog.save(new Option("Geschirr", Money.of(8, EURO), OptionType.EQUIP, new String[] {"eventcatering", "partyservice", "mobilebreakfast"}));
-		// Preis pro 6 Personen
-		catalog.save(new Option("Tischtücher", Money.of(25, EURO), OptionType.EQUIP, new String[] {"eventcatering"}));
-
-		// Preis pro 1 Person
 		catalog.save(new Option("Buffet", Money.of(13, EURO), OptionType.FOOD, new String[] {"eventcatering"}));
 		// Preis pro 1 Person
 		catalog.save(new Option("Galadinner", Money.of(25, EURO), OptionType.FOOD, new String[] {"eventcatering"}));
@@ -70,5 +58,17 @@ public class CatalogInitializer implements DataInitializer {
 		catalog.save(new Option("Alkoholfreie Getränke", Money.of(9, EURO), OptionType.FOOD, new String[] {"eventcatering", "partyservice", "mobilebreakfast"}));
 		// Preis pro 1 Person
 		catalog.save(new Option("Alkoholische Getränke", Money.of(14, EURO), OptionType.FOOD, new String[] {"eventcatering", "partyservice"}));
+
+		// Preis pro 1 Person
+		catalog.save(new Option("Blumen", Money.of(9, EURO), OptionType.GOODS, new String[] {"eventcatering", "rentacook"}));
+		// Preis pro 1 Person
+		catalog.save(new Option("Servietten", Money.of(0.75, EURO), OptionType.GOODS, new String[] {"eventcatering", "partyservice", "mobilebreakfast", "rentacook"}));
+
+		// Preis pro 1 Person
+		catalog.save(new Option("Dekoration", Money.of(4, EURO), OptionType.EQUIP, new String[] {"eventcatering", "rentacook"}));
+		// Preis pro 1 Person
+		catalog.save(new Option("Geschirr", Money.of(8, EURO), OptionType.EQUIP, new String[] {"eventcatering", "partyservice", "mobilebreakfast", "rentacook"}));
+		// Preis pro 6 Personen
+		catalog.save(new Option("Tischtücher", Money.of(25, EURO), OptionType.EQUIP, new String[] {"eventcatering", "rentacook"}));
 	}
 }
