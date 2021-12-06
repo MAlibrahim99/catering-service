@@ -9,16 +9,18 @@ import org.javamoney.moneta.Money;
 @Entity
 public class Option extends Product {
 
+	private int personCount;
 	private OptionType type;
 
 	@SuppressWarnings({"unused", "deprecation"})
 	private Option() {
 	}
 
-	public Option(String name, Money price, OptionType type, String[] services) {
+	public Option(String name, Money price, int personCount, OptionType type, String[] services) {
 
 		super(name, price);
 
+		this.personCount = personCount;
 		this.type = type;
 
 		for (String s : services) {
@@ -28,5 +30,9 @@ public class Option extends Product {
 
 	public OptionType getType() {
 		return type;
+	}
+
+	public int getPersonCount() {
+		return personCount;
 	}
 }
