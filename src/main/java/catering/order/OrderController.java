@@ -3,7 +3,6 @@ import org.salespointframework.inventory.QInventoryItem;
 import org.salespointframework.order.*;
 import org.springframework.validation.Errors;
 
-import java.lang.StackWalker.Option;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -31,7 +30,7 @@ import static org.salespointframework.core.Currencies.*;
 
 import catering.catalog.CateringCatalog;
 import catering.catalog.OptionCatalog;
-import catering.catalog.Options;
+import catering.catalog.Option;
 import catering.catalog.Ware;
 import catering.catalog.Ware.ServiceType;
 import catering.catalog.services.Eventcatering;
@@ -83,25 +82,25 @@ private final OrderManagement<Order> orderManagement;
         int waitercount = guestcount * 5;
 		System.out.println(ord1.toString());
 		cart.addOrUpdateItem(ware, Quantity.of(number));
-		for(Options o : catalog.findByName("Servietten")){
+		for(Option o : catalog.findByName("Servietten")){
 			cart.addOrUpdateItem(o, eventcatering.getServiette());
 		}
-		for(Options o : catalog.findByName("Geschirr")){
+		for(Option o : catalog.findByName("Geschirr")){
 			cart.addOrUpdateItem(o, eventcatering.getDishes());
 		}
-		for(Options o : catalog.findByName("Blumen")){
+		for(Option o : catalog.findByName("Blumen")){
 			cart.addOrUpdateItem(o, eventcatering.getFlowers());
 		}
-		for(Options o : catalog.findByName("Deokration")){
+		for(Option o : catalog.findByName("Deokration")){
 			cart.addOrUpdateItem(o, eventcatering.getDecoration());
 		}
-		for(Options o : catalog.findByName("Tischtücher")){
+		for(Option o : catalog.findByName("Tischtücher")){
 			cart.addOrUpdateItem(o, eventcatering.getTablecloth());
 		}
-		for(Options o : catalog.findByName("Buffet")){
+		for(Option o : catalog.findByName("Buffet")){
 			cart.addOrUpdateItem(o, eventcatering.getBuffet());
 		}
-		for(Options o : catalog.findByName("Galadinner")){
+		for(Option o : catalog.findByName("Galadinner")){
 			cart.addOrUpdateItem(o, eventcatering.getGaladinner());
 		}
 		return "redirect:/orderreview";
@@ -119,37 +118,37 @@ private final OrderManagement<Order> orderManagement;
 		System.out.println(ord2.toString());
 		cart.addOrUpdateItem(ware, Quantity.of(number));
 
-		for(Options o : catalog.findByName("Servietten")){
+		for(Option o : catalog.findByName("Servietten")){
 			cart.addOrUpdateItem(o, partyservice.getServiette());
 		}
-		for(Options o : catalog.findByName("Geschirr")){
+		for(Option o : catalog.findByName("Geschirr")){
 			cart.addOrUpdateItem(o, partyservice.getDishes());
 		}
-		for(Options o : catalog.findByName("Schinkenplatte")){
+		for(Option o : catalog.findByName("Schinkenplatte")){
 			cart.addOrUpdateItem(o, partyservice.getHamplate());
 		}
-		for(Options o : catalog.findByName("Käseplatte")){
+		for(Option o : catalog.findByName("Käseplatte")){
 			cart.addOrUpdateItem(o, partyservice.getCheeseplate());
 		}
-		for(Options o : catalog.findByName("Eierplatte")){
+		for(Option o : catalog.findByName("Eierplatte")){
 			cart.addOrUpdateItem(o, partyservice.getEggplate());
 		}
-		for(Options o : catalog.findByName("Fischlatte")){
+		for(Option o : catalog.findByName("Fischlatte")){
 			cart.addOrUpdateItem(o, partyservice.getFishplate());
 		}
-		for(Options o : catalog.findByName("Obstplatte")){
+		for(Option o : catalog.findByName("Obstplatte")){
 			cart.addOrUpdateItem(o, partyservice.getFruitplate());
 		}
-		for(Options o : catalog.findByName("Salatplatte")){
+		for(Option o : catalog.findByName("Salatplatte")){
 			cart.addOrUpdateItem(o, partyservice.getSaladplate());
 		}
-		for(Options o : catalog.findByName("Sushi")){
+		for(Option o : catalog.findByName("Sushi")){
 			cart.addOrUpdateItem(o, partyservice.getSushi());
 		}
-		for(Options o : catalog.findByName("Pizza")){
+		for(Option o : catalog.findByName("Pizza")){
 			cart.addOrUpdateItem(o, partyservice.getPizza());
 		}
-		for(Options o : catalog.findByName("Meeresfrüchte")){
+		for(Option o : catalog.findByName("Meeresfrüchte")){
 			cart.addOrUpdateItem(o, partyservice.getSeafood());
 		}
 		return "redirect:/orderreview";
@@ -194,13 +193,13 @@ private final OrderManagement<Order> orderManagement;
         int waitercount = guestcount;
 
 		System.out.println(mobilebreakfast.getDishes());
-		for(Options o : catalog.findByName("Servietten")){
+		for(Option o : catalog.findByName("Servietten")){
 			cart.addOrUpdateItem(o, mobilebreakfast.getServiette());
 		}
-		for(Options o : catalog.findByName("Geschirr")){
+		for(Option o : catalog.findByName("Geschirr")){
 			cart.addOrUpdateItem(o, mobilebreakfast.getDishes());
 		}
-		for(Options o : catalog.findByName("Frühstück")){
+		for(Option o : catalog.findByName("Frühstück")){
 			cart.addOrUpdateItem(o, mobilebreakfast.getBreakfast());
 		}
 		
