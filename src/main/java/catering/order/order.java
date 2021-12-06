@@ -26,8 +26,6 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 
 class order {
     
-    private int extra1;
-    private int extra2;
     private String time;
     
     @DateTimeFormat(pattern = "yyyy-MM-dd")
@@ -50,10 +48,9 @@ class order {
 
     
 
-    public order(int extra1, int extra2, LocalDate date, String time, String location){
+    public order(LocalDate date, String time, String location){
         
-        this.extra1 = extra1;
-        this.extra2 = extra2;
+
         this.date = date;
         this.time = time;
         this.location = location;
@@ -172,14 +169,6 @@ class order {
 
 
 
-    public int getExtra1(){
-        return extra1;
-    }
-
-    public int getExtra2(){
-        return extra2;
-    }
-
 
     public LocalDate getDate(){
         return date;
@@ -195,7 +184,7 @@ class order {
     }
 
     public String toString(){
-        return extra1 + " " + extra2 + " " + date + " " + time + " " + location;
+        return date + " " + time + " " + location;
     }
 
     public void setLocation(String location) {
@@ -210,12 +199,6 @@ class order {
         this.time = time;
     }
 
-    public void setExtra1(int extra1){
-        this.extra1 = extra1;
-    }
 
-    public void setExtra2(int extra2){
-        this.extra2 = extra2;
-    }
 }
 

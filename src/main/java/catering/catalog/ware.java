@@ -10,7 +10,7 @@ import org.javamoney.moneta.Money;
 import org.salespointframework.catalog.Product;
 
 @Entity
-public class ware extends Product{
+public class Ware extends Product{
 
     public static enum ServiceType {
         EVENTCATERING, PARTYSERVICE, RENTACOOK, MOBILEBREAKFAST;
@@ -20,9 +20,10 @@ public class ware extends Product{
     private String description;
 
     @SuppressWarnings({ "unused", "deprecation" })
-	private ware() {}
+	private Ware() {}
 
-    public ware(String name, Money price, String description, ServiceType type){
+
+    public Ware(String name, Money price, String description, ServiceType type){
 
         super(name, price);
         this.description = description;

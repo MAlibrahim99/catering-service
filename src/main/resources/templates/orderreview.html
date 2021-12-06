@@ -60,15 +60,6 @@
                         <!--preis hier -->
                         <td th:text="${item.price}">11111</td>
                             <!-- remove item  hier-->
-                        <td>
-                            <div>
-                                <form class="ui form" method="post" th:action="@{/clearcart}">
-                                    <input type="hidden" name="id" value="0" th:value="${item.id}"/>
-                                    <button class="btn btn-secondary" type="submit" th:text="#{cart.removeItem}">  <!--clear cart-->
-                                    </button>
-                                </form>
-                            </div>
-                        </td>
                     </tr>
                 </tbody>
                 <tfoot>
@@ -76,6 +67,10 @@
                     </tr>
                 </tfoot>
             </table>
+            <form class="ui form" method="post" th:action="@{/clearcart}">  
+                <button class="btn btn-secondary" type="submit" th:text="#{cart.removeItem}">  <!--clear cart-->
+                </button>
+            </form>
         </div>
         
         <!--hier buy button mit summe-->

@@ -6,6 +6,8 @@ import org.springframework.validation.Errors;
 import java.lang.StackWalker.Option;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Optional;
 
 import org.javamoney.moneta.Money;
@@ -29,8 +31,12 @@ import static org.salespointframework.core.Currencies.*;
 
 import catering.catalog.CateringCatalog;
 import catering.catalog.OptionCatalog;
-import catering.catalog.ware;
-import catering.catalog.ware.ServiceType;
+import catering.catalog.Options;
+import catering.catalog.Ware;
+import catering.catalog.Ware.ServiceType;
+import catering.catalog.services.Eventcatering;
+import catering.catalog.services.Mobilebreakfast;
+import catering.catalog.services.Partyservice;
 
 
 @Controller
@@ -67,7 +73,7 @@ private final OrderManagement<Order> orderManagement;
 	}
 
 	@PostMapping("/cartadd1")
-	String addToCart1(@RequestParam("pid") ware ware, @RequestParam("number") int number, @ModelAttribute Cart cart, @ModelAttribute ("order") order ord1){
+	String addToCart1(Eventcatering eventcatering, @RequestParam("pid") Ware ware, @RequestParam("number") int number, @ModelAttribute Cart cart, @ModelAttribute ("order") order ord1){
 		cart.clear();
 		int guestcount = number / 10;
 		if (guestcount == 0){
@@ -77,11 +83,32 @@ private final OrderManagement<Order> orderManagement;
         int waitercount = guestcount * 5;
 		System.out.println(ord1.toString());
 		cart.addOrUpdateItem(ware, Quantity.of(number));
+		for(Options o : catalog.findByName("Servietten")){
+			cart.addOrUpdateItem(o, eventcatering.getServiette());
+		}
+		for(Options o : catalog.findByName("Geschirr")){
+			cart.addOrUpdateItem(o, eventcatering.getDishes());
+		}
+		for(Options o : catalog.findByName("Blumen")){
+			cart.addOrUpdateItem(o, eventcatering.getFlowers());
+		}
+		for(Options o : catalog.findByName("Deokration")){
+			cart.addOrUpdateItem(o, eventcatering.getDecoration());
+		}
+		for(Options o : catalog.findByName("Tischtücher")){
+			cart.addOrUpdateItem(o, eventcatering.getTablecloth());
+		}
+		for(Options o : catalog.findByName("Buffet")){
+			cart.addOrUpdateItem(o, eventcatering.getBuffet());
+		}
+		for(Options o : catalog.findByName("Galadinner")){
+			cart.addOrUpdateItem(o, eventcatering.getGaladinner());
+		}
 		return "redirect:/orderreview";
 	}
 
 	@PostMapping("/cartadd2")
-	String addToCart2(@RequestParam("pid") ware ware, @RequestParam("number") int number, @ModelAttribute Cart cart, @ModelAttribute ("order") order ord2){
+	String addToCart2(@RequestParam("pid") Ware ware, @RequestParam("number") int number, @ModelAttribute Cart cart, @ModelAttribute ("order") order ord2, Partyservice partyservice){
 		cart.clear();
 		int guestcount = number / 10;
 		if (guestcount == 0){
@@ -91,13 +118,47 @@ private final OrderManagement<Order> orderManagement;
         int waitercount = guestcount * 4;
 		System.out.println(ord2.toString());
 		cart.addOrUpdateItem(ware, Quantity.of(number));
+
+		for(Options o : catalog.findByName("Servietten")){
+			cart.addOrUpdateItem(o, partyservice.getServiette());
+		}
+		for(Options o : catalog.findByName("Geschirr")){
+			cart.addOrUpdateItem(o, partyservice.getDishes());
+		}
+		for(Options o : catalog.findByName("Schinkenplatte")){
+			cart.addOrUpdateItem(o, partyservice.getHamplate());
+		}
+		for(Options o : catalog.findByName("Käseplatte")){
+			cart.addOrUpdateItem(o, partyservice.getCheeseplate());
+		}
+		for(Options o : catalog.findByName("Eierplatte")){
+			cart.addOrUpdateItem(o, partyservice.getEggplate());
+		}
+		for(Options o : catalog.findByName("Fischlatte")){
+			cart.addOrUpdateItem(o, partyservice.getFishplate());
+		}
+		for(Options o : catalog.findByName("Obstplatte")){
+			cart.addOrUpdateItem(o, partyservice.getFruitplate());
+		}
+		for(Options o : catalog.findByName("Salatplatte")){
+			cart.addOrUpdateItem(o, partyservice.getSaladplate());
+		}
+		for(Options o : catalog.findByName("Sushi")){
+			cart.addOrUpdateItem(o, partyservice.getSushi());
+		}
+		for(Options o : catalog.findByName("Pizza")){
+			cart.addOrUpdateItem(o, partyservice.getPizza());
+		}
+		for(Options o : catalog.findByName("Meeresfrüchte")){
+			cart.addOrUpdateItem(o, partyservice.getSeafood());
+		}
 		return "redirect:/orderreview";
 	}
 
 
 	@PostMapping("/cartadd3")
 	//String addToCart3(Model model, @RequestParam("pid") ware ware, @RequestParam("number") int number, @ModelAttribute Cart cart , @RequestParam("date") LocalDate date){
-	String addToCart3(Model model, @RequestParam("pid") ware ware, @RequestParam("number") int number, @ModelAttribute Cart cart, @ModelAttribute ("order") order ord3){
+	String addToCart3(Model model, @RequestParam("pid") Ware ware, @RequestParam("number") int number, @ModelAttribute Cart cart, @ModelAttribute ("order") order ord3){
 		cart.clear();
 		int guestcount = number / 5;
 		if (guestcount == 0){
@@ -123,7 +184,7 @@ private final OrderManagement<Order> orderManagement;
 	}
 
 	@PostMapping("/cartadd4")
-	String addToCart4(@RequestParam("pid") ware ware, @RequestParam("number") int number, @ModelAttribute Cart cart, @ModelAttribute ("order") order ord4){
+	String addToCart4(@RequestParam("pid") Ware ware, @RequestParam("number") int number, @ModelAttribute Cart cart, @ModelAttribute ("order") order ord4, @ModelAttribute ("mobilebreakfast") Mobilebreakfast mobilebreakfast){
 		cart.clear();
 		int guestcount = number / 3;
 		if (guestcount == 0){
@@ -131,8 +192,31 @@ private final OrderManagement<Order> orderManagement;
 		}
 		int chefcount = 1;
         int waitercount = guestcount;
+
+		System.out.println(mobilebreakfast.getDishes());
+		for(Options o : catalog.findByName("Servietten")){
+			cart.addOrUpdateItem(o, mobilebreakfast.getServiette());
+		}
+		for(Options o : catalog.findByName("Geschirr")){
+			cart.addOrUpdateItem(o, mobilebreakfast.getDishes());
+		}
+		for(Options o : catalog.findByName("Frühstück")){
+			cart.addOrUpdateItem(o, mobilebreakfast.getBreakfast());
+		}
+		
+
+		/*HashMap<Options, Integer> mblist = new HashMap<>();
+		for(Options o : catalog.findAll()){
+			if(o.getName().contains("mobilebreakfast")){
+				mblist.put(o, value);
+			}*/
+		
+
+
 		System.out.println(ord4.toString());
+
 		cart.addOrUpdateItem(ware, Quantity.of(number));
+		//cart.addOrUpdateItem(option, Quantity.of(number2));
 		return "redirect:/orderreview";
 	}
 
@@ -142,15 +226,19 @@ private final OrderManagement<Order> orderManagement;
 	}
 
 	@GetMapping("/eventcateringform")
-	String eventcateringform(Model model, order order1){
+	String eventcateringform(Model model, order order1, Eventcatering eventcatering){
 		model.addAttribute("catalog", cCatalog.findByType(ServiceType.EVENTCATERING));
+		model.addAttribute("option", catalog.findByCategory("eventcatering"));
+		model.addAttribute("eventcatering", eventcatering);
 		model.addAttribute("order", order1);
 		return "eventcateringform";
 	}
 
 	@GetMapping("/partyserviceform")
-	String partyserviceform(Model model, order order2){
+	String partyserviceform(Model model, order order2, Partyservice partyservice){
 		model.addAttribute("catalog", cCatalog.findByType(ServiceType.PARTYSERVICE));
+		model.addAttribute("option", catalog.findByCategory("partyservice"));
+		model.addAttribute("partyservice", partyservice);
 		model.addAttribute("order", order2);
 		return "partyserviceform";
 	}
@@ -164,6 +252,7 @@ private final OrderManagement<Order> orderManagement;
 			}
 		}*/
 		model.addAttribute("catalog", cCatalog.findByType(ServiceType.RENTACOOK));
+		model.addAttribute("option", catalog.findByCategory("rent a cook"));
 		model.addAttribute("order", order3);
 		//model.addAttribute("catalog", list1);
 		//model.addAttribute("catalog", cCatalog);
@@ -172,9 +261,10 @@ private final OrderManagement<Order> orderManagement;
 	}
 
 	@GetMapping("/mobilebreakfastform")
-	String mobilebreakfastform(Model model, order order4){
+	String mobilebreakfastform(Model model, order order4, Mobilebreakfast mobilebreakfast){
 		model.addAttribute("catalog", cCatalog.findByType(ServiceType.MOBILEBREAKFAST));
 		model.addAttribute("option", catalog.findByCategory("mobilebreakfast"));
+		model.addAttribute("mobilebreakfast", mobilebreakfast);
 		model.addAttribute("order", order4);
 		return "mobilebreakfastform";
 	}
@@ -229,7 +319,11 @@ private final OrderManagement<Order> orderManagement;
 	}
 
 	@GetMapping("/orderform5")
-	String orderform5(){
+	String orderform5(Model model, order order4, Mobilebreakfast mobilebreakfast){
+		model.addAttribute("catalog", cCatalog.findByType(ServiceType.MOBILEBREAKFAST));
+		model.addAttribute("option", catalog.findByCategory("mobilebreakfast"));
+		model.addAttribute("mobilebreakfast", mobilebreakfast);
+		model.addAttribute("order", order4);
 		return "orderform5";
 	}
 

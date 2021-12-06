@@ -2,15 +2,15 @@ package catering.catalog;
 import org.salespointframework.catalog.Catalog;
 import org.springframework.data.domain.Sort;
 
-import catering.catalog.ware.ServiceType;
+import catering.catalog.Ware.ServiceType;
 
-public interface CateringCatalog extends Catalog<ware>{
+public interface CateringCatalog extends Catalog<Ware>{
 
     static final Sort DEFAULT_SORT = Sort.by("productIdentifier").descending();
 
-    Iterable<ware> findByType(ServiceType type, Sort sort);
+    Iterable<Ware> findByType(ServiceType type, Sort sort);
 
-    default Iterable<ware> findByType(ServiceType type){
+    default Iterable<Ware> findByType(ServiceType type){
         return findByType(type, DEFAULT_SORT);
     }
     
