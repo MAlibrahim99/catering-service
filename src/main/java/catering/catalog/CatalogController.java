@@ -76,7 +76,10 @@ public class CatalogController {
 		String headline = "Rent-A-Cook";
 		model.addAttribute("headline", headline);
 
-		String info = "Mieten sie Küchen- und Servicepersonal, welches bei Ihnen Zuhause, vor den Augen ihrer Gäste, verschiedene Köstlichkeiten zubereitet. Sie müssen sich dabei weder um das decken des Tisches kümmern, noch um den Abwasch und das Aufräumen. Das Saubermachen übernimmt das Personal für sie. Um die Lebensmittel müssen sich die Kunden dabei jedoch selbst kümmern.";
+		String info = "Mieten sie Küchen- und Servicepersonal, welches bei Ihnen Zuhause, vor den Augen ihrer Gäste, verschiedene " +
+				"Köstlichkeiten zubereitet. Sie müssen sich dabei weder um das decken des Tisches kümmern, noch um den Abwasch und " +
+				"das Aufräumen. Das Saubermachen übernimmt das Personal für sie. Um die Lebensmittel müssen sich die Kunden dabei " +
+				"jedoch selbst kümmern.";
 		model.addAttribute("info", info);
 
 		model.addAttribute("catalog", catalog.findByCategory("rentacook"));
@@ -86,28 +89,28 @@ public class CatalogController {
 		model.addAttribute("price", price);
 		return "catalog";
 	}
+
 	@GetMapping("/mobilebreakfast")
 	public String mobile(Model model) {
 		String picture = "/resources/img/mobile-detail.jpg";
 		model.addAttribute("picture", picture);
 		String headline = "Mobile Breakfast";
 		model.addAttribute("headline", headline);
-
 		model.addAttribute("catalog", catalog.findByCategory("mobilebreakfast"));
-
 		String order = "/mobilebreakfastform";
 		model.addAttribute("orderformular", order);
-
 		String price = "mobilebreakfast";
 		model.addAttribute("price", price);
 		return "catalog";
+
 	}
 
 
 	@PreAuthorize("hasRole('ADMIN')")
 	@GetMapping("/edit/{service}")
 	public String getPrices(@PathVariable String service, Model model) {
-		Assert.isTrue((service.equals("eventcatering") || service.equals("partyservice") || service.equals("rentacook") || service.equals("mobilebreakfast")), "Service must be valid");
+		Assert.isTrue((service.equals("eventcatering") || service.equals("partyservice") || service.equals("rentacook") ||
+				service.equals("mobilebreakfast")), "Service must be valid");
 
 		Streamable<Option> optionStreamable = catalog.findByCategory(service);
 
