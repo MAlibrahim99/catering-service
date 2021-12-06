@@ -38,37 +38,32 @@ public class CatalogController {
 
 	@GetMapping("/eventcatering")
 	public String event(Model model) {
-		String picture = "/resources/img/event-detail.jpg";
-		model.addAttribute("picture", picture);
+		String pic = "/resources/img/event-detail.jpg";
+		model.addAttribute("picture", pic);
 		String headline = "Eventcatering";
 		model.addAttribute("headline", headline);
-
-
 		model.addAttribute("catalog", catalog.findByCategory("eventcatering"));
-
 		String order = "/eventcateringform";
 		model.addAttribute("orderformular", order);
-
 		String price = "eventcatering";
 		model.addAttribute("price", price);
 		return "catalog";
 	}
+
 	@GetMapping("/partyservice")
 	public String party(Model model) {
-		String picture = "/resources/img/party-detail.jpg";
-		model.addAttribute("picture", picture);
+		String partypicture = "/resources/img/party-detail.jpg";
+		model.addAttribute("picture", partypicture);
 		String headline = "Partyservice";
 		model.addAttribute("headline", headline);
-
 		model.addAttribute("catalog", catalog.findByCategory("partyservice"));
-
 		String order = "/partyserviceform";
 		model.addAttribute("orderformular", order);
-
 		String price = "partyservice";
 		model.addAttribute("price", price);
 		return "catalog";
 	}
+
 	@GetMapping("/rentacook")
 	public String cook(Model model) {
 		String picture = "/resources/img/cook-detail.jpg";
@@ -76,9 +71,11 @@ public class CatalogController {
 		String headline = "Rent-A-Cook";
 		model.addAttribute("headline", headline);
 
-		String info = "Mieten sie Küchen- und Servicepersonal, welches bei Ihnen Zuhause, vor den Augen ihrer Gäste, verschiedene " +
-				"Köstlichkeiten zubereitet. Sie müssen sich dabei weder um das decken des Tisches kümmern, noch um den Abwasch und " +
-				"das Aufräumen. Das Saubermachen übernimmt das Personal für sie. Um die Lebensmittel müssen sich die Kunden dabei " +
+		String info =
+				"Mieten sie Küchen- und Servicepersonal, welches bei Ihnen Zuhause, vor den Augen ihrer " +
+				"Gäste, verschiedene Köstlichkeiten zubereitet. Sie müssen sich dabei weder um das " +
+				"decken des Tisches kümmern, noch um den Abwasch und das Aufräumen. " +
+				"Das Saubermachen übernimmt das Personal für sie. Um die Lebensmittel müssen sich die Kunden dabei " +
 				"jedoch selbst kümmern.";
 		model.addAttribute("info", info);
 
@@ -102,7 +99,6 @@ public class CatalogController {
 		String price = "mobilebreakfast";
 		model.addAttribute("price", price);
 		return "catalog";
-
 	}
 
 
