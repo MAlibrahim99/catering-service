@@ -2,11 +2,11 @@ package catering.catalog;
 
 import static org.salespointframework.core.Currencies.EURO;
 
-import com.mysema.commons.lang.Assert;
 import org.springframework.data.util.Streamable;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import java.util.ArrayList;
 import java.util.List;
 import org.javamoney.moneta.Money;
+
 
 @Controller
 public class CatalogController {
