@@ -110,7 +110,8 @@ public class CatalogController {
 	@PreAuthorize("hasRole('ADMIN')")
 	@GetMapping("/edit/{service}")
 	public String getPrices(@PathVariable String service, Model model) {
-		Assert.isTrue((service.equals("eventcatering") || service.equals("partyservice") || service.equals("rentacook") || service.equals("mobilebreakfast")), "Service must be valid");
+		Assert.isTrue((service.equals("eventcatering") || service.equals("partyservice") || service.equals("rentacook") ||
+				service.equals("mobilebreakfast")), "Service must be valid");
 
 		Streamable<Option> optionStreamable = catalog.findByCategory(service);
 
