@@ -67,7 +67,6 @@ public class CatalogController {
 
 		String price = "partyservice";
 		model.addAttribute("price", price);
-
 		return "catalog";
 	}
 	@GetMapping("/rentacook")
@@ -99,7 +98,8 @@ public class CatalogController {
 		String order = "/mobilebreakfastform";
 		model.addAttribute("orderformular", order);
 
-
+		String price = "mobilebreakfast";
+		model.addAttribute("price", price);
 		return "catalog";
 	}
 
