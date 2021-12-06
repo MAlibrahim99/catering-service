@@ -89,21 +89,20 @@ public class CatalogController {
 		model.addAttribute("price", price);
 		return "catalog";
 	}
+
 	@GetMapping("/mobilebreakfast")
 	public String mobile(Model model) {
 		String picture = "/resources/img/mobile-detail.jpg";
 		model.addAttribute("picture", picture);
 		String headline = "Mobile Breakfast";
 		model.addAttribute("headline", headline);
-
 		model.addAttribute("catalog", catalog.findByCategory("mobilebreakfast"));
-
 		String order = "/mobilebreakfastform";
 		model.addAttribute("orderformular", order);
-
 		String price = "mobilebreakfast";
 		model.addAttribute("price", price);
 		return "catalog";
+
 	}
 
 
