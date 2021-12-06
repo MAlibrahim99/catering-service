@@ -70,7 +70,11 @@ public class CatalogInitializer implements DataInitializer{
 		catalog.save(new Options("Sushi", Money.of(100, EURO), OptionType.FOOD, new String[] {"partyservice"}));
 		catalog.save(new Options("Pizza", Money.of(90, EURO), OptionType.FOOD, new String[] {"partyservice"}));
 		catalog.save(new Options("Meeresfrüchte", Money.of(130, EURO), OptionType.FOOD, new String[] {"partyservice"}));
-
+		catalog.save(new Options("Torten-Auswahl", Money.of(120, EURO), OptionType.FOOD, new String[] {"partyservice"}));
+		catalog.save(new Options("Alkoholfreie Getränke", Money.of(9, EURO), OptionType.FOOD, new String[] {"eventcatering",
+                "partyservice", "mobilebreakfast"}));
+		
 		catalog.save(new Options("Frühstück", Money.of(10, EURO), OptionType.FOOD, new String[] {"mobilebreakfast"}));
     }
+
 }
