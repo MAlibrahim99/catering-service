@@ -7,15 +7,15 @@ import org.javamoney.moneta.Money;
 
 
 @Entity
-public class Options extends Product {
+public class Option extends Product {
 
 	private OptionType type;
 
 	@SuppressWarnings({"unused", "deprecation"})
-	private Options() {
+	private Option() {
 	}
 
-	public Options(String name, Money price, OptionType type, String[] services) {
+	public Option(String name, Money price, OptionType type, String[] services) {
 
 		super(name, price);
 
