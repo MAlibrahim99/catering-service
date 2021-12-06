@@ -18,9 +18,10 @@ class CatalogControllerIntegrationTests {
 	MockMvc mvc;
 
 	@Test
-	void showsIndexPage() throws Exception {
-		mvc.perform(get("/")) //
+	void showsHeadline() throws Exception {
+		mvc.perform(get("/eventcatering")) //
 				.andExpect(status().isOk())
-				.andExpect(content().string(containsString("Herrzlich Wilkommen")));
+				.andExpect(content().string(containsString("Eventcatering")));
 	}
+
 }

@@ -4,12 +4,13 @@
 
 <head>
     <meta charset="UTF-8">
+    <title>Angebot</title>
     <link th:href="@{/resources/css/style.css}" rel="stylesheet" href="../static/resources/css/style.css" type="text/css"/>
     <link th:href="@{/resources/css/navigation.css}" rel="stylesheet" href="../static/resources/css/navigation.css" type="text/css"/>
 </head>
 <body>
     <div th:replace="navigation :: navigation"></div>
-    <section layout:fragment="content">
+    <div>
         <div class="image">
             <img src="/resources/img/offer.jpeg" alt="Bild">
         </div>
@@ -42,6 +43,6 @@
                     <br />Die Firmen können diesen Service monatsweise in Auftrag geben. </article>
             </div>
 
-    </section>
+    </div>
 </body>
 </html>
