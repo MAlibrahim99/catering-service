@@ -5,13 +5,15 @@ import org.salespointframework.catalog.Catalog;
 import org.springframework.data.domain.Sort;
 
 
-public interface OptionCatalog extends Catalog<Options> {
+
+
+public interface OptionCatalog extends Catalog<Option> {
 
 	Sort DEFAULT_SORT = Sort.by("productIdentifier").descending();
 
-	Iterable<Options> findByType(OptionType type, Sort sort);
+	Iterable<Option> findByType(OptionType type, Sort sort);
 
-	default Iterable<Options> findByOptionType(OptionType type) {
+	default Iterable<Option> findByOptionType(OptionType type) {
 		return findByType(type, DEFAULT_SORT);
 	}
 
