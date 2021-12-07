@@ -5,6 +5,7 @@ import org.salespointframework.useraccount.Role;
 import org.salespointframework.useraccount.UserAccount;
 import org.salespointframework.useraccount.web.LoggedIn;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.config.authentication.UserServiceBeanDefinitionParser;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -68,6 +69,23 @@ public class UserController {
 			return "profile";
 		}
 		return "login";
+	}
+	
+	@GetMapping("/customer-list")
+	@PreAuthorize(value = "isAuthenticated()")
+	public String showCustomerList(@LoggedIn UserAccount account, Model model){
+		if(account.hasRole(Role.of("ADMIN"))) {
+			Iterable<User> customers = userRepository.getUserByPositionIn(List.of(Position.NONE));
+			model.addAttribute("allCustomers", customers);
+			return "customer-list";
+		}
+		if(account.hasRole(Role.of("STAFF"))) {
+			Iterable<User> customers = userRepository.getUserByPositionIn(List.of(Position.NONE));
+			model.addAttribute("allCustomers", customers);
+			return "customer-list";
+		}else {
+			return "login";
+		}
 	}
 
 	@GetMapping("/staff-list")
