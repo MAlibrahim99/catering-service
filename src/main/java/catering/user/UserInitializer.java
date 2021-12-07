@@ -18,7 +18,8 @@ public class UserInitializer implements DataInitializer {
 	private final UserAccountManagement accountManagement;
 	private final UserManagement userManagement;
 
-	public UserInitializer(@Qualifier("persistentUserAccountManagement") UserAccountManagement accountManagement, UserManagement userManagement) {
+	public UserInitializer(@Qualifier("persistentUserAccountManagement") UserAccountManagement accountManagement,
+						   UserManagement userManagement) {
 		this.accountManagement = accountManagement;
 		this.userManagement = userManagement;
 	}

@@ -33,7 +33,8 @@ public class CateringOrder extends Order {
 		this.address = address;
 	}
 
-	public CateringOrder(UserAccount userAccount, PaymentMethod paymentMethod, LocalDateTime completionDate, String address) {
+	public CateringOrder(UserAccount userAccount, PaymentMethod paymentMethod,
+						 LocalDateTime completionDate,String address) {
 		super(userAccount, paymentMethod);
 
 		this.allocStaff = new ArrayList<>();
