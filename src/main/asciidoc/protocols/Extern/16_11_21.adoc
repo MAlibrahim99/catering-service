@@ -1,0 +1,36 @@
+= Protokoll Gruppe 27
+
+Treffen am 16.11.2021
+
+Ort:      Online (BBB) +
+Beginn:   13:00 Uhr +
+Ende:     14:00 Uhr
+
+__Schriftführer:__ Lennart Obermüller
+
+*Nächstes Treffen:* +
+22.11.2021, 15:00 Uhr, Online (BBB)
+
+__Teilnehmer:__
+//Tabellarisch oder Aufzählung, Kennzeichnung von Teilnehmern mit besonderer Rolle (z.B. Kunde)
+
+- Phillipp Zschiedrich (Tutor)
+- Lennart Obermüller (Scrum Master)
+- Dan Nguyen
+- Konrad Schneider
+- Lisa-Marie Müller
+- Mohamad Alibrahim
+- Rosa Splittgerber
+- Mitglieder aus Gruppe 26
+
+== Bemerkungen
+- gruppenübergreifende Vorstellung der Prototypen
+
+== Ereignisse
+- Gruppe 26 stellte zuerst ihr Team und ihren Prototypen vor
+- Gruppe 27 stellte ihr Team und ihren Prototypen von
+- Tutor gab Hinweise zu den Prototypen und den Vorträgen
+
+== Aktueller Stand
+- Entwicklerdokumentation und Testplan v1 wurden abgeschlossen
+- der Prototyp ist fertiggestellt

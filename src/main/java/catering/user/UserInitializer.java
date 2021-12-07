@@ -1,5 +1,6 @@
 package catering.user;
 
+import catering.user.forms.RegistrationForm;
 import org.salespointframework.core.DataInitializer;
 import org.salespointframework.useraccount.Password;
 import org.salespointframework.useraccount.Role;
@@ -11,7 +12,7 @@ import org.springframework.stereotype.Component;
 import java.util.List;
 
 @Component
-@Order()
+@Order(10)
 public class UserInitializer implements DataInitializer {
 
 	private final UserAccountManagement accountManagement;

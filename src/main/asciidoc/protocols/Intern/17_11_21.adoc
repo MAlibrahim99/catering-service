@@ -1,22 +1,20 @@
 = Protokoll Gruppe 27
 
-Treffen am 14.11.2021
+Treffen am 17.11.2021
 
 Ort:      Online (Discord) +
-Beginn:   11:00 Uhr +
-Ende:     13:15 Uhr
+Beginn:   16:00 Uhr +
+Ende:     20:00 Uhr
 
 __Schriftführer:__ Lennart Obermüller
 
 *Nächstes Treffen:* +
-17.11.2021, 16:00 Uhr, Online (Discord)
+
 
 __Teilnehmer:__
 //Tabellarisch oder Aufzählung, Kennzeichnung von Teilnehmern mit besonderer Rolle (z.B. Kunde)
 
 - Lennart Obermüller (Scrum Master)
-- Dan Nguyen
-- Konrad Schneider
 - Mohamad Alibrahim
 - Rosa Splittgerber
 
@@ -24,8 +22,8 @@ __Teilnehmer:__
 n.V.
 
 == Ereignisse
-- Testplan vervollständigen
-- Mergen aller einzelnen Prototypen auf Prototypen-Branch
+- initiales Template der Programmdateien auf main-Branch erstellt
+- Aufteilung der Programmierarbeit in einzelne Aufgaben
+- Erstellung eines Aufgabenplans und Verteilung der Aufgaben mit einem GitHub-Project
 
 == Aktueller Stand
-- Testplan Version 0.1 fertiggestellt

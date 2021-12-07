@@ -1,4 +1,6 @@
-package catering.user;
+package catering.user.forms;
+
+import catering.user.Position;
 
 import javax.validation.constraints.NotEmpty;
 

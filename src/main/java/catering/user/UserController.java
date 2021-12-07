@@ -1,5 +1,6 @@
 package catering.user;
 
+import catering.user.forms.RegistrationForm;
 import org.salespointframework.useraccount.Role;
 import org.salespointframework.useraccount.UserAccount;
 import org.salespointframework.useraccount.web.LoggedIn;
@@ -10,7 +11,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-
 import java.util.List;
 import java.util.Optional;
 
@@ -47,7 +47,7 @@ public class UserController {
 				return "redirect:/register";
 			case "register-user" : userManagement.createUser(form, UserManagement.CUSTOMER_ROLE);
 				model.addAttribute("userName", form.getLastName());
-				return "welcome";
+				return "index";
 			default: return "register";
 		}
 	}
@@ -58,12 +58,14 @@ public class UserController {
 		return "register";
 	}
 
-	@GetMapping("/profile")
-	public String sendProfilePage(@LoggedIn Optional<UserAccount> account, Model model){
-		System.out.println("Profile info: " + account.isPresent());
-		account.ifPresent(userAccount -> System.out.println(userAccount.getUsername()));
+	@GetMapping("/profile/{user-name}")
+	@PreAuthorize(value="hasAnyRole('CUSTOMER', 'ADMIN')")
+	public String sendProfilePage(@PathVariable("user-name") String accountId, @LoggedIn Optional<UserAccount> account, Model model){
+		System.out.println("User id: " + accountId);
+//		account.ifPresent(userAccount -> System.out.println(userAccount.getUsername()));
 		if(account.isPresent()){
-			model.addAttribute("user", userManagement.findByUsername(account.get().getUsername()));
+//			model.addAttribute("user", userManagement.findByUsername(account.get().getUsername()));
+			model.addAttribute("user", userManagement.findByUsername(accountId));
 			return "profile";
 		}
 		return "login";
@@ -86,7 +88,20 @@ public class UserController {
 		}
 	}
 
-	
+	@GetMapping("/staff-list")
+	@PreAuthorize(value="isAuthenticated()")
+	public String showStaffList(@LoggedIn UserAccount account, Model model){
+		if(account.hasRole(Role.of("ADMIN"))){
+			// finde alle personal mit Positionen(Cook, EXPERIENCED_WAITER; WAITER)
+			Iterable<User> staff = userRepository.getUserByPositionIn(List.of(Position.COOK, Position.EXPERIENCED_WAITER,
+			Position.WAITER));
+			model.addAttribute("allStaff", staff);
+			return "staff-list";
+		}else{
+			return "access-denied";
+		}
+	}
+
 	@GetMapping("/test")
 	@PreAuthorize("isAuthenticated()")
 	public String sendTest() {
