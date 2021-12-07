@@ -77,7 +77,7 @@ public class InventoryController {
 
 	private void saveInventoryItem(InventoryFormitem inventoryFormitem) {
 
-		Option option = (Option) catalog.findByName(inventoryFormitem.getName()).stream().findFirst().get();
+		Option option = catalog.findByName(inventoryFormitem.getName()).stream().findFirst().get();
 		UniqueInventoryItem item = inventory.findByProduct(option).get();
 
 		if (inventoryFormitem.getQuantity().equals("")) {

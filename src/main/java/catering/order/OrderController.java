@@ -56,8 +56,7 @@ public class OrderController {
 				}
 			}
 			return "redirect:/order-history";
-		}
-		else{
+		}else{
 			return "redirect:/login";
 		}
 	}
