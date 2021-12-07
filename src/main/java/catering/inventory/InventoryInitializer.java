@@ -30,11 +30,16 @@ class InventoryInitializer implements DataInitializer {
 	@Override
 	public void initialize() {
 
-		inventory.save(new UniqueInventoryItem(catalog.findByName("Blumen").stream().findFirst().get(), Quantity.of(50)));
-		inventory.save(new UniqueInventoryItem(catalog.findByName("Servietten").stream().findFirst().get(), Quantity.of(500)));
+		inventory.save(new UniqueInventoryItem(catalog.findByName("Blumen").stream().findFirst().get(),
+				Quantity.of(50)));
+		inventory.save(new UniqueInventoryItem(catalog.findByName("Servietten").stream().findFirst().get(),
+				Quantity.of(500)));
 
-		inventory.save(new UniqueInventoryItem(catalog.findByName("Dekoration").stream().findFirst().get(), Quantity.of(50)));
-		inventory.save(new UniqueInventoryItem(catalog.findByName("Geschirr").stream().findFirst().get(), Quantity.of(100)));
-		inventory.save(new UniqueInventoryItem(catalog.findByName("Tischtücher").stream().findFirst().get(), Quantity.of(20)));
+		inventory.save(new UniqueInventoryItem(catalog.findByName("Dekoration").stream().findFirst().get(),
+				Quantity.of(50)));
+		inventory.save(new UniqueInventoryItem(catalog.findByName("Geschirr").stream().findFirst().get(),
+				Quantity.of(100)));
+		inventory.save(new UniqueInventoryItem(catalog.findByName("Tischtücher").stream().findFirst().get(),
+				Quantity.of(20)));
 	}
 }
