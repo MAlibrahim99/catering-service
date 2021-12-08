@@ -15,18 +15,19 @@
         <div class="row">
             <div class="one wide column"></div>
 
-            <div class="four wide column">
-                <form class="ui form"><!-- TODO zeige Werte in Datumeingabefeld nach Formbestätigung-->
+            <div class="three wide column">
+                <form class="ui form" th:action="@{/income-overview}">
                     <div class="ui field">
                         <label for="from-date">Von: </label>
-                        <input type="date" th:value="${startDate}" id="from-date" onchange="this.form.submit()">
+                        <input type="date" name="startDate" th:value="${start}" id="from-date"
+                               th:pattern="#{valid.input.date.regexp}">
                     </div>
                     <div class="ui field">
                         <label for="to-date">Bis: </label>
-                        <input type="date" th:value="${endDate}" id="to-date" onchange="this.form.submit()">
+                        <input type="date" name="endDate" th:value="${end}" id="to-date">
                     </div>
+                    <button type="submit" class="ui basic blue button">Details Abrufen</button>
                 </form>
-                <p class="ui middle header">Einnahmen gesamt: <span>0.00€</span></p>
             </div>
 
             <div class="one wide column"></div>
@@ -45,66 +46,61 @@
                     <!--        <tr th:each="service : ${services}">-->
                     <!--            <td th:text="${service.name}">Vorschau</td>-->
                     <!--            <td th:text="${service.percent}">Vorschau</td>-->
-                    <td>Service</td>
+                    <td>Event catering</td>
+                    <td>38%</td>
+                </tr>
+                <tr>
+                    <td>Party service</td>
                     <td>40%</td>
                 </tr>
                 <tr>
-                    <td>Service</td>
-                    <td>40%</td>
+                    <td>Breakfast</td>
+                    <td>13%</td>
                 </tr>
                 <tr>
-                    <td>Service</td>
-                    <td>40%</td>
-                </tr>
-                <tr>
-                    <td>Service</td>
-                    <td>40%</td>
+                    <td>Rent a cook</td>
+                    <td>9%</td>
                 </tr>
                 </tbody>
             </table>
 
             <div class="one wide column"></div>
+
             <!-- Anzeigen nach Bestellstatus im Prozentsatz-->
-            <div class="middle aligned three wide column">
+            <div class="middle aligned four wide column">
                 <table class="ui single striped line table">
-                    <!-- <tr>
-                        <td>E-Mail:</td>
-                        <td><input type="email" th:field="${profileForm.email}" required></td>
-                    </tr>
-                    <tr>
-                        <td>New Password:</td>
-                        <td><input type="password" th:field="${profileForm.password}" required></td>
-                    </tr>
-                    <tr>
-                        <td>Confirm Password:</td>
-                        <td><input type="password" th:field="${profileForm.passwordConfirmation}" required></td>
-                    </tr>
-                    <tr>
-                        <td>Confirm Password:</td>
-                        <td><input type="password" th:field="${profileForm.passwordConfirmation}" required></td>
-                    </tr>
-                    -->
                     <thead>
                     <tr>
-                        <td colspan="2">
+                        <th colspan="2">
                             <strong>Verteilnug nach Status</strong>
-                        </td>
+                        </th>
                     </tr>
                     </thead>
+                    <tbody>
                     <tr>
                         <td>Abgeschlossen</td>
-                        <td>00%</td>
+                        <td th:text="${statusPercentages.get('COMPLETED') + '%'}">00%</td>
                     </tr>
                     <tr>
-                        <td>aktiv</td>
-                        <td>00%</td>
+                        <td>Offen</td>
+                        <td th:text="${statusPercentages.get('OPEN') + '%'}">00%</td>
                     </tr>
                     <tr>
-                        <td>storniert</td>
-                        <td>00%</td>
+                        <td>Storniert</td>
+                        <td th:text="${statusPercentages.get('CANCELLED') + '%'}">00%</td>
                     </tr>
+                    </tbody>
                 </table>
             </div>
+        </div>
+
+        <div class="row">
+            <div class="one wid column"></div>
+            <div class="seven wide column">
+                <p class="ui middle header">Einnahmen gesamt: <span
+                        th:text="${totalIncome.getNumber() + ' €'}">0.00€</span>
+            </div>
+            </p>
         </div>
     </div>
 </section>
