@@ -5,7 +5,6 @@ import org.salespointframework.useraccount.Role;
 import org.salespointframework.useraccount.UserAccount;
 import org.salespointframework.useraccount.web.LoggedIn;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.config.authentication.UserServiceBeanDefinitionParser;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -28,7 +27,6 @@ public class UserController {
 	@PostMapping("/register")
 	public String registerUser(@Valid @ModelAttribute("registrationForm") RegistrationForm form,
 							   @RequestParam(value = "action") String action, Model model){
-		System.out.println("register user coming on");
 		// wenn name oder email bereits besetzt ist, gebe nutzer meldung zurück
 		if(userManagement.usernameAlreadyExists(form.getUsername())){
 			model.addAttribute("usernameAlreadyExists", true);
@@ -40,16 +38,14 @@ public class UserController {
 			return "register";
 		}
 
-		// entweder personal oder normalen Nutzer erstellen
-		switch(action){
-			case "register-staff" : userManagement.createUser(form, UserManagement.STAFF_ROLE);
-				model.addAttribute("userName", form.getLastName());
-				return "redirect:/register";
-			case "register-user" : userManagement.createUser(form, UserManagement.CUSTOMER_ROLE);
-				model.addAttribute("userName", form.getLastName());
-				return "index";
-			default: return "register";
+		if(action.equals("register-staff")){
+			userManagement.createUser(form, UserManagement.STAFF_ROLE);
+		}else{
+			userManagement.createUser(form, UserManagement.CUSTOMER_ROLE);
+			model.addAttribute("userName", form.getLastName());
+			return "index";
 		}
+		return "redirect:/register";
 	}
 
 	@GetMapping("/register")
@@ -61,10 +57,7 @@ public class UserController {
 	@GetMapping("/profile/{user-name}")
 	@PreAuthorize(value="hasAnyRole('CUSTOMER', 'ADMIN')")
 	public String sendProfilePage(@PathVariable("user-name") String accountId, @LoggedIn Optional<UserAccount> account, Model model){
-		System.out.println("User id: " + accountId);
-//		account.ifPresent(userAccount -> System.out.println(userAccount.getUsername()));
 		if(account.isPresent()){
-//			model.addAttribute("user", userManagement.findByUsername(account.get().getUsername()));
 			model.addAttribute("user", userManagement.findByUsername(accountId));
 			return "profile";
 		}
@@ -100,11 +93,5 @@ public class UserController {
 		}else{
 			return "access-denied";
 		}
-	}
-
-	@GetMapping("/test")
-	@PreAuthorize("isAuthenticated()")
-	public String sendTest() {
-		return "test";
 	}
 }
