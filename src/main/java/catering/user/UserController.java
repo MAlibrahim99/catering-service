@@ -71,11 +71,6 @@ public class UserController {
 			Iterable<User> customers = userRepository.getUserByPositionIn(List.of(Position.NONE));
 			model.addAttribute("allCustomers", customers);
 			return "customer-list";
-		}
-		if(account.hasRole(Role.of("STAFF"))) {
-			Iterable<User> customers = userRepository.getUserByPositionIn(List.of(Position.NONE));
-			model.addAttribute("allCustomers", customers);
-			return "customer-list";
 		}else {
 			return "login";
 		}
