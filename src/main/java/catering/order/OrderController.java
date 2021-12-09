@@ -19,10 +19,17 @@ import java.util.Objects;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
 import java.util.Optional;
 
+import org.hibernate.boot.registry.classloading.spi.ClassLoaderService.Work;
 import org.javamoney.moneta.Money;
 import org.salespointframework.catalog.Product;
 import org.salespointframework.core.AbstractEntity;
@@ -50,6 +57,10 @@ import catering.catalog.Ware.ServiceType;
 import catering.catalog.services.Eventcatering;
 import catering.catalog.services.Mobilebreakfast;
 import catering.catalog.services.Partyservice;
+import catering.user.Position;
+import catering.user.User;
+import catering.user.UserManagement;
+import catering.user.UserRepository;
 
 @Controller
 //@PreAuthorize(value = "isAuthenticated()")
@@ -59,8 +70,9 @@ public class OrderController {
 	private CateringOrderRepository orderRepository;
 	private CateringCatalog cCatalog;
 	private OptionCatalog catalog;
+	private UserRepository userRepository;
 
-	public OrderController(OrderManagement<Order> oOrderManagement, OrderManagement<CateringOrder> orderManagement, CateringOrderRepository orderRepository, CateringCatalog cCatalog, OptionCatalog catalog) {
+	public OrderController(UserRepository userRepository, OrderManagement<Order> oOrderManagement, OrderManagement<CateringOrder> orderManagement, CateringOrderRepository orderRepository, CateringCatalog cCatalog, OptionCatalog catalog) {
 		this.orderManagement = orderManagement;
 		this.orderRepository = orderRepository;
 
@@ -68,6 +80,8 @@ public class OrderController {
 		this.oOrderManagement = oOrderManagement;
 		this.cCatalog = cCatalog;
 		this.catalog = catalog;
+
+		this.userRepository = userRepository;
 	}
 
 	@GetMapping(value = "/order-history")
@@ -208,13 +222,73 @@ public class OrderController {
 	String addToCart3(Model model, @RequestParam("pid") Ware ware, @RequestParam("number") int number, @ModelAttribute Cart cart, @ModelAttribute ("order") order ord3){
 		cart.clear();
 		int guestcount = number / 5;
+		System.out.println(number);
 		if (guestcount == 0){
 			guestcount = 1;
 		}
+		System.out.println(guestcount);
 		int chefcount = guestcount * 2;
         int waitercount = guestcount * 2;
-		System.out.println(ord3.toString());
+		ord3.chefcount = chefcount;
+		ord3.waitercount = waitercount;
 		
+		System.out.println(ord3.toString());
+		System.out.println(ord3.getTime());
+		
+		/*ArrayList<User> staffList = new ArrayList<>();
+		Iterable<User> staff = userRepository.getUserByPositionIn(List.of(Position.COOK, Position.EXPERIENCED_WAITER, Position.WAITER));
+		for (User u : staff){
+			System.out.println(u.workCount);
+			System.out.println(u.getUserAccount());
+			System.out.println(u);
+			staffList.add(u);
+		}*/
+
+
+		/*Iterator<User> iStafflist = staffList.iterator();
+		while (iStafflist.hasNext()){
+			User u1 = iStafflist.next();
+			User u2 = iStafflist.next();
+			if (u1.workCount < u2.workCount){
+				lowestWorkcount = u1;
+				u2 = iStafflist.next();
+			}
+			else if (u1.workCount == u2.workCount){
+				lowestWorkcount = u1;
+				u2 = iStafflist.next();
+			}
+			else{
+				lowestWorkcount = u2;
+				u1 = iStafflist.next();
+			}
+		}*/
+		/*System.out.println("--------------------------------------------");
+		for (int i=0; i<staffList.size();i++){
+			staffList.get(i).workCount = i;
+			System.out.println(staffList.get(i));
+			System.out.println(i);
+			System.out.println(staffList.get(i).workCount);
+		}
+		
+		for (int k=0; k>staffList.size()-1; k++){
+			for (int i=0; i>staffList.size()-k; i++){
+				if (staffList.get(i).workCount > staffList.get(k).workCount){
+					Collections.swap(staffList, i, k);
+				}
+				
+			}
+
+		}
+		
+		int count =0;
+		System.out.println(ord3.waitercount);
+		System.out.println(ord3.chefcount);
+		for (User u : staffList){
+			System.out.println(u);
+			count++;
+			System.out.println(count);
+		}*/
+
 		/*if (chefcount <= chefs && waitercount <= waiter){               //Funktion aus Inventar für Personal benötigt
 			System.out.println("Bestellung wird aufgegeben");           // return hinzufügen 
 			return "orderrewview";
@@ -317,7 +391,7 @@ public class OrderController {
 	}
 
 	@PostMapping("/checkout")
-	String buy(@ModelAttribute Cart cart, @LoggedIn Optional<UserAccount> userAccount, Errors help) {
+	String buy(@ModelAttribute Cart cart, @LoggedIn Optional<UserAccount> userAccount, Errors help/*, @ModelAttribute ("order") order orderOut*/) {
 
 		return userAccount.map(account -> {
 			var order = new Order(account, Cash.CASH);
@@ -326,6 +400,24 @@ public class OrderController {
 
 			oOrderManagement.payOrder(order);
 			oOrderManagement.completeOrder(order);
+
+			/*ArrayList<User> staffList = new ArrayList<>();
+			Iterable<User> staff = userRepository.getUserByPositionIn(List.of(Position.EXPERIENCED_WAITER, Position.WAITER));
+			for (User u : staff){
+				staffList.add(u);
+			}
+
+			for (int k=0; k>staffList.size()-1; k++){
+				for (int i=0; i>staffList.size()-k; i++){
+					if (staffList.get(i).workCount > staffList.get(k).workCount){
+						Collections.swap(staffList, i, k);
+					}
+				}
+			}
+
+			System.out.println(orderOut.chefcount);
+			System.out.println(orderOut.waitercount);*/
+
 			if (help.hasErrors()){
 				return "cart";
 			}
@@ -359,6 +451,8 @@ public class OrderController {
 		cart.clear();
 		return "redirect:/";
 	}
+
+
 
 
 	@GetMapping("/orderform5")

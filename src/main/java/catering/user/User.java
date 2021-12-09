@@ -2,10 +2,12 @@ package catering.user;
 
 import org.salespointframework.useraccount.UserAccount;
 
+import java.util.Comparator;
+
 import javax.persistence.*;
 
 @Entity
-public class User {
+public class User{
 	@Id()
 	@GeneratedValue
 	private long id;
@@ -15,6 +17,7 @@ public class User {
 	private String address;
 	@Enumerated(EnumType.STRING)
 	private Position position;
+    public int workCount = 0;
 
 	public User() {
 	}
@@ -30,6 +33,7 @@ public class User {
 			throw new NullPointerException("Position can not be set assigned to null");
 		}
 		this.position = position;
+        
 	}
 
 	public String getAddress() {
@@ -55,4 +59,20 @@ public class User {
 	public void setPosition(Position position) {
 		this.position = position;
 	}
+
+    public int getWorkcount(){
+        return workCount;
+    }
+
+    public void setWorkcount(int workCount){
+        this.workCount = workCount;
+    }
+
+
+
+
+
+
+
+ 
 }

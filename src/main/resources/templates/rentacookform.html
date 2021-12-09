@@ -21,18 +21,15 @@
                     <label for="number">Anzahl der Gäste:</label><br/>
                     <input type="number" name="number" min="1" max="100" step="1" value="0" th:value="1"><br/><br/>
                     <p>Falls Sie noch weitere Wünsche haben, fügen Sie dies bitte hinzu:</p>
-                    <div class="ui card" th:each="option : ${option}">
-                        <label for="option" th:text="${option.name}">Option</label> <br/>
-                        <input name="option" type="number" min="0" max="10" step="1" value="0"><br/><br/>
-                    </div>
+
                     <label for="date">Datum:</label><br/>
-                    <input id="date" type="date" name="date" required th:field="${order.date}"/><br/><br/>
+                    <input id="date" type="date" name="date" required th:value="${order.date}"/><br/><br/>
                     <p>Zeitraum:</p>
                     <input type="radio" id="frühs" name="time" value="Frühs" required th:value="${order.time}">
                     <label for="Frühs">Frühs</label><br/>
-                    <input type="radio" id="mittag" name="time" value="Mittag" required th:value="${order.time}">>
+                    <input type="radio" id="mittag" name="time" value="Mittag" required th:value="${order.time}">
                     <label for="Mittag">Mittag</label><br/>
-                    <input type="radio" id="abends" name="time" value="Abends" required th:value="${order.time}">>
+                    <input type="radio" id="abends" name="time" value="Abends" required th:value="${order.time}">
                     <label for="Abends">Abends</label><br/><br/>
                     <label for="location">Veranstaltungsort</label><br/>
                     <input type="text" name="location" required th:value="${order.location}"/><br/><br/>

@@ -1,5 +1,7 @@
 package catering.order;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.money.Monetary;
 import javax.money.MonetaryAmount;
@@ -24,6 +26,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttributes;
 
+import catering.user.User;
+
 class order {
     
     private String time;
@@ -32,8 +36,6 @@ class order {
     private LocalDate date;
     private String location;
     
-
-
     private int Cost = 100;
     private int SumCost;
     private int PersonalAnzahl = 100;
@@ -45,6 +47,10 @@ class order {
     
     private int waiter = 500;
     private int chefs = 100;
+
+    public int chefcount;
+    public int waitercount;
+    public ArrayList<User> staffList = new ArrayList<User>();
 
     
 
@@ -179,12 +185,16 @@ class order {
         return time;
     }
 
+    public void setTime(String time){
+        this.time = time;
+    }
+
     public String getLocation(){
         return location;
     }
 
     public String toString(){
-        return date + " " + time + " " + location;
+        return date + " " + time + " " + location + " " + chefcount + " " + waitercount;
     }
 
     public void setLocation(String location) {
@@ -195,9 +205,7 @@ class order {
         this.date = date;
     }
 
-    public void setTime(String time){
-        this.time = time;
-    }
+    
 
 
 }
