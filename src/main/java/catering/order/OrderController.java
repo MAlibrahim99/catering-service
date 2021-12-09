@@ -10,19 +10,27 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Optional;
 
 @Controller
 @PreAuthorize(value = "isAuthenticated()")
 public class OrderController {
 	private OrderManagement<CateringOrder> orderManagement;
 	private CateringOrderRepository orderRepository;
+	private IncomeOverview incomeOverview;
 
-	public OrderController(OrderManagement<CateringOrder> orderManagement, CateringOrderRepository orderRepository) {
+
+	public OrderController(OrderManagement<CateringOrder> orderManagement, CateringOrderRepository orderRepository,
+						   IncomeOverview incomeOverview) {
 		this.orderManagement = orderManagement;
 		this.orderRepository = orderRepository;
+		this.incomeOverview = incomeOverview;
 	}
 
 	@GetMapping(value = "/order-history")
@@ -59,5 +67,32 @@ public class OrderController {
 		}else{
 			return "redirect:/login";
 		}
+	}
+
+	// Initial wird eine Übersicht der letzten 30 Tage zurückgegeben, exeklusive des aktuellen Tages
+	@GetMapping("/income-overview")
+	public String displayIncomeOverview(@RequestParam("startDate") Optional<String> startDate,
+										@RequestParam("endDate") Optional<String> endDate, Model model) {
+		LocalDateTime start;
+		LocalDateTime end;
+		if (startDate.isEmpty() || endDate.isEmpty()) {
+			start = LocalDateTime.now().minusDays(30L);
+			end = LocalDateTime.now().minusDays(1L);
+		} else {
+			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+			start = LocalDate.parse(startDate.get(), formatter).atStartOfDay();
+			end = LocalDate.parse(endDate.get(), formatter).atStartOfDay();
+		}
+
+		if (start.isAfter(end)) {
+			start = end.minusDays(30L);
+		}
+
+		model.addAttribute("totalIncome", incomeOverview.totalIncome(start, end));
+		model.addAttribute("statusPercentages", incomeOverview.statusPercentages(start, end));
+		model.addAttribute("start", start.toLocalDate());
+		model.addAttribute("end", end.toLocalDate());
+
+		return "income-overview";
 	}
 }

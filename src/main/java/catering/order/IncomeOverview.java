@@ -1,7 +1,5 @@
-package catering.user.admin;
+package catering.order;
 
-import catering.order.CateringOrder;
-import catering.order.CateringOrderRepository;
 import org.javamoney.moneta.Money;
 import org.salespointframework.order.OrderStatus;
 import org.springframework.data.util.Streamable;
@@ -10,14 +8,10 @@ import org.springframework.stereotype.Component;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import static org.salespointframework.core.Currencies.EURO;
 
-//@SuppressWarnings("DuplicatedCode")
 @Component
 public class IncomeOverview {
 
@@ -89,23 +83,20 @@ public class IncomeOverview {
 		}
 
 		Map<String, String> percentages = new HashMap<>();
-		List<OrderStatus> orderStatus = new ArrayList<>();
-		for (OrderStatus status : OrderStatus.values()) {
-			if (status.equals(OrderStatus.PAID)) {
-				continue;
-			}
-			orderStatus.add(status);
-		}
 		BigDecimal allOrders = new BigDecimal(orderRepository.countByCompletionDateBetween(start, end));
+
 		if (allOrders.equals(BigDecimal.valueOf(0))) {
-			allOrders = new BigDecimal(100);
-		}
-		BigDecimal orderCount;
-		for (OrderStatus status : orderStatus) {
-			orderCount = new BigDecimal(orderRepository.countByOrderStatusAndCompletionDateBetween(status, start, end));
-			// prozent berchnen und runden
-			orderCount = orderCount.multiply(new BigDecimal("100.0")).divide(allOrders, RoundingMode.HALF_DOWN);
-			percentages.put(status.name(), orderCount.toString());
+			percentages.put("PAID", "0.0");
+			percentages.put("COMPLETED", "0.0");
+			percentages.put("CANCELLED", "0.0");
+		}else {
+			BigDecimal orderCount;
+			for (OrderStatus status : Arrays.asList(OrderStatus.PAID, OrderStatus.COMPLETED, OrderStatus.CANCELLED)) {
+				orderCount = new BigDecimal(orderRepository.countByOrderStatusAndCompletionDateBetween(status, start, end));
+				// prozent berchnen und runden
+				orderCount = orderCount.multiply(new BigDecimal("100.0")).divide(allOrders, RoundingMode.HALF_DOWN);
+				percentages.put(status.name(), orderCount.toString());
+			}
 		}
 		return percentages;
 	}
