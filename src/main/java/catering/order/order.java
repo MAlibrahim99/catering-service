@@ -48,8 +48,8 @@ class order {
     private int waiter = 500;
     private int chefs = 100;
 
-    public int chefcount;
-    public int waitercount;
+    private int chefcount;
+    private int waitercount;
     public ArrayList<User> staffList = new ArrayList<User>();
 
     
@@ -203,6 +203,30 @@ class order {
 
     public void setDate(LocalDate date){
         this.date = date;
+    }
+
+    public int getChefcount(){
+        return chefcount;
+    }
+
+    public void setChefcount(int chefcount){
+        this.chefcount = chefcount;
+    }
+
+    public int getWaitercount(){
+        return waitercount;
+    }
+
+    public void setWaitercount(int waitercount){
+        this.waitercount = waitercount;
+    }
+
+    public ArrayList<User> getStafflist(){
+        return staffList;
+    }
+
+    public void setStafflist(ArrayList<User> staffList){
+        this.staffList = staffList;
     }
 
     

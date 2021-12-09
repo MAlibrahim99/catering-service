@@ -30,6 +30,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.hibernate.boot.registry.classloading.spi.ClassLoaderService.Work;
+import org.hibernate.jdbc.WorkExecutor;
 import org.javamoney.moneta.Money;
 import org.salespointframework.catalog.Product;
 import org.salespointframework.core.AbstractEntity;
@@ -37,6 +38,7 @@ import org.salespointframework.payment.Cash;
 import org.salespointframework.quantity.Quantity;
 import org.salespointframework.useraccount.UserAccount;
 import org.salespointframework.useraccount.web.LoggedIn;
+import org.springframework.data.util.Streamable;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
@@ -134,7 +136,7 @@ public class OrderController {
 	}
 
 	@PostMapping("/cartadd1")
-	String addToCart1(Eventcatering eventcatering, @RequestParam("pid") Ware ware, @RequestParam("number") int number, @ModelAttribute Cart cart, @ModelAttribute ("order") order ord1){
+	String addToCart1(Model model, Eventcatering eventcatering, @RequestParam("pid") Ware ware, @RequestParam("number") int number, @ModelAttribute Cart cart, @ModelAttribute ("order") order ord1){
 		cart.clear();
 		int guestcount = number / 10;
 		if (guestcount == 0){
@@ -142,8 +144,12 @@ public class OrderController {
 		}
 		int chefcount = guestcount * 4;
         int waitercount = guestcount * 5;
+		ord1.setChefcount(chefcount);
+		ord1.setWaitercount(waitercount);
 		System.out.println(ord1.toString());
 		cart.addOrUpdateItem(ware, Quantity.of(number));
+		model.addAttribute("order", ord1);
+		model.addAttribute("orderOut", new order());
 		for(Option o : catalog.findByName("Servietten")){
 			cart.addOrUpdateItem(o, eventcatering.getServiette());
 		}
@@ -165,11 +171,11 @@ public class OrderController {
 		for(Option o : catalog.findByName("Galadinner")){
 			cart.addOrUpdateItem(o, eventcatering.getGaladinner());
 		}
-		return "redirect:/orderreview";
+		return "orderreview";
 	}
 
 	@PostMapping("/cartadd2")
-	String addToCart2(@RequestParam("pid") Ware ware, @RequestParam("number") int number, @ModelAttribute Cart cart, @ModelAttribute ("order") order ord2, Partyservice partyservice){
+	String addToCart2(Model model, @RequestParam("pid") Ware ware, @RequestParam("number") int number, @ModelAttribute Cart cart, @ModelAttribute ("order") order ord2, Partyservice partyservice){
 		cart.clear();
 		int guestcount = number / 10;
 		if (guestcount == 0){
@@ -177,8 +183,12 @@ public class OrderController {
 		}
 		int chefcount = guestcount * 3;
         int waitercount = guestcount * 4;
+		ord2.setChefcount(chefcount);
+		ord2.setWaitercount(waitercount);
 		System.out.println(ord2.toString());
 		cart.addOrUpdateItem(ware, Quantity.of(number));
+		model.addAttribute("order", ord2);
+		model.addAttribute("orderOut", new order());
 
 		for(Option o : catalog.findByName("Servietten")){
 			cart.addOrUpdateItem(o, partyservice.getServiette());
@@ -213,7 +223,7 @@ public class OrderController {
 		for(Option o : catalog.findByName("Meeresfrüchte")){
 			cart.addOrUpdateItem(o, partyservice.getSeafood());
 		}
-		return "redirect:/orderreview";
+		return "orderreview";
 	}
 
 
@@ -229,8 +239,8 @@ public class OrderController {
 		System.out.println(guestcount);
 		int chefcount = guestcount * 2;
         int waitercount = guestcount * 2;
-		ord3.chefcount = chefcount;
-		ord3.waitercount = waitercount;
+		ord3.setChefcount(chefcount);
+		ord3.setWaitercount(waitercount);
 		
 		System.out.println(ord3.toString());
 		System.out.println(ord3.getTime());
@@ -299,13 +309,15 @@ public class OrderController {
 
 		*/
 		cart.addOrUpdateItem(ware, Quantity.of(number));
+		model.addAttribute("order", ord3);
+		model.addAttribute("orderOut", new order());
 		//model.addAttribute("date", date);
 		
 		return "orderreview";
 	}
 
 	@PostMapping("/cartadd4")
-	String addToCart4(@RequestParam("pid") Ware ware, @RequestParam("number") int number, @ModelAttribute Cart cart, @ModelAttribute ("order") order ord4, @ModelAttribute ("mobilebreakfast") Mobilebreakfast mobilebreakfast){
+	String addToCart4(Model model, @RequestParam("pid") Ware ware, @RequestParam("number") int number, @ModelAttribute Cart cart, @ModelAttribute ("order") order ord4, @ModelAttribute ("mobilebreakfast") Mobilebreakfast mobilebreakfast){
 		cart.clear();
 		int guestcount = number / 3;
 		if (guestcount == 0){
@@ -313,7 +325,8 @@ public class OrderController {
 		}
 		int chefcount = 1;
         int waitercount = guestcount;
-
+		ord4.setChefcount(chefcount);
+		ord4.setWaitercount(waitercount);
 		System.out.println(mobilebreakfast.getDishes());
 		for(Option o : catalog.findByName("Servietten")){
 			cart.addOrUpdateItem(o, mobilebreakfast.getServiette());
@@ -337,8 +350,10 @@ public class OrderController {
 		System.out.println(ord4.toString());
 
 		cart.addOrUpdateItem(ware, Quantity.of(number));
+		model.addAttribute("order", ord4);
+		model.addAttribute("orderOut", new order());
 		//cart.addOrUpdateItem(option, Quantity.of(number2));
-		return "redirect:/orderreview";
+		return "orderreview";
 	}
 
 	@GetMapping("/orderreview")
@@ -391,7 +406,7 @@ public class OrderController {
 	}
 
 	@PostMapping("/checkout")
-	String buy(@ModelAttribute Cart cart, @LoggedIn Optional<UserAccount> userAccount, Errors help/*, @ModelAttribute ("order") order orderOut*/) {
+	String buy(@ModelAttribute Cart cart, @LoggedIn Optional<UserAccount> userAccount, Errors help, @ModelAttribute ("orderOut") order orderOut) {
 
 		return userAccount.map(account -> {
 			var order = new Order(account, Cash.CASH);
@@ -401,22 +416,137 @@ public class OrderController {
 			oOrderManagement.payOrder(order);
 			oOrderManagement.completeOrder(order);
 
-			/*ArrayList<User> staffList = new ArrayList<>();
-			Iterable<User> staff = userRepository.getUserByPositionIn(List.of(Position.EXPERIENCED_WAITER, Position.WAITER));
+
+			System.out.println("----------------");
+			System.out.println(orderOut.toString());
+
+			ArrayList<User> staffList = new ArrayList<>();
+
+
+			sort(staffList, staffList.size());
+			System.out.println(staffList.size());
+			
+			ArrayList<User> orderStaffList = new ArrayList<>();
+			Streamable<User> staff = userRepository.getUserByPositionIn(List.of(Position.EXPERIENCED_WAITER, Position.WAITER));
+			System.out.println(staff.toList().size());
 			for (User u : staff){
 				staffList.add(u);
 			}
+			
+			//Streamable<User> staffTest = userRepository.getUserByPositionInOrderByWorkcount(List.of(Position.COOK));
+			//System.out.println(staffTest.toList().size());
 
-			for (int k=0; k>staffList.size()-1; k++){
+			/*or (int k=0; k>staffList.size()-1; k++){
 				for (int i=0; i>staffList.size()-k; i++){
 					if (staffList.get(i).workCount > staffList.get(k).workCount){
 						Collections.swap(staffList, i, k);
 					}
 				}
+			}*/
+
+			ArrayList<User> chefList = new ArrayList<>();
+			Streamable<User> chef = userRepository.getUserByPositionIn(List.of(Position.COOK));
+			for (User u : chef){
+				chefList.add(u);
 			}
 
-			System.out.println(orderOut.chefcount);
-			System.out.println(orderOut.waitercount);*/
+
+			sort(staffList, staffList.size());
+			sort(chefList, chefList.size());
+			System.out.println("oooooooooooooooooooooooooooo");
+			System.out.println(staffList.size());
+			System.out.println(chefList.size());
+			for (User u: staffList){
+				System.out.println(u);
+			}
+			
+			/*for (int k=0; k>chefList.size()-1; k++){
+				for (int i=0; i>chefList.size()-k; i++){
+					if (chefList.get(i).workCount > chefList.get(k).workCount){
+						Collections.swap(chefList, i, k);
+					}
+				}
+			}*/
+
+			
+			/*for (int i=0; i<orderOut.getWaitercount(); i++){
+				if(i>staffList.size()){
+					break;
+				}
+				orderStaffList.add(staffList.get(i));
+			}
+
+			for (int i=0; i<orderOut.getChefcount(); i++){
+				if(i>chefList.size()){
+					break;
+				}
+				orderStaffList.add(chefList.get(i));
+			}
+			
+			
+			for (int k=0; k>staffList.size()-1; k++){
+				for (int i=0; i>staffList.size()-k; i++){
+					if (staffList.get(i).workCount > staffList.get(k).workCount){
+						Collections.swap(staffList, i, k);
+				}
+				
+			}
+
+		}
+			
+			
+			*/
+
+			
+
+
+			if(chefList.size() >= orderOut.getChefcount() && staffList.size() >= orderOut.getWaitercount()){
+				
+				
+				ArrayList<User> allstaff = new ArrayList<>();
+				//allstaff.addAll(staffList.subList(0, orderOut.getWaitercount()-1));
+				//orderOut.setStafflist(allstaff);
+				for (int i=0; i<orderOut.getChefcount();i++){
+					allstaff.add(chefList.get(i));
+				}
+				for (int i=0; i<orderOut.getWaitercount();i++){
+					allstaff.add(staffList.get(i));
+				}
+				for (User u : allstaff){
+					u.setWorkcount(u.getWorkcount()+1);
+					System.out.println(u);
+					System.out.println(u.getWorkcount());
+					userRepository.save(u);
+					
+				}
+
+				orderOut.setStafflist(allstaff);
+				System.out.println("llllllllllllllllllll");
+				System.out.println(userRepository.getUserByPositionIn(List.of(Position.EXPERIENCED_WAITER, Position.WAITER,Position.COOK)).toList().size());
+
+				for (User u: userRepository.getUserByPositionIn(List.of(Position.EXPERIENCED_WAITER, Position.WAITER,Position.COOK)).toList()){
+					System.out.println(u);
+					System.out.println(u.getWorkcount());
+				}
+			}
+
+
+			
+
+			
+
+			
+			
+			
+			/*System.out.println("+++++++++++++++++++++");
+			for (int i=0; i<orderOut.getStafflist().size();i++){
+				System.out.println(orderOut.getStafflist().get(i));
+			}*/
+			
+			
+
+			System.out.println(orderOut.getChefcount());
+			System.out.println(orderOut.getWaitercount());
 
 			if (help.hasErrors()){
 				return "cart";
@@ -465,6 +595,21 @@ public class OrderController {
 	}
 
 	
+	public void sort(ArrayList<User> list, int n){
+		if (n==0){
+			return;
+		}
+		if (n ==1){
+			return;
+		}
+		
+		for (int i=0; i<n-1; i++){
+			if (list.get(i).workCount>list.get(i+1).workCount){
+				Collections.swap(list, i, i+1);
+			}
+		}
+		sort(list, n-1);
 
+	}
 
 }
