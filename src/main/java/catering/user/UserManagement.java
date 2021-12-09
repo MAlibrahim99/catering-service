@@ -40,10 +40,8 @@ public class UserManagement {
 		UserAccount userAccount = accountManagement.create(form.getUsername(), password, form.getEmail(), roles);
 		userAccount.setFirstname(form.getFirstName());
 		userAccount.setLastname(form.getLastName());
-
-		if(Arrays.asList(roles).contains(CUSTOMER_ROLE)) {//wenn Nutzer Kundenrolle hat, dann hat er keine Position
-			return users.save(new User(userAccount, "Sie haben noch keine Adresse gegeben"));
-		}return  users.save(new User(userAccount, "Sie haben noch keine Adresse gegeben", form.getPosition()));
+		
+		return  users.save(new User(userAccount, "Sie haben noch keine Adresse gegeben", form.getPosition()));
 	}
 
 	public boolean deleteUser(long id){
