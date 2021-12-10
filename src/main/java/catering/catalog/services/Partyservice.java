@@ -14,7 +14,8 @@ public class Partyservice extends Mainservice{
     private int seafood;
 
 
-    public Partyservice(int serviette, int dishes, int hamplate, int cheeseplate, int eggplate, int fishplate, int fruitplate, int saladplate, int sushi, int pizza, int seafood){
+    public Partyservice(int serviette, int dishes, int hamplate, int cheeseplate,
+						int eggplate, int fishplate, int fruitplate, int saladplate, int sushi, int pizza, int seafood){
         super(serviette, dishes);
         this.hamplate = hamplate;
         this.cheeseplate = cheeseplate;

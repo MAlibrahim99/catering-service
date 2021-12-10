@@ -7,7 +7,8 @@ public class Eventcatering extends Mainservice {
     private int buffet;
     private int galadinner;
 
-    public Eventcatering(int serviette, int dishes, int flowers, int decoration, int tablecloth, int buffet, int galadinner){
+    public Eventcatering(int serviette, int dishes, int flowers, int decoration,
+						 int tablecloth, int buffet, int galadinner){
         super(serviette, dishes);
         this.flowers = flowers;
         this.decoration = decoration;
