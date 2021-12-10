@@ -1,5 +1,10 @@
 package catering.order;
 import catering.catalog.services.*;
+import catering.inventory.InventoryFormitem;
+
+import org.salespointframework.catalog.Product;
+import org.salespointframework.inventory.UniqueInventory;
+import org.salespointframework.inventory.UniqueInventoryItem;
 import org.salespointframework.order.*;
 import org.springframework.validation.Errors;
 
@@ -12,6 +17,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+
+import antlr.debug.Event;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -41,6 +48,7 @@ import catering.user.Position;
 import catering.user.User;
 import catering.user.UserRepository;
 
+
 @Controller
 //@PreAuthorize(value = "isAuthenticated()")
 public class OrderController {
@@ -51,10 +59,12 @@ public class OrderController {
 	private OptionCatalog catalog;
 	private UserRepository userRepository;
 	private IncomeOverview incomeOverview;
+	private UniqueInventory<UniqueInventoryItem> inventory;
+	
 
 	public OrderController(UserRepository userRepository, OrderManagement<org.salespointframework.order.Order> oOrderManagement,
 						   OrderManagement<CateringOrder> orderManagement, CateringOrderRepository orderRepository,
-						   CateringCatalog cCatalog, OptionCatalog catalog, IncomeOverview incomeOverview) {
+						   CateringCatalog cCatalog, OptionCatalog catalog, IncomeOverview incomeOverview, UniqueInventory<UniqueInventoryItem> inventory) {
 		this.orderManagement = orderManagement;
 		this.orderRepository = orderRepository;
 
@@ -63,8 +73,10 @@ public class OrderController {
 		this.cCatalog = cCatalog;
 		this.catalog = catalog;
 		this.incomeOverview = incomeOverview;
-
+						
 		this.userRepository = userRepository;
+
+		this.inventory = inventory;
 	}
 
 	@GetMapping(value = "/order-history")
@@ -159,6 +171,8 @@ public class OrderController {
 		cart.addOrUpdateItem(ware, Quantity.of(number));
 		model.addAttribute("order", ord1);
 		model.addAttribute("orderOut", new Order());
+
+
 		for(Option o : catalog.findByName("Servietten")){
 			cart.addOrUpdateItem(o, eventcatering.getServiette());
 		}
@@ -168,7 +182,7 @@ public class OrderController {
 		for(Option o : catalog.findByName("Blumen")){
 			cart.addOrUpdateItem(o, eventcatering.getFlowers());
 		}
-		for(Option o : catalog.findByName("Deokration")){
+		for(Option o : catalog.findByName("Dekoration")){
 			cart.addOrUpdateItem(o, eventcatering.getDecoration());
 		}
 		for(Option o : catalog.findByName("Tischtücher")){
@@ -200,6 +214,7 @@ public class OrderController {
 		cart.addOrUpdateItem(ware, Quantity.of(number));
 		model.addAttribute("order", ord2);
 		model.addAttribute("orderOut", new Order());
+	
 
 		for(Option o : catalog.findByName("Servietten")){
 			cart.addOrUpdateItem(o, partyservice.getServiette());
@@ -234,6 +249,11 @@ public class OrderController {
 		for(Option o : catalog.findByName("Meeresfrüchte")){
 			cart.addOrUpdateItem(o, partyservice.getSeafood());
 		}
+
+		System.out.println("ppppppppppppppppppppp");
+		for (CartItem ci : cart){
+			System.out.println(ci.getProductName());
+		}
 		return "orderreview";
 	}
 
@@ -266,7 +286,7 @@ public class OrderController {
 		for(Option o : catalog.findByName("Blumen")){
 			cart.addOrUpdateItem(o, rentacook.getDishes());
 		}
-		for(Option o : catalog.findByName("Deokration")){
+		for(Option o : catalog.findByName("Dekoration")){
 			cart.addOrUpdateItem(o, rentacook.getDecoration());
 		}
 		for(Option o : catalog.findByName("Tischtücher")){
@@ -309,6 +329,7 @@ public class OrderController {
 		cart.addOrUpdateItem(ware, Quantity.of(number));
 		model.addAttribute("order", ord4);
 		model.addAttribute("orderOut", new Order());
+		
 		return "orderreview";
 	}
 
@@ -362,7 +383,22 @@ public class OrderController {
 		return userAccount.map(account -> {
 			var order = new org.salespointframework.order.Order(account, Cash.CASH);
 
+
+			System.out.println("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx");
+			for (CartItem ci : cart){ 
+				System.out.println("x");
+				if(ci.getProductName() != "Eventcatering" ||ci.getProductName() != "PartyService" ||
+					ci.getProductName() != "Rent a cook" || ci.getProductName() != "Mobilebreakfast"){
+					saveInventoryItem(ci);
+				}
+				System.out.println(ci.getProductName());
+				System.out.println(ci.getQuantity());
+			}
+
 			cart.addItemsTo(order);
+
+
+			
 
 			oOrderManagement.payOrder(order);
 			oOrderManagement.completeOrder(order);
@@ -468,16 +504,6 @@ public class OrderController {
 
 
 
-
-	@GetMapping("/orderform5")
-	String orderform5(Model model, Order order4, Mobilebreakfast mobilebreakfast){
-		model.addAttribute("catalog", cCatalog.findByType(ServiceType.MOBILEBREAKFAST));
-		model.addAttribute("option", catalog.findByCategory("mobilebreakfast"));
-		model.addAttribute("mobilebreakfast", mobilebreakfast);
-		model.addAttribute("order", order4);
-		return "orderform5";
-	}
-
 	
 	public void sort(ArrayList<User> list, int n){
 		if (n==0){
@@ -495,5 +521,21 @@ public class OrderController {
 		sort(list, n-1);
 
 	}
+
+	private void saveInventoryItem(CartItem cartItem) {
+
+        Option option = catalog.findByName(cartItem.getProductName()).stream().findFirst().get();
+        UniqueInventoryItem item = inventory.findByProduct(option).get();
+
+
+        Quantity quantityInput = cartItem.getQuantity();
+        if (item.getQuantity().add(quantityInput).isNegative()) {
+            item.decreaseQuantity(item.getQuantity());
+        } else {
+            item.increaseQuantity(quantityInput);
+        }
+
+        inventory.save(item);
+    }
 
 }
