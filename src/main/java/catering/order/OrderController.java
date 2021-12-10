@@ -79,7 +79,9 @@ public class OrderController {
 	private UserRepository userRepository;
 	private IncomeOverview incomeOverview;
 
-	public OrderController(UserRepository userRepository, OrderManagement<Order> oOrderManagement, OrderManagement<CateringOrder> orderManagement, CateringOrderRepository orderRepository, CateringCatalog cCatalog, OptionCatalog catalog, IncomeOverview incomeOverview) {
+	public OrderController(UserRepository userRepository, OrderManagement<Order> oOrderManagement,
+						   OrderManagement<CateringOrder> orderManagement, CateringOrderRepository orderRepository,
+						   CateringCatalog cCatalog, OptionCatalog catalog, IncomeOverview incomeOverview) {
 		this.orderManagement = orderManagement;
 		this.orderRepository = orderRepository;
 
@@ -168,7 +170,9 @@ public class OrderController {
 	}
 
 	@PostMapping("/cartadd1")
-	String addToCart1(Model model, Eventcatering eventcatering, @RequestParam("pid") Ware ware, @RequestParam("number") int number, @ModelAttribute Cart cart, @ModelAttribute ("order") order ord1){
+	String addToCart1(Model model, Eventcatering eventcatering, @RequestParam("pid") Ware ware,
+					  @RequestParam("number") int number, @ModelAttribute Cart cart,
+					  @ModelAttribute ("order") order ord1){
 		cart.clear();
 		int guestcount = number / 10;
 		if (guestcount == 0){
@@ -207,7 +211,9 @@ public class OrderController {
 	}
 
 	@PostMapping("/cartadd2")
-	String addToCart2(Model model, @RequestParam("pid") Ware ware, @RequestParam("number") int number, @ModelAttribute Cart cart, @ModelAttribute ("order") order ord2, Partyservice partyservice){
+	String addToCart2(Model model, @RequestParam("pid") Ware ware, @RequestParam("number") int number,
+					  @ModelAttribute Cart cart, @ModelAttribute ("order") order ord2,
+					  Partyservice partyservice){
 		cart.clear();
 		int guestcount = number / 10;
 		if (guestcount == 0){
@@ -260,8 +266,9 @@ public class OrderController {
 
 
 	@PostMapping("/cartadd3")
-	//String addToCart3(Model model, @RequestParam("pid") ware ware, @RequestParam("number") int number, @ModelAttribute Cart cart , @RequestParam("date") LocalDate date){
-	String addToCart3(Model model, @RequestParam("pid") Ware ware, @RequestParam("number") int number, @ModelAttribute Cart cart, @ModelAttribute ("order") order ord3){
+	String addToCart3(Model model, @RequestParam("pid") Ware ware,
+					  @RequestParam("number") int number, @ModelAttribute Cart cart,
+					  @ModelAttribute ("order") order ord3){
 		cart.clear();
 		int guestcount = number / 5;
 		System.out.println(number);
@@ -276,80 +283,18 @@ public class OrderController {
 		
 		System.out.println(ord3.toString());
 		System.out.println(ord3.getTime());
-		
-		/*ArrayList<User> staffList = new ArrayList<>();
-		Iterable<User> staff = userRepository.getUserByPositionIn(List.of(Position.COOK, Position.EXPERIENCED_WAITER, Position.WAITER));
-		for (User u : staff){
-			System.out.println(u.workCount);
-			System.out.println(u.getUserAccount());
-			System.out.println(u);
-			staffList.add(u);
-		}*/
 
-
-		/*Iterator<User> iStafflist = staffList.iterator();
-		while (iStafflist.hasNext()){
-			User u1 = iStafflist.next();
-			User u2 = iStafflist.next();
-			if (u1.workCount < u2.workCount){
-				lowestWorkcount = u1;
-				u2 = iStafflist.next();
-			}
-			else if (u1.workCount == u2.workCount){
-				lowestWorkcount = u1;
-				u2 = iStafflist.next();
-			}
-			else{
-				lowestWorkcount = u2;
-				u1 = iStafflist.next();
-			}
-		}*/
-		/*System.out.println("--------------------------------------------");
-		for (int i=0; i<staffList.size();i++){
-			staffList.get(i).workCount = i;
-			System.out.println(staffList.get(i));
-			System.out.println(i);
-			System.out.println(staffList.get(i).workCount);
-		}
-		
-		for (int k=0; k>staffList.size()-1; k++){
-			for (int i=0; i>staffList.size()-k; i++){
-				if (staffList.get(i).workCount > staffList.get(k).workCount){
-					Collections.swap(staffList, i, k);
-				}
-				
-			}
-
-		}
-		
-		int count =0;
-		System.out.println(ord3.waitercount);
-		System.out.println(ord3.chefcount);
-		for (User u : staffList){
-			System.out.println(u);
-			count++;
-			System.out.println(count);
-		}*/
-
-		/*if (chefcount <= chefs && waitercount <= waiter){               //Funktion aus Inventar für Personal benötigt
-			System.out.println("Bestellung wird aufgegeben");           // return hinzufügen 
-			return "orderrewview";
-		}
-		else{
-			System.out.println("Bestellung kann nicht aufgegeben werden");
-			return "redirect:/rentacookform";
-
-		*/
 		cart.addOrUpdateItem(ware, Quantity.of(number));
 		model.addAttribute("order", ord3);
 		model.addAttribute("orderOut", new order());
-		//model.addAttribute("date", date);
 		
 		return "orderreview";
 	}
 
 	@PostMapping("/cartadd4")
-	String addToCart4(Model model, @RequestParam("pid") Ware ware, @RequestParam("number") int number, @ModelAttribute Cart cart, @ModelAttribute ("order") order ord4, @ModelAttribute ("mobilebreakfast") Mobilebreakfast mobilebreakfast){
+	String addToCart4(Model model, @RequestParam("pid") Ware ware, @RequestParam("number") int number,
+					  @ModelAttribute Cart cart, @ModelAttribute ("order") order ord4,
+					  @ModelAttribute ("mobilebreakfast") Mobilebreakfast mobilebreakfast){
 		cart.clear();
 		int guestcount = number / 3;
 		if (guestcount == 0){
@@ -369,22 +314,12 @@ public class OrderController {
 		for(Option o : catalog.findByName("Frühstück")){
 			cart.addOrUpdateItem(o, mobilebreakfast.getBreakfast());
 		}
-		
-
-		/*HashMap<Options, Integer> mblist = new HashMap<>();
-		for(Options o : catalog.findAll()){
-			if(o.getName().contains("mobilebreakfast")){
-				mblist.put(o, value);
-			}*/
-		
-
 
 		System.out.println(ord4.toString());
 
 		cart.addOrUpdateItem(ware, Quantity.of(number));
 		model.addAttribute("order", ord4);
 		model.addAttribute("orderOut", new order());
-		//cart.addOrUpdateItem(option, Quantity.of(number2));
 		return "orderreview";
 	}
 
@@ -392,6 +327,7 @@ public class OrderController {
 	String orderreview(){
 		return "orderreview";
 	}
+
 
 	@GetMapping("/eventcateringform")
 	String eventcateringform(Model model, order order1, Eventcatering eventcatering){
@@ -413,18 +349,10 @@ public class OrderController {
 
 	@GetMapping("/rentacookform")
 	String rentacookform(Model model, order order3){
-		/*ArrayList<Option> list1 = new ArrayList<>();
-		for(Option o : catalog.findAll()){
-			if(o.getName().contains("Rent a cook")){
-				list1.add(o);
-			}
-		}*/
 		model.addAttribute("catalog", cCatalog.findByType(ServiceType.RENTACOOK));
 		model.addAttribute("option", catalog.findByCategory("rent a cook"));
 		model.addAttribute("order", order3);
-		//model.addAttribute("catalog", list1);
-		//model.addAttribute("catalog", cCatalog);
-		
+
 		return "rentacookform";
 	}
 
@@ -438,7 +366,8 @@ public class OrderController {
 	}
 
 	@PostMapping("/checkout")
-	String buy(@ModelAttribute Cart cart, @LoggedIn Optional<UserAccount> userAccount, Errors help, @ModelAttribute ("orderOut") order orderOut) {
+	String buy(@ModelAttribute Cart cart, @LoggedIn Optional<UserAccount> userAccount, Errors help,
+			   @ModelAttribute ("orderOut") order orderOut) {
 
 		return userAccount.map(account -> {
 			var order = new Order(account, Cash.CASH);
@@ -464,17 +393,6 @@ public class OrderController {
 			for (User u : staff){
 				staffList.add(u);
 			}
-			
-			//Streamable<User> staffTest = userRepository.getUserByPositionInOrderByWorkcount(List.of(Position.COOK));
-			//System.out.println(staffTest.toList().size());
-
-			/*or (int k=0; k>staffList.size()-1; k++){
-				for (int i=0; i>staffList.size()-k; i++){
-					if (staffList.get(i).workCount > staffList.get(k).workCount){
-						Collections.swap(staffList, i, k);
-					}
-				}
-			}*/
 
 			ArrayList<User> chefList = new ArrayList<>();
 			Streamable<User> chef = userRepository.getUserByPositionIn(List.of(Position.COOK));
@@ -492,52 +410,11 @@ public class OrderController {
 				System.out.println(u);
 			}
 			
-			/*for (int k=0; k>chefList.size()-1; k++){
-				for (int i=0; i>chefList.size()-k; i++){
-					if (chefList.get(i).workCount > chefList.get(k).workCount){
-						Collections.swap(chefList, i, k);
-					}
-				}
-			}*/
-
-			
-			/*for (int i=0; i<orderOut.getWaitercount(); i++){
-				if(i>staffList.size()){
-					break;
-				}
-				orderStaffList.add(staffList.get(i));
-			}
-
-			for (int i=0; i<orderOut.getChefcount(); i++){
-				if(i>chefList.size()){
-					break;
-				}
-				orderStaffList.add(chefList.get(i));
-			}
-			
-			
-			for (int k=0; k>staffList.size()-1; k++){
-				for (int i=0; i>staffList.size()-k; i++){
-					if (staffList.get(i).workCount > staffList.get(k).workCount){
-						Collections.swap(staffList, i, k);
-				}
-				
-			}
-
-		}
-			
-			
-			*/
-
-			
-
 
 			if(chefList.size() >= orderOut.getChefcount() && staffList.size() >= orderOut.getWaitercount()){
 				
 				
 				ArrayList<User> allstaff = new ArrayList<>();
-				//allstaff.addAll(staffList.subList(0, orderOut.getWaitercount()-1));
-				//orderOut.setStafflist(allstaff);
 				for (int i=0; i<orderOut.getChefcount();i++){
 					allstaff.add(chefList.get(i));
 				}
@@ -554,28 +431,16 @@ public class OrderController {
 
 				orderOut.setStafflist(allstaff);
 				System.out.println("llllllllllllllllllll");
-				System.out.println(userRepository.getUserByPositionIn(List.of(Position.EXPERIENCED_WAITER, Position.WAITER,Position.COOK)).toList().size());
+				System.out.println(userRepository.getUserByPositionIn(List.of(Position.EXPERIENCED_WAITER,
+						Position.WAITER,Position.COOK)).toList().size());
 
-				for (User u: userRepository.getUserByPositionIn(List.of(Position.EXPERIENCED_WAITER, Position.WAITER,Position.COOK)).toList()){
+				for (User u: userRepository.getUserByPositionIn(List.of(Position.EXPERIENCED_WAITER,
+						Position.WAITER,Position.COOK)).toList()){
 					System.out.println(u);
 					System.out.println(u.getWorkcount());
 				}
 			}
 
-
-			
-
-			
-
-			
-			
-			
-			/*System.out.println("+++++++++++++++++++++");
-			for (int i=0; i<orderOut.getStafflist().size();i++){
-				System.out.println(orderOut.getStafflist().get(i));
-			}*/
-			
-			
 
 			System.out.println(orderOut.getChefcount());
 			System.out.println(orderOut.getWaitercount());
