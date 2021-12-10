@@ -1,5 +1,4 @@
 package catering.order;
-import org.salespointframework.inventory.QInventoryItem;
 import org.salespointframework.order.*;
 import org.springframework.validation.Errors;
 
@@ -21,39 +20,16 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
-import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
 import java.util.Collections;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Optional;
 
-import org.hibernate.boot.registry.classloading.spi.ClassLoaderService.Work;
-import org.hibernate.jdbc.WorkExecutor;
-import org.javamoney.moneta.Money;
-import org.salespointframework.catalog.Product;
-import org.salespointframework.core.AbstractEntity;
 import org.salespointframework.payment.Cash;
 import org.salespointframework.quantity.Quantity;
-import org.salespointframework.useraccount.UserAccount;
-import org.salespointframework.useraccount.web.LoggedIn;
 import org.springframework.data.util.Streamable;
-import org.springframework.format.annotation.DateTimeFormat;
-import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.util.Assert;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.SessionAttributes;
-import static org.salespointframework.core.Currencies.*;
 
 import catering.catalog.CateringCatalog;
 import catering.catalog.OptionCatalog;
@@ -65,21 +41,20 @@ import catering.catalog.services.Mobilebreakfast;
 import catering.catalog.services.Partyservice;
 import catering.user.Position;
 import catering.user.User;
-import catering.user.UserManagement;
 import catering.user.UserRepository;
 
 @Controller
 //@PreAuthorize(value = "isAuthenticated()")
 public class OrderController {
 	private OrderManagement<CateringOrder> orderManagement;
-	private OrderManagement<Order> oOrderManagement;
+	private OrderManagement<org.salespointframework.order.Order> oOrderManagement;
 	private CateringOrderRepository orderRepository;
 	private CateringCatalog cCatalog;
 	private OptionCatalog catalog;
 	private UserRepository userRepository;
 	private IncomeOverview incomeOverview;
 
-	public OrderController(UserRepository userRepository, OrderManagement<Order> oOrderManagement,
+	public OrderController(UserRepository userRepository, OrderManagement<org.salespointframework.order.Order> oOrderManagement,
 						   OrderManagement<CateringOrder> orderManagement, CateringOrderRepository orderRepository,
 						   CateringCatalog cCatalog, OptionCatalog catalog, IncomeOverview incomeOverview) {
 		this.orderManagement = orderManagement;
@@ -172,7 +147,7 @@ public class OrderController {
 	@PostMapping("/cartadd1")
 	String addToCart1(Model model, Eventcatering eventcatering, @RequestParam("pid") Ware ware,
 					  @RequestParam("number") int number, @ModelAttribute Cart cart,
-					  @ModelAttribute ("order") order ord1){
+					  @ModelAttribute ("order") Order ord1){
 		cart.clear();
 		int guestcount = number / 10;
 		if (guestcount == 0){
@@ -185,7 +160,7 @@ public class OrderController {
 		System.out.println(ord1.toString());
 		cart.addOrUpdateItem(ware, Quantity.of(number));
 		model.addAttribute("order", ord1);
-		model.addAttribute("orderOut", new order());
+		model.addAttribute("orderOut", new Order());
 		for(Option o : catalog.findByName("Servietten")){
 			cart.addOrUpdateItem(o, eventcatering.getServiette());
 		}
@@ -212,7 +187,7 @@ public class OrderController {
 
 	@PostMapping("/cartadd2")
 	String addToCart2(Model model, @RequestParam("pid") Ware ware, @RequestParam("number") int number,
-					  @ModelAttribute Cart cart, @ModelAttribute ("order") order ord2,
+					  @ModelAttribute Cart cart, @ModelAttribute ("order") Order ord2,
 					  Partyservice partyservice){
 		cart.clear();
 		int guestcount = number / 10;
@@ -226,7 +201,7 @@ public class OrderController {
 		System.out.println(ord2.toString());
 		cart.addOrUpdateItem(ware, Quantity.of(number));
 		model.addAttribute("order", ord2);
-		model.addAttribute("orderOut", new order());
+		model.addAttribute("orderOut", new Order());
 
 		for(Option o : catalog.findByName("Servietten")){
 			cart.addOrUpdateItem(o, partyservice.getServiette());
@@ -268,7 +243,7 @@ public class OrderController {
 	@PostMapping("/cartadd3")
 	String addToCart3(Model model, @RequestParam("pid") Ware ware,
 					  @RequestParam("number") int number, @ModelAttribute Cart cart,
-					  @ModelAttribute ("order") order ord3){
+					  @ModelAttribute ("order") Order ord3){
 		cart.clear();
 		int guestcount = number / 5;
 		System.out.println(number);
@@ -286,14 +261,14 @@ public class OrderController {
 
 		cart.addOrUpdateItem(ware, Quantity.of(number));
 		model.addAttribute("order", ord3);
-		model.addAttribute("orderOut", new order());
+		model.addAttribute("orderOut", new Order());
 		
 		return "orderreview";
 	}
 
 	@PostMapping("/cartadd4")
 	String addToCart4(Model model, @RequestParam("pid") Ware ware, @RequestParam("number") int number,
-					  @ModelAttribute Cart cart, @ModelAttribute ("order") order ord4,
+					  @ModelAttribute Cart cart, @ModelAttribute ("order") Order ord4,
 					  @ModelAttribute ("mobilebreakfast") Mobilebreakfast mobilebreakfast){
 		cart.clear();
 		int guestcount = number / 3;
@@ -319,7 +294,7 @@ public class OrderController {
 
 		cart.addOrUpdateItem(ware, Quantity.of(number));
 		model.addAttribute("order", ord4);
-		model.addAttribute("orderOut", new order());
+		model.addAttribute("orderOut", new Order());
 		return "orderreview";
 	}
 
@@ -330,7 +305,7 @@ public class OrderController {
 
 
 	@GetMapping("/eventcateringform")
-	String eventcateringform(Model model, order order1, Eventcatering eventcatering){
+	String eventcateringform(Model model, Order order1, Eventcatering eventcatering){
 		model.addAttribute("catalog", cCatalog.findByType(ServiceType.EVENTCATERING));
 		model.addAttribute("option", catalog.findByCategory("eventcatering"));
 		model.addAttribute("eventcatering", eventcatering);
@@ -339,7 +314,7 @@ public class OrderController {
 	}
 
 	@GetMapping("/partyserviceform")
-	String partyserviceform(Model model, order order2, Partyservice partyservice){
+	String partyserviceform(Model model, Order order2, Partyservice partyservice){
 		model.addAttribute("catalog", cCatalog.findByType(ServiceType.PARTYSERVICE));
 		model.addAttribute("option", catalog.findByCategory("partyservice"));
 		model.addAttribute("partyservice", partyservice);
@@ -348,7 +323,7 @@ public class OrderController {
 	}
 
 	@GetMapping("/rentacookform")
-	String rentacookform(Model model, order order3){
+	String rentacookform(Model model, Order order3){
 		model.addAttribute("catalog", cCatalog.findByType(ServiceType.RENTACOOK));
 		model.addAttribute("option", catalog.findByCategory("rent a cook"));
 		model.addAttribute("order", order3);
@@ -357,7 +332,7 @@ public class OrderController {
 	}
 
 	@GetMapping("/mobilebreakfastform")
-	String mobilebreakfastform(Model model, order order4, Mobilebreakfast mobilebreakfast){
+	String mobilebreakfastform(Model model, Order order4, Mobilebreakfast mobilebreakfast){
 		model.addAttribute("catalog", cCatalog.findByType(ServiceType.MOBILEBREAKFAST));
 		model.addAttribute("option", catalog.findByCategory("mobilebreakfast"));
 		model.addAttribute("mobilebreakfast", mobilebreakfast);
@@ -367,10 +342,10 @@ public class OrderController {
 
 	@PostMapping("/checkout")
 	String buy(@ModelAttribute Cart cart, @LoggedIn Optional<UserAccount> userAccount, Errors help,
-			   @ModelAttribute ("orderOut") order orderOut) {
+			   @ModelAttribute ("orderOut") Order orderOut) {
 
 		return userAccount.map(account -> {
-			var order = new Order(account, Cash.CASH);
+			var order = new org.salespointframework.order.Order(account, Cash.CASH);
 
 			cart.addItemsTo(order);
 
@@ -461,16 +436,13 @@ public class OrderController {
 			if (ci.getProductName().contains("Rent a cook")){
 				cart.clear();
 				return "redirect:/rentacookform";
-			}
-			else if (ci.getProductName().contains("Eventcatering")){
+			}else if (ci.getProductName().contains("Eventcatering")){
 				cart.clear();
 				return "redirect:/eventcateringform";
-			}
-			else if (ci.getProductName().contains("PartyService")){
+			}else if (ci.getProductName().contains("PartyService")){
 				cart.clear();
 				return "redirect:/partyserviceform";
-			}
-			else if (ci.getProductName().contains("Mobilebreakfast")){
+			}else if (ci.getProductName().contains("Mobilebreakfast")){
 				cart.clear();
 				return "redirect:/mobilebreakfastform";
 			}
@@ -483,7 +455,7 @@ public class OrderController {
 
 
 	@GetMapping("/orderform5")
-	String orderform5(Model model, order order4, Mobilebreakfast mobilebreakfast){
+	String orderform5(Model model, Order order4, Mobilebreakfast mobilebreakfast){
 		model.addAttribute("catalog", cCatalog.findByType(ServiceType.MOBILEBREAKFAST));
 		model.addAttribute("option", catalog.findByCategory("mobilebreakfast"));
 		model.addAttribute("mobilebreakfast", mobilebreakfast);

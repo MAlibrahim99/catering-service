@@ -34,7 +34,8 @@ public class UserController {
 		if(userManagement.emailAlreadyExists(form.getEmail())){
 			model.addAttribute("emailAddressAlreadyExists", true);
 		}
-		if(model.containsAttribute("usernameAlreadyExists") || model.containsAttribute("emailAddressAlreadyExists")){
+		if(model.containsAttribute("usernameAlreadyExists") ||
+				model.containsAttribute("emailAddressAlreadyExists")){
 			return "register";
 		}
 
@@ -56,7 +57,8 @@ public class UserController {
 
 	@GetMapping("/profile/{user-name}")
 	@PreAuthorize(value="hasAnyRole('CUSTOMER', 'ADMIN')")
-	public String sendProfilePage(@PathVariable("user-name") String accountId, @LoggedIn Optional<UserAccount> account, Model model){
+	public String sendProfilePage(@PathVariable("user-name") String accountId,
+								  @LoggedIn Optional<UserAccount> account, Model model){
 		if(account.isPresent()){
 			model.addAttribute("user", userManagement.findByUsername(accountId));
 			return "profile";
