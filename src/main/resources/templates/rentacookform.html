@@ -25,6 +25,16 @@
                     <input type="number" name="number" min="1" max="100" step="1" value="0" th:value="1"><br/><br/>
                     <p>Falls Sie noch weitere Wünsche haben, fügen Sie dies bitte hinzu:</p>
 
+                        <label for="serviette">Anzahl der Servietten:</label><br/>
+                        <input id="serviette" type="number" name="serviette" min="0" max="10" step="1" value="0" required th:value="${rentacook.serviette}"/><br/><br/>
+                        <label for="dishes">Anzahl des Geschirrs:</label><br/>
+                        <input id="dishes" type="number" name="dishes" min="0" max="10" step="1" value="0" required th:value="${rentacook.dishes}"/><br/><br/>
+                        <label for="flowers">Anzahl der zusätzlichen Blumen:</label><br/>
+                        <input id="flowers" type="number" name="flowers" min="0" max="10" step="1" value="0" required th:value="${rentacook.flowers}"/><br/><br/>
+                        <label for="decoration">Anzahl der zusätzlichen Dekoraton:</label><br/>
+                        <input id="decoration" type="number" name="decoration" min="0" max="10" step="1" value="0" required th:value="${rentacook.decoration}"/><br/><br/>
+                        <label for="tablecloth">Anzahl der zusätzlichen Tischtücher:</label><br/>
+                        <input id="tablecloth" type="number" name="tablecloth" min="0" max="10" step="1" value="0" required th:value="${rentacook.tablecloth}"/><br/><br/>
                     <label for="date">Datum:</label><br/>
                     <input id="date" type="date" name="date" required th:value="${order.date}"/><br/><br/>
                     <p>Zeitraum:</p>

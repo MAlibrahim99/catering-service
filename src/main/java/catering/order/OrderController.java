@@ -1,4 +1,5 @@
 package catering.order;
+import catering.catalog.services.*;
 import org.salespointframework.order.*;
 import org.springframework.validation.Errors;
 
@@ -36,9 +37,6 @@ import catering.catalog.OptionCatalog;
 import catering.catalog.Option;
 import catering.catalog.Ware;
 import catering.catalog.Ware.ServiceType;
-import catering.catalog.services.Eventcatering;
-import catering.catalog.services.Mobilebreakfast;
-import catering.catalog.services.Partyservice;
 import catering.user.Position;
 import catering.user.User;
 import catering.user.UserRepository;
@@ -241,7 +239,7 @@ public class OrderController {
 
 
 	@PostMapping("/cartadd3")
-	String addToCart3(Model model, @RequestParam("pid") Ware ware,
+	String addToCart3(Model model, @RequestParam("pid") Ware ware, Rentacook rentacook,
 					  @RequestParam("number") int number, @ModelAttribute Cart cart,
 					  @ModelAttribute ("order") Order ord3){
 		cart.clear();
@@ -258,6 +256,22 @@ public class OrderController {
 		
 		System.out.println(ord3.toString());
 		System.out.println(ord3.getTime());
+
+		for(Option o : catalog.findByName("Servietten")){
+			cart.addOrUpdateItem(o, rentacook.getServiette());
+		}
+		for(Option o : catalog.findByName("Geschirr")){
+			cart.addOrUpdateItem(o, rentacook.getDishes());
+		}
+		for(Option o : catalog.findByName("Blumen")){
+			cart.addOrUpdateItem(o, rentacook.getDishes());
+		}
+		for(Option o : catalog.findByName("Deokration")){
+			cart.addOrUpdateItem(o, rentacook.getDecoration());
+		}
+		for(Option o : catalog.findByName("Tischtücher")){
+			cart.addOrUpdateItem(o, rentacook.getTablecloth());
+		}
 
 		cart.addOrUpdateItem(ware, Quantity.of(number));
 		model.addAttribute("order", ord3);
@@ -323,9 +337,10 @@ public class OrderController {
 	}
 
 	@GetMapping("/rentacookform")
-	String rentacookform(Model model, Order order3){
+	String rentacookform(Model model, Order order3, Rentacook rentacook){
 		model.addAttribute("catalog", cCatalog.findByType(ServiceType.RENTACOOK));
-		model.addAttribute("option", catalog.findByCategory("rent a cook"));
+		model.addAttribute("option", catalog.findByCategory("rentacook"));
+		model.addAttribute("rentacook", rentacook);
 		model.addAttribute("order", order3);
 
 		return "rentacookform";
