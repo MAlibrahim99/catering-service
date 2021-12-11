@@ -28,7 +28,6 @@ public class UserController {
 	@PostMapping("/register")
 	public String registerUser(@Valid @ModelAttribute("registrationForm") RegistrationForm form,
 							   @RequestParam(value = "action") String action, Model model){
-		System.out.println("register user coming on");
 		// wenn name oder email bereits besetzt ist, gebe nutzer meldung zurück
 		if(userManagement.usernameAlreadyExists(form.getUsername())){
 			model.addAttribute("usernameAlreadyExists", true);
@@ -36,20 +35,19 @@ public class UserController {
 		if(userManagement.emailAlreadyExists(form.getEmail())){
 			model.addAttribute("emailAddressAlreadyExists", true);
 		}
-		if(model.containsAttribute("usernameAlreadyExists") || model.containsAttribute("emailAddressAlreadyExists")){
+		if(model.containsAttribute("usernameAlreadyExists") ||
+				model.containsAttribute("emailAddressAlreadyExists")){
 			return "register";
 		}
 
-		// entweder personal oder normalen Nutzer erstellen
-		switch(action){
-			case "register-staff" : userManagement.createUser(form, UserManagement.STAFF_ROLE);
-				model.addAttribute("userName", form.getLastName());
-				return "redirect:/register";
-			case "register-user" : userManagement.createUser(form, UserManagement.CUSTOMER_ROLE);
-				model.addAttribute("userName", form.getLastName());
-				return "welcome";
-			default: return "register";
+		if(action.equals("register-staff")){
+			userManagement.createUser(form, UserManagement.STAFF_ROLE);
+		}else{
+			userManagement.createUser(form, UserManagement.CUSTOMER_ROLE);
+			model.addAttribute("userName", form.getLastName());
+			return "index";
 		}
+		return "redirect:/register";
 	}
 
 	@GetMapping("/register")
@@ -60,18 +58,28 @@ public class UserController {
 
 	@GetMapping("/profile/{user-name}")
 	@PreAuthorize(value="hasAnyRole('CUSTOMER', 'ADMIN')")
-	public String sendProfilePage(@PathVariable("user-name") String accountId, @LoggedIn Optional<UserAccount> account, Model model){
-		System.out.println("User id: " + accountId);
-//		account.ifPresent(userAccount -> System.out.println(userAccount.getUsername()));
+	public String sendProfilePage(@PathVariable("user-name") String accountId,
+								  @LoggedIn Optional<UserAccount> account, Model model){
 		if(account.isPresent()){
-//			model.addAttribute("user", userManagement.findByUsername(account.get().getUsername()));
 			model.addAttribute("user", userManagement.findByUsername(accountId));
 			return "profile";
 		}
 		return "login";
 	}
+	
+	@GetMapping("/customer-list")
+	@PreAuthorize(value = "isAuthenticated()")
+	public String showCustomerList(@LoggedIn UserAccount account, Model model){
+		if(account.hasRole(Role.of("ADMIN"))) {
+			Iterable<User> customers = userRepository.getUserByPositionIn(List.of(Position.NONE));
+			model.addAttribute("allCustomers", customers);
+			return "customer-list";
+		}else {
+			return "login";
+		}
+	}
 
-	@GetMapping("/staff")
+	@GetMapping("/staff-list")
 	@PreAuthorize(value="isAuthenticated()")
 	public String showStaffList(@LoggedIn UserAccount account, Model model){
 		if(account.hasRole(Role.of("ADMIN"))){
@@ -133,4 +141,5 @@ public class UserController {
 	public String sendTest() {
 		return "test";
 	}
+
 }

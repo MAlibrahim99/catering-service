@@ -11,4 +11,7 @@ public interface UserRepository extends CrudRepository<User, Long> {
 	Streamable<User> findAll();
 
 	Streamable<User> getUserByPositionIn(Collection<Position> positions);
+
+	//Streamable<User> getUserByPositionInOrderByWorkcount(Collection<Position> positions);
+
 }

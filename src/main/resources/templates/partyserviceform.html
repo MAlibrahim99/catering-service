@@ -1,0 +1,70 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout.html}">
+    <head>
+        <meta charset="UTF-8">
+        <title>Partyservice Bestellformular</title>
+    </head>
+    <body>
+        <div th:replace="navigation :: navigation"></div>
+        <section layout:fragment="content">
+        	<h2 class="underlined-text">Partyservice Bestellformular</h2>
+            <div class="ui card" th:each="ware : ${catalog}">
+                <div>
+                <h3>TEST</h3>
+                <h3 class="card-title" th:href="@{/ware/{id}(id=${ware.id})}" th:text="${ware.name}">Partyservice</h3>
+                <hr>
+                <p class="card-text" th:text="${ware.description}">This is a desctiptive text telling you why you would wanna buy this book this should be limited as noone likes to read essays.</p>
+                <hr>
+                <h4 class="card-text" th:text="${ware.price}">Grundpreis: 200,00€</h4>
+                <hr>
+                <form class="ui form" method="post" th:action="@{/cartadd2}">
+                    <input type="hidden" name="pid" value="0" th:value="${ware.id}"/>   <!--ware.id = ServiceType-->
+                    <label for="number">Anzahl der Gäste:</label><br/>
+                    <input type="number" name="number" min="1" max="100" step="1" value="0" th:value="1"><br/><br/>
+                    <p>Falls Sie noch weitere Wünsche haben, fügen Sie dies bitte hinzu:</p>
+                    <div>
+                        <label for="serviette">Anzahl der Servietten:</label><br/>
+                        <input id="serviette" type="number" name="serviette" min="0" max="10" step="1" value="0" required th:value="${partyservice.serviette}"/><br/><br/>
+                        <label for="dishes">Anzahl des Geschirrs:</label><br/>
+                        <input id="dishes" type="number" name="dishes" min="0" max="10" step="1" value="0" required th:value="${partyservice.dishes}"/><br/><br/>
+                        <label for="hamplate">Anzahl der zusätzlichen Schinkenplatten:</label><br/>
+                        <input id="hamplate" type="number" name="hamplate" min="0" max="10" step="1" value="0" required th:value="${partyservice.hamplate}"/><br/><br/>
+                        <label for="cheeseplate">Anzahl der zusätzlichen Käseplatten:</label><br/>
+                        <input id="cheeseplate" type="number" name="cheeseplate" min="0" max="10" step="1" value="0" required th:value="${partyservice.cheeseplate}"/><br/><br/>
+                        <label for="eggplate">Anzahl der zusätzlichen Eierplatten:</label><br/>
+                        <input id="eggplate" type="number" name="eggplate" min="0" max="10" step="1" value="0" required th:value="${partyservice.eggplate}"/><br/><br/>
+                        <label for="fishplate">Anzahl der zusätzlichen Fischplatten:</label><br/>
+                        <input id="fishplate" type="number" name="fishplate" min="0" max="10" step="1" value="0" required th:value="${partyservice.fishplate}"/><br/><br/>
+                        <label for="fruitplate">Anzahl der zusätzlichen Früchteplatten:</label><br/>
+                        <input id="fruitplate" type="number" name="fruitplate" min="0" max="10" step="1" value="0" required th:value="${partyservice.fruitplate}"/><br/><br/>
+                        <label for="saladplate">Anzahl der zusätzlichen Salatplatten:</label><br/>
+                        <input id="saladplate" type="number" name="saladplate" min="0" max="10" step="1" value="0" required th:value="${partyservice.saladplate}"/><br/><br/>
+                        <label for="sushi">Anzahl des zusätzlichen Sushis:</label><br/>
+                        <input id="sushi" type="number" name="sushi" min="0" max="10" step="1" value="0" required th:value="${partyservice.sushi}"/><br/><br/>
+                        <label for="pizza">Anzahl der zusätzlichen Pizzen:</label><br/>
+                        <input id="pizza" type="number" name="pizza" min="0" max="10" step="1" value="0" required th:value="${partyservice.pizza}"/><br/><br/>
+                        <label for="seafood">Anzahl der zusätzlichen Meeresfrüchte:</label><br/>
+                        <input id="seafood" type="number" name="seafood" min="0" max="10" step="1" value="0" required th:value="${partyservice.seafood}"/><br/><br/>
+                        
+                        
+                    </div>
+                    <label for="date">Datum:</label><br/>
+                    <input id="date" type="date" name="date" required th:field="${order.date}"/><br/><br/>
+                    <p>Zeitraum:</p>
+                    <input type="radio" id="frühs" name="time" value="Frühs" required th:value="${order.time}">
+                    <label for="Frühs">Frühs</label><br/>
+                    <input type="radio" id="mittag" name="time" value="Mittag" required th:value="${order.time}">>
+                    <label for="Mittag">Mittag</label><br/>
+                    <input type="radio" id="abends" name="time" value="Abends" required th:value="${order.time}">>
+                    <label for="Abends">Abends</label><br/><br/>
+                    <label for="location">Veranstaltungsort</label><br/>
+                    <input type="text" name="location" required th:value="${order.location}"/><br/><br/>
+                    <button class="btn btn-outline-primary" type="submit" th:text="#{shop.addToBasket}"> Kaufen</button>
+                </form>
+                </div>
+            </div>
+        </section>
+    </body>
+</html>

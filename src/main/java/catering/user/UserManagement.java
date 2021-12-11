@@ -24,7 +24,8 @@ public class UserManagement {
 	public static final Role STAFF_ROLE = Role.of("STAFF");
 	public static final Role ADMIN_ROLE = Role.of("ADMIN");
 
-	public UserManagement(UserRepository users, @Qualifier("persistentUserAccountManagement") UserAccountManagement accountManagement) {
+	public UserManagement(UserRepository users,
+						  @Qualifier("persistentUserAccountManagement") UserAccountManagement accountManagement) {
 		if(users == null || accountManagement == null){
 			throw new IllegalArgumentException("userRepository or userAccountManager can not be assigned to null");
 		}
@@ -40,10 +41,8 @@ public class UserManagement {
 		UserAccount userAccount = accountManagement.create(form.getUsername(), password, form.getEmail(), roles);
 		userAccount.setFirstname(form.getFirstName());
 		userAccount.setLastname(form.getLastName());
-
-		if(Arrays.asList(roles).contains(CUSTOMER_ROLE)) {//wenn Nutzer Kundenrolle hat, dann hat er keine Position
-			return users.save(new User(userAccount, "Sie haben noch keine Adresse gegeben"));
-		}return  users.save(new User(userAccount, "Sie haben noch keine Adresse gegeben", form.getPosition()));
+		
+		return  users.save(new User(userAccount, "Sie haben noch keine Adresse gegeben", form.getPosition()));
 	}
 
 
@@ -92,7 +91,7 @@ public User updateUser(ProfileForm data, User user) {
 			throw new NullPointerException("Role can not be null");
 		}
 		Role userRole = Role.of(role);
-		List<User> allUsers = (List<User>) users.findAll().toList();
+		List<User> allUsers = users.findAll().toList();
 		List<User> filteredUsers = new ArrayList<>();
 		for(User user: allUsers){ // wenn es Konten mit der gegebenen Rolle gibt, dann füge sie in die Liste
 			if(user.getUserAccount().getRoles().stream().findFirst().isPresent()){

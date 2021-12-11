@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout.html}">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="${headline}"></title>
+
+
+</head>
+<body>
+    <div th:replace="navigation :: navigation"></div>
+    <section layout:fragment="content">
+
+        <div class="image">
+            <img th:src="@{${picture}}"/>
+        </div>
+
+        <h1 class="info-3" align="left" th:text="${headline}">Überschrift</h1>
+
+
+        <article class="article" th:text="${info}"></article>
+
+
+        <button type="button" class="offers">Angebote</button>
+        <div class="content" >
+            <div class="ui cards">
+                <div class="ui card" th:each="option : ${catalog}">
+                    <div>
+                        <a class="header"  th:text="${option.name}">Käseplatte</a>
+                    </div>
+
+                    <div>
+                        <div class="description" th:text="${option.price}">9.99 €</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+
+        <div class="abstand">
+            <a th:href="@{${orderformular}}"><h3 align="left" th:text="#{catalog.formular}">Bestellformular einsehen</h3></a>
+        </div>
+
+        <div class="abstand">
+            <a th:href="@{/edit/{price}(price=${price})}" sec:authorize="hasRole('ADMIN')"><h3 align="left" th:text="#{catalog.editprices}"></h3></a>
+        </div>
+
+
+
+
+
+        <script>
+            var coll = document.getElementsByClassName("offers");
+            var i;
+
+            for (i = 0; i < coll.length; i++) {
+                coll[i].addEventListener("click", function() {
+                    this.classList.toggle("active");
+                    var content = this.nextElementSibling;
+                    if (content.style.display === "block") {
+                        content.style.display = "none";
+                    } else {
+                        content.style.display = "block";
+                    }
+                });
+            }
+        </script>
+
+    </section>
+</body>
+</html>

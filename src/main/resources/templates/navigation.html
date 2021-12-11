@@ -1,57 +1,60 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
-      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorate="~{layout}"><!--kann weg und Zeilen 7 und 8 wieder zurück -->
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 <head>
-<!--    <link th:href="@{/resources/css/all.css}" rel="stylesheet"-->
-<!--          href="../static/resources/css/all.css" type="text/css"/>-->
     <meta http-equiv="content-type" content="text/html; charset=UTF-8"/>
+
 </head>
 <body>
+
     <div th:fragment="navigation">
+
         <h1 id="logo-name"><a th:href="@{/}">Cateringservice <em>Mampf</em></a></h1>
-    <nav>
+        <nav>
 
+            <a class="link" th:href="@{/register}" th:text="#{nav.register}" sec:authorize="isAnonymous()">Registrierung</a>
 
-            <a class="tooltip" th:href="@{/register}"
-               th:text="#{nav.register}" sec:authorize="isAnonymous()">Registrierung</a>
-
-            <div class="tooltip"><a th:href="@{/offer}" th:text="#{nav.offer}">Angebot</a>
+            <div class="link"><a th:href="@{/offer}" th:text="#{nav.offer}">Angebot</a>
                 <span class="tooltiptext">
                     <a th:href="@{/eventcatering}" th:text="#{nav.eventCatalog}">Eventcatering</a>
                     <a th:href="@{/partyservice}" th:text="#{nav.partyCatalog}">Partyservice</a>
-                    <a th:href="@{/rentacook}" th:text="#{nav.rentacookCatalog}">RentACook</a>
+                    <a th:href="@{/rentacook}" th:text="#{nav.rentacookCatalog}">Rent-A-Cook</a>
                     <a th:href="@{/mobilebreakfast}" th:text="#{nav.mobilebreakfastCatalog}">MobileBreakfast</a>
                 </span>
             </div>
-            <a class="tooltip" th:href="@{/Bestellverlauf}"
+
+            <a class="link" th:href="@{order-history}"
                th:text="#{nav.bestellverlauf}">Bestellverlauf</a>
 
-            <a class="tooltip" th:href="@{/order-list}"
+            <a class="link" th:href="@{/order-list}"
                th:text="#{nav.orderlist}">Bestellliste</a>
 
-            <a class="tooltip" th:href="@{/calender}"
+            <a class="link" th:href="@{/calender}"
                th:text="#{nav.calendar}">Kalender</a>
 
-            <a class="tooltip" th:href="@{/inventory}"
+            <a class="link" th:href="@{/inventory}"
                th:text="#{nav.inventory}">Inventar</a>
 
-            <a class="tooltip" th:href="@{/customer-list}"
+            <a class="link" th:href="@{/customer-list}"
                th:text="#{nav.customerlist}">Kundenliste</a>
 
-            <a class="tooltip" th:href="@{/personalliste}"
+            <a class="link" th:href="@{/staff-list}"
                th:text="#{nav.stafflist}">Personalliste</a>
 
-            <a class="tooltip" th:href="@{/income-overview-month}"
-               th:text="#{nav.incomeoverview}">Einkommensübersicht</a>
+            <a class="link" th:href="@{/income-overview}"
+               th:text="#{nav.incomeoverview}" sec:authorize="hasRole('ADMIN')">Einkommensübersicht</a>
 
-            <a class="tooltip" th:href="@{/profile/{username}(username=${#authentication.name})}" sec:authorize="hasRole('CUSTOMER')"
+            <a class="link" th:href="@{/profile/{username}(username=${#authentication.name})}" sec:authorize="hasRole('CUSTOMER')"
                th:text="#{nav.profile}">Profile</a>
 
-            <a class="tooltip" sec:authorize="isAnonymous()" th:href="@{/login}"  th:text="#{nav.login}">Login</a>
-            <a class="tooltip" sec:authorize="isAuthenticated()" th:href="@{/logout}"  th:text="#{nav.logout}">Logout</a>
-    </nav>
+
+
+            <a class="link" sec:authorize="isAnonymous()" th:href="@{/login}" th:text="#{nav.login}">Login</a>
+            <a class="link" sec:authorize="isAuthenticated()" th:href="@{/logout}" th:text="#{nav.logout}">Logout</a>
+
+
+        </nav>
     </div>
 </body>
 </html>

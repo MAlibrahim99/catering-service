@@ -1,0 +1,29 @@
+= Protokoll Gruppe 27
+
+Treffen am 17.11.2021
+
+Ort:      Online (Discord) +
+Beginn:   16:00 Uhr +
+Ende:     20:00 Uhr
+
+__Schriftführer:__ Lennart Obermüller
+
+*Nächstes Treffen:* +
+
+
+__Teilnehmer:__
+//Tabellarisch oder Aufzählung, Kennzeichnung von Teilnehmern mit besonderer Rolle (z.B. Kunde)
+
+- Lennart Obermüller (Scrum Master)
+- Mohamad Alibrahim
+- Rosa Splittgerber
+
+== Bemerkungen
+n.V.
+
+== Ereignisse
+- initiales Template der Programmdateien auf main-Branch erstellt
+- Aufteilung der Programmierarbeit in einzelne Aufgaben
+- Erstellung eines Aufgabenplans und Verteilung der Aufgaben mit einem GitHub-Project
+
+== Aktueller Stand
