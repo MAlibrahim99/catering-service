@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<!--xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+layout:decorate="~{layout}">-->
+<head>
+</head>
+<body>
+<!--<div th:replace="navigation :: navigation"></div>-->
+<!--<section layout:fragment="content">-->
+<h2 class="underlined-text">Bestellliste</h2>
+<table>
+  <thead>
+  <tr>
+    <th>Name</th>
+    <th>Termin</th>
+    <th>Kosten</th>
+    <th>Details</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr th:each="order: ${ordersCompleted}">
+    <td th:text="${order}"></td>
+    <td th:text="Datum fehlt noch"></td>
+    <td th:text="${order.total}"></td>
+    <td th:text="${order.orderStatus}"></td>
+  </tr>
+  </tbody>
+</table>
+<!--</section>-->
+</body>
+</html>	<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<!--xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+layout:decorate="~{layout}">-->
+<head>
+</head>
+<body>
+<!--<div th:replace="navigation :: navigation"></div>-->
+<!--<section layout:fragment="content">-->
+<h2 class="underlined-text">Bestellliste</h2>
+<table>
+  <thead>
+  <tr>
+    <th>Name</th>
+    <th>Termin</th>
+    <th>Kosten</th>
+    <th>Details</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr th:each="order: ${ordersCompleted}">
+    <td th:text="${order}"></td>
+    <td th:text="Datum fehlt noch"></td>
+    <td th:text="${order.total}"></td>
+    <td th:text="${order.orderStatus}"></td>
+  </tr>
+  </tbody>
+</table>
+<!--</section>-->
+</body>
+</html>

@@ -2,6 +2,7 @@ package catering.order;
 
 import org.salespointframework.order.OrderIdentifier;
 import org.salespointframework.order.OrderManagement;
+import org.salespointframework.order.OrderStatus;
 import org.salespointframework.useraccount.UserAccount;
 import org.salespointframework.useraccount.web.LoggedIn;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -59,5 +60,15 @@ public class OrderController {
 		}else{
 			return "redirect:/login";
 		}
+	}
+
+	@GetMapping("/order-list")
+	String list(Model model){
+		model.addAttribute("ordersCompleted", orderManagement.findBy(OrderStatus.COMPLETED));
+		model.addAttribute("ordersPaid", orderManagement.findBy(OrderStatus.PAID));
+		//for (Order order : orderManagement.findBy(OrderStatus.COMPLETED)){
+		//	System.out.println(order.toString());
+		//}
+		return "order-list";
 	}
 }
