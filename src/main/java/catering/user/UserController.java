@@ -113,9 +113,19 @@ public class UserController {
 		return "welcome";
 	}
 	
-	@GetMapping("/delete-profile")
-	public String deleteUserAccount() {
-		return "login";
+	@RequestMapping(value="/delete-account/{id}", method=RequestMethod.GET)
+	@PreAuthorize(value="isAuthenticated()")
+	public String deleteUseraccount(@PathVariable ("id") long userId, @LoggedIn UserAccount user) {
+		if(user.hasRole(Role.of("CUSTOMER"))) {
+			userManagement.deleteUser(userId);
+			return "redirect:/logout";
+		}
+		if(user.hasRole(Role.of("ADMIN"))) {
+			userManagement.deleteUser(userId);
+			return "redirect:/staff-list";
+		}else {
+		return "access-denied";
+		}
 	}
 
 	@GetMapping("/test")

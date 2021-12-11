@@ -36,11 +36,15 @@
             <input type="hidden" name="name" th:value="*{userAccount.lastname}">
             <input type="hidden" name="email" th:value="*{userAccount.email}">
             <input type="hidden" name="address" th:value="*{address}">
-            <button class="ui black basic button" type="submit">Edit Profile</button>
+            <button class="ui black basic button" type="submit">Edit Profile</button> 
         </form>
-        <a th:href="@{/delete-account}" class="ui red basic button">Delete Account</a>
+    </div>
+    <div>
+        <form action="#" th:action="@{'/delete-account/{id}'(id=${user.id})}" th:method="get" >
+        <button type="submit" class="ui red basic button">
+        Delete
+        </button>
     </div>
 </section>
 </body>
 </html>
-
