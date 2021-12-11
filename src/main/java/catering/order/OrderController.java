@@ -66,9 +66,6 @@ public class OrderController {
 	String list(Model model){
 		model.addAttribute("ordersCompleted", orderManagement.findBy(OrderStatus.COMPLETED));
 		model.addAttribute("ordersPaid", orderManagement.findBy(OrderStatus.PAID));
-		//for (Order order : orderManagement.findBy(OrderStatus.COMPLETED)){
-		//	System.out.println(order.toString());
-		//}
 		return "order-list";
 	}
 }
