@@ -42,8 +42,8 @@
             <a class="link" th:href="@{/staff-list}"
                th:text="#{nav.stafflist}">Personalliste</a>
 
-            <a class="link" th:href="@{/income-overview-month}"
-               th:text="#{nav.incomeoverview}">Einkommensübersicht</a>
+            <a class="link" th:href="@{/income-overview}"
+               th:text="#{nav.incomeoverview}" sec:authorize="hasRole('ADMIN')">Einkommensübersicht</a>
 
             <a class="link" th:href="@{/profile/{username}(username=${#authentication.name})}" sec:authorize="hasRole('CUSTOMER')"
                th:text="#{nav.profile}">Profile</a>

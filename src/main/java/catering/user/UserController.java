@@ -1,11 +1,11 @@
 package catering.user;
 
+import catering.user.forms.ProfileForm;
 import catering.user.forms.RegistrationForm;
 import org.salespointframework.useraccount.Role;
 import org.salespointframework.useraccount.UserAccount;
 import org.salespointframework.useraccount.web.LoggedIn;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.config.authentication.UserServiceBeanDefinitionParser;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -28,7 +28,6 @@ public class UserController {
 	@PostMapping("/register")
 	public String registerUser(@Valid @ModelAttribute("registrationForm") RegistrationForm form,
 							   @RequestParam(value = "action") String action, Model model){
-		System.out.println("register user coming on");
 		// wenn name oder email bereits besetzt ist, gebe nutzer meldung zurück
 		if(userManagement.usernameAlreadyExists(form.getUsername())){
 			model.addAttribute("usernameAlreadyExists", true);
@@ -36,20 +35,19 @@ public class UserController {
 		if(userManagement.emailAlreadyExists(form.getEmail())){
 			model.addAttribute("emailAddressAlreadyExists", true);
 		}
-		if(model.containsAttribute("usernameAlreadyExists") || model.containsAttribute("emailAddressAlreadyExists")){
+		if(model.containsAttribute("usernameAlreadyExists") ||
+				model.containsAttribute("emailAddressAlreadyExists")){
 			return "register";
 		}
 
-		// entweder personal oder normalen Nutzer erstellen
-		switch(action){
-			case "register-staff" : userManagement.createUser(form, UserManagement.STAFF_ROLE);
-				model.addAttribute("userName", form.getLastName());
-				return "redirect:/register";
-			case "register-user" : userManagement.createUser(form, UserManagement.CUSTOMER_ROLE);
-				model.addAttribute("userName", form.getLastName());
-				return "index";
-			default: return "register";
+		if(action.equals("register-staff")){
+			userManagement.createUser(form, UserManagement.STAFF_ROLE);
+		}else{
+			userManagement.createUser(form, UserManagement.CUSTOMER_ROLE);
+			model.addAttribute("userName", form.getLastName());
+			return "index";
 		}
+		return "redirect:/register";
 	}
 
 	@GetMapping("/register")
@@ -60,11 +58,9 @@ public class UserController {
 
 	@GetMapping("/profile/{user-name}")
 	@PreAuthorize(value="hasAnyRole('CUSTOMER', 'ADMIN')")
-	public String sendProfilePage(@PathVariable("user-name") String accountId, @LoggedIn Optional<UserAccount> account, Model model){
-		System.out.println("User id: " + accountId);
-//		account.ifPresent(userAccount -> System.out.println(userAccount.getUsername()));
+	public String sendProfilePage(@PathVariable("user-name") String accountId,
+								  @LoggedIn Optional<UserAccount> account, Model model){
 		if(account.isPresent()){
-//			model.addAttribute("user", userManagement.findByUsername(account.get().getUsername()));
 			model.addAttribute("user", userManagement.findByUsername(accountId));
 			return "profile";
 		}
@@ -75,11 +71,6 @@ public class UserController {
 	@PreAuthorize(value = "isAuthenticated()")
 	public String showCustomerList(@LoggedIn UserAccount account, Model model){
 		if(account.hasRole(Role.of("ADMIN"))) {
-			Iterable<User> customers = userRepository.getUserByPositionIn(List.of(Position.NONE));
-			model.addAttribute("allCustomers", customers);
-			return "customer-list";
-		}
-		if(account.hasRole(Role.of("STAFF"))) {
 			Iterable<User> customers = userRepository.getUserByPositionIn(List.of(Position.NONE));
 			model.addAttribute("allCustomers", customers);
 			return "customer-list";
@@ -102,9 +93,53 @@ public class UserController {
 		}
 	}
 
+	@GetMapping("/edit-profile")
+	public String showProfileForm(@ModelAttribute("profileForm") ProfileForm data, Model model) {
+		model.addAttribute("profileForm", data);
+		return "edit-profile";
+	}
+	
+	@PostMapping("/update-profile")
+	public String updateUserAccount(@Valid @ModelAttribute("profileForm") ProfileForm data, Model model){
+		if(userManagement.usernameAlreadyExists(data.getUsername())){
+			model.addAttribute("usernameAlreadyExists", true);
+		}
+		if(userManagement.emailAlreadyExists(data.getEmail())){
+			model.addAttribute("emailAddressAlreadyExists", true);
+		}
+		if(model.containsAttribute("usernameAlreadyExists") || model.containsAttribute("emailAddressAlreadyExists")){
+			return "profile";
+		} else {
+//		userManagement.updateUser(data, data.getAddress());
+		return "welcome";
+		}
+	}
+	
+	@GetMapping("/update-profile")
+	public String update(ProfileForm data, Model model) {
+		model.addAttribute("profileForm", data);
+		return "welcome";
+	}
+	
+	@RequestMapping(value="/delete-account/{id}", method=RequestMethod.GET)
+	@PreAuthorize(value="isAuthenticated()")
+	public String deleteUseraccount(@PathVariable ("id") long userId, @LoggedIn UserAccount user) {
+		if(user.hasRole(Role.of("CUSTOMER"))) {
+			userManagement.deleteUser(userId);
+			return "redirect:/logout";
+		}
+		if(user.hasRole(Role.of("ADMIN"))) {
+			userManagement.deleteUser(userId);
+			return "redirect:/staff-list";
+		}else {
+		return "access-denied";
+		}
+	}
+
 	@GetMapping("/test")
 	@PreAuthorize("isAuthenticated()")
 	public String sendTest() {
 		return "test";
 	}
+
 }

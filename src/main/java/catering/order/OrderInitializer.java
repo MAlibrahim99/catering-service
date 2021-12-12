@@ -28,10 +28,10 @@ public class OrderInitializer implements DataInitializer {
 	@Override
 	public void initialize() {
 		// wenn Konto da ist, und dieses Konto Bestellungen hat dann überspringe Initailieserien
-		if (userManagement.findByUsername("user 1") != null) {
-			if (!orderManagement.findBy(userManagement.findByUsername("user 1").getUserAccount()).isEmpty()) {
+		if (userManagement.findByUsername("user 1") != null
+				&& !orderManagement.findBy(userManagement.findByUsername("user 1").getUserAccount()).isEmpty()) {
 				return;
-			}
+
 		}
 		PaymentMethod paymentMethod = new DebitCharge("some description");
 

@@ -46,7 +46,7 @@
         </div>
 
         <div class="abstand">
-            <a th:href="@{/edit/{price}(price=${price})}" ><h3 align="left" th:text="#{catalog.editprices}"></h3></a>
+            <a th:href="@{/edit/{price}(price=${price})}" sec:authorize="hasRole('ADMIN')"><h3 align="left" th:text="#{catalog.editprices}"></h3></a>
         </div>
 
 

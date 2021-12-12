@@ -7,6 +7,12 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.Assert;
+import org.salespointframework.inventory.UniqueInventory;
+import org.salespointframework.inventory.UniqueInventoryItem;
+import org.salespointframework.quantity.Quantity;
+import org.salespointframework.time.BusinessTime;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -17,15 +23,27 @@ import java.util.List;
 import org.javamoney.moneta.Money;
 
 
+
+
 @Controller
 public class CatalogController {
 
+	private static final Quantity NONE = Quantity.of(0);
+
+	private final CateringCatalog cCatalog;
+	private final UniqueInventory<UniqueInventoryItem> inventory;
+	private final BusinessTime businessTime;
 	private final OptionCatalog catalog;
 
-	public CatalogController(OptionCatalog catalog) {
+
+	CatalogController(CateringCatalog cateringCatalog, UniqueInventory<UniqueInventoryItem> inventory,
+					  BusinessTime businessTime, OptionCatalog catalog) {
+
+		this.cCatalog = cateringCatalog;
+		this.inventory = inventory;
+		this.businessTime = businessTime;
 		this.catalog = catalog;
 	}
-
 
 	@GetMapping("/")
 	public String index() {

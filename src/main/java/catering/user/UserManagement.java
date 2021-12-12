@@ -1,5 +1,6 @@
 package catering.user;
 
+import catering.user.forms.ProfileForm;
 import catering.user.forms.RegistrationForm;
 import org.salespointframework.useraccount.*;
 import org.salespointframework.useraccount.Password.UnencryptedPassword;
@@ -40,12 +41,24 @@ public class UserManagement {
 		UserAccount userAccount = accountManagement.create(form.getUsername(), password, form.getEmail(), roles);
 		userAccount.setFirstname(form.getFirstName());
 		userAccount.setLastname(form.getLastName());
-
-		if(Arrays.asList(roles).contains(CUSTOMER_ROLE)) {//wenn Nutzer Kundenrolle hat, dann hat er keine Position
-			return users.save(new User(userAccount, "Sie haben noch keine Adresse gegeben"));
-		}return  users.save(new User(userAccount, "Sie haben noch keine Adresse gegeben", form.getPosition()));
+		
+		return  users.save(new User(userAccount, "Sie haben noch keine Adresse gegeben", form.getPosition()));
 	}
 
+
+public User updateUser(ProfileForm data, User user) {
+		if(data == null) {
+			throw new IllegalArgumentException("User can not be created with value null of ProfileForm");
+		}
+		UserAccount userAccount = user.getUserAccount();
+		userAccount.setFirstname(data.getFirstName());
+		userAccount.setLastname(data.getLastName());
+		userAccount.setEmail(data.getEmail());
+		user.setAddress(data.getAddress());
+		return users.save(user);
+	}
+	
+	
 	public boolean deleteUser(long id){
 		if(id < 0 || !users.existsById(id)){
 			return false;

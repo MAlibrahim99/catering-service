@@ -57,6 +57,7 @@ public class Catering {
 					.defaultSuccessUrl(CONTEXT_ROOT, true).and()
 //					.failureUrl("/error").and()
 					.logout().logoutUrl("/logout").logoutSuccessUrl(CONTEXT_ROOT);
+				
 		}
 	}
 }
