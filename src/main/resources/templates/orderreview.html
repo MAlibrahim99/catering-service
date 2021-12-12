@@ -2,52 +2,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 
     <body>
-        <section layout:fragment="content">
-            <div th:unless="${cart.empty}">
-            <table class="table">
-                <thead>
-                    <tr>
-                    <th scope="col">Datum</th>
-                    <th scope="col">Kosten</th>
-                    <th scope="col">Details</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td th:text="${order.date}">Test1</td>
-                        <td th:text="${order.time}">Test2</td>
-                        <td th:text="${order.location}">Test3</td>
-                    </tr>
-                    
-                    <tr>
-                        <td>Last Action Hero</td>
-                        <td>10</td>
-                        <td>10 Euro</td>
-                    </tr>
-                    <tr>
-                        <td>Last Action Hero</td>
-                        <td>10</td>
-                        <td>10 Euro</td>
-                    </tr>
-                    <tr>
-                        <td>Last Action Hero</td>
-                        <td>10</td>
-                        <td>10 Euro</td>
-                    </tr>
-                    </tbody>
-                </tbody>
-            </table>
-            </div>    
-            <div th:unless="${cart.empty}"></div> <!--Möglichkeit über localhost/8080/cart verhindern nicht vergessen-->
-            <h2 th:if="${cart.empty}" th:text="#{cart.empty}">Leer</h2>
-        </section>
+        
 
         <div class="table-responsive">
             <table class="table table-hover align-middle">
                 <thead>
                     <tr>
                         <th th:text="#{cart.service}">Service</th>
-                        <th th:text="#{cart.description}">Beschreibung</th>
                         <th th:text="#{cart.price}">Preis</th>
                     </tr>
                 </thead>
@@ -67,6 +28,9 @@
                 </tfoot>
             </table>
             <form class="ui form" method="post" th:action="@{/clearcart}">  
+                
+                
+
                 <button class="btn btn-secondary" type="submit" th:text="#{cart.removeItem}">  <!--clear cart-->
                 </button>
             </form>
@@ -83,7 +47,7 @@
                 <input type="hidden" name="location"  th:value="${order.location}"/>
                 <input type="hidden" name="chefcount"  th:value="${order.chefcount}"/>
                 <input type="hidden" name="waitercount"  th:value="${order.waitercount}"/>
-                <input type="hidden" name="staffList"  th:value="${staffList}"/>
+                <input type="hidden" name="staffList"  th:value="${order.staffList}"/>
                 <button type="submit" class="btn btn-outline-primary btn-md" th:text="#{cart.buy}">Buy Now</button>
             </form>
         </div>
