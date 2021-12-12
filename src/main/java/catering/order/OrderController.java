@@ -230,6 +230,13 @@ public class OrderController {
 		ord2.setChefcount(chefcount);
 		ord2.setWaitercount(waitercount);
 		System.out.println(ord2.toString());
+
+		Streamable<User> chefcountRep = userRepository.getUserByPositionIn(List.of(Position.COOK)); 
+		Streamable<User> waitercountRep = userRepository.getUserByPositionIn(List.of(Position.WAITER, Position.EXPERIENCED_WAITER));
+		if(chefcountRep.toList().size() < chefcount || waitercountRep.toList().size() < waitercount){
+			return "redirect:/partyserviceform";
+		}
+
 		cart.addOrUpdateItem(ware, Quantity.of(number));
 		model.addAttribute("order", ord2);
 		model.addAttribute("orderOut", new Order());
@@ -302,6 +309,12 @@ public class OrderController {
 		System.out.println(ord3.toString());
 		System.out.println(ord3.getTime());
 
+		Streamable<User> chefcountRep = userRepository.getUserByPositionIn(List.of(Position.COOK)); 
+		Streamable<User> waitercountRep = userRepository.getUserByPositionIn(List.of(Position.WAITER, Position.EXPERIENCED_WAITER));
+		if(chefcountRep.toList().size() < chefcount || waitercountRep.toList().size() < waitercount){
+			return "redirect:/rentacookform";
+		}
+
 		for(Option o : catalog.findByName("Servietten")){
 			cart.addOrUpdateItem(o, rentacook.getServiette());
 		}
@@ -336,6 +349,13 @@ public class OrderController {
 		}
 		int chefcount = 1;
         int waitercount = guestcount;
+
+		Streamable<User> chefcountRep = userRepository.getUserByPositionIn(List.of(Position.COOK)); 
+		Streamable<User> waitercountRep = userRepository.getUserByPositionIn(List.of(Position.WAITER, Position.EXPERIENCED_WAITER));
+		if(chefcountRep.toList().size() < chefcount || waitercountRep.toList().size() < waitercount){
+			return "redirect:/eventcateringform";
+		}
+		
 		ord4.setChefcount(chefcount);
 		ord4.setWaitercount(waitercount);
 		System.out.println(mobilebreakfast.getDishes());
@@ -413,7 +433,7 @@ public class OrderController {
 
 			
 			System.out.println("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx");
-			for (CartItem ci : cart){ 
+			/*for (CartItem ci : cart){ 
 				System.out.println("x");
 				long amount = orderOut.getChefcount()/4*10;
 				if (ci.getProductName().equals("Eventcatering")){
@@ -466,7 +486,7 @@ public class OrderController {
 				
 				System.out.println(ci.getProductName());
 				System.out.println(ci.getQuantity());
-			}
+			}*/
 			
 			cart.addItemsTo(order);
 
