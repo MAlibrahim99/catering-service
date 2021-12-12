@@ -6,6 +6,25 @@
         <meta charset="UTF-8">
         <title>Eventcatering Bestellformular</title>
     </head>
+        <script>
+            var today = new Date();
+            var dd = today.getDate();
+            var mm = today.getMonth() + 1; //January is 0!
+            var yyyy = today.getFullYear();
+
+            if (dd < 10) {
+            dd = '0' + dd;
+            }
+
+            if (mm < 10) {
+            mm = '0' + mm;
+            } 
+
+            today = yyyy + '-' + mm + '-' + dd;
+            document.getElementById("date").setAttribute("min", today);
+
+        </script>
+
     <body>
         <div th:replace="navigation :: navigation"></div>
         <section layout:fragment="content">
@@ -17,6 +36,7 @@
                 <hr>
                 <p class="card-text" th:text="${ware.description}">This is a desctiptive text telling you why you would wanna buy this book this should be limited as noone likes to read essays.</p>
                 <hr>
+                <h4>Grundpreis pro Person:</h4>
                 <h4 class="card-text" th:text="${ware.price}">Grundpreis: 100,00€</h4>
                 <hr>
                 <form class="ui form" method="post" th:action="@{/cartadd1}">
@@ -26,28 +46,32 @@
                     <p>Falls Sie noch weitere Wünsche haben, fügen Sie dies bitte hinzu:</p>
                     <div>
                         <label for="serviette">Anzahl der Servietten:</label><br/>
-                        <input id="serviette" type="number" name="serviette" min="0" max="10" step="1" value="0" required th:value="${eventcatering.serviette}"/><br/><br/>
+                        <input id="serviette" type="number" name="serviette" min="0" max="100" step="1" value="0" required th:value="${eventcatering.serviette}"/><br/><br/>
                         <label for="dishes">Anzahl des Geschirrs:</label><br/>
-                        <input id="dishes" type="number" name="dishes" min="0" max="10" step="1" value="0" required th:value="${eventcatering.dishes}"/><br/><br/>
+                        <input id="dishes" type="number" name="dishes" min="0" max="100" step="1" value="0" required th:value="${eventcatering.dishes}"/><br/><br/>
                         <label for="flowers">Anzahl der zusätzlichen Blumen:</label><br/>
-                        <input id="flowers" type="number" name="flowers" min="0" max="10" step="1" value="0" required th:value="${eventcatering.flowers}"/><br/><br/>
+                        <input id="flowers" type="number" name="flowers" min="0" max="100" step="1" value="0" required th:value="${eventcatering.flowers}"/><br/><br/>
                         <label for="decoration">Anzahl der zusätzlichen Dekoraton:</label><br/>
-                        <input id="decoration" type="number" name="decoration" min="0" max="10" step="1" value="0" required th:value="${eventcatering.decoration}"/><br/><br/>
+                        <input id="decoration" type="number" name="decoration" min="0" max="100" step="1" value="0" required th:value="${eventcatering.decoration}"/><br/><br/>
                         <label for="tablecloth">Anzahl der zusätzlichen Tischtücher:</label><br/>
-                        <input id="tablecloth" type="number" name="tablecloth" min="0" max="10" step="1" value="0" required th:value="${eventcatering.tablecloth}"/><br/><br/>
+                        <input id="tablecloth" type="number" name="tablecloth" min="0" max="100" step="1" value="0" required th:value="${eventcatering.tablecloth}"/><br/><br/>
                         <label for="buffet">Anzahl für Buffet:</label><br/>
-                        <input id="buffet" type="number" name="buffet" min="0" max="10" step="1" value="0" required th:value="${eventcatering.buffet}"/><br/><br/>
+                        <input id="buffet" type="number" name="buffet" min="0" max="100" step="1" value="0" required th:value="${eventcatering.buffet}"/><br/><br/>
                         <label for="galadinner">Anzahl für Galadinner:</label><br/>
-                        <input id="galadinner" type="number" name="galadinner" min="0" max="10" step="1" value="0" required th:value="${eventcatering.galadinner}"/><br/><br/>
+                        <input id="galadinner" type="number" name="galadinner" min="0" max="100" step="1" value="0" required th:value="${eventcatering.galadinner}"/><br/><br/>
+                        <label for="alk">Anzahl für alkoholische Getränke:</label><br/>
+                        <input id="alk" type="number" name="alk" min="0" max="100" step="1" value="0" required th:value="${eventcatering.alk}"/><br/><br/>
+                        <label for="noalk">Anzahl für alkohofreie Getränke:</label><br/>
+                        <input id="noalk" type="number" name="noalk" min="0" max="100" step="1" value="0" required th:value="${eventcatering.noalk}"/><br/><br/>
                     </div>
                     <label for="date">Datum:</label><br/>
-                    <input id="date" type="date" name="date" required th:field="${order.date}"/><br/><br/>
-                    <p>Zeitraum:</p>
-                    <input type="radio" id="frühs" name="time" value="Frühs" required th:value="${order.time}">
+                   <!-- <input id="date" type="date" name="date" required th:field="${order.date}"/><br/><br/>-->
+                    <input id="date" type='date' min='2021-01-01' max='2100-13-13' required th:field="${order.date}"/>
+                    <input type="radio" id="frühs" name="time" value="Frühs" required th:value="${order.time}"/>
                     <label for="Frühs">Frühs</label><br/>
-                    <input type="radio" id="mittag" name="time" value="Mittag" required th:value="${order.time}">
+                    <input type="radio" id="mittag" name="time" value="Mittag" required th:value="${order.time}"/>
                     <label for="Mittag">Mittag</label><br/>
-                    <input type="radio" id="abends" name="time" value="Abends" required th:value="${order.time}">
+                    <input type="radio" id="abends" name="time" value="Abends" required th:value="${order.time}"/>
                     <label for="Abends">Abends</label><br/><br/>
                     <label for="location">Veranstaltungsort</label><br/>
                     <input type="text" name="location" required th:value="${order.location}"/><br/><br/>

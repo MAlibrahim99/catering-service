@@ -17,6 +17,7 @@
                 <hr>
                 <p class="card-text" th:text="${ware.description}">This is a desctiptive text telling you why you would wanna buy this book this should be limited as noone likes to read essays.</p>
                 <hr>
+                <h4>Grundpreis pro Person:</h4>
                 <h4 class="card-text" th:text="${ware.price}">Grundpreis: 50,00€</h4>
                 <hr>
                 <form class="ui form" method="post" th:action="@{/cartadd3}">

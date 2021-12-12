@@ -17,6 +17,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.SessionAttributes;
 
 import antlr.debug.Event;
 
@@ -27,7 +28,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
-
+import java.util.stream.Stream;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -51,6 +52,7 @@ import catering.user.UserRepository;
 
 @Controller
 //@PreAuthorize(value = "isAuthenticated()")
+@SessionAttributes("cart")
 public class OrderController {
 	private OrderManagement<CateringOrder> orderManagement;
 	private OrderManagement<org.salespointframework.order.Order> oOrderManagement;
@@ -168,6 +170,17 @@ public class OrderController {
 		ord1.setChefcount(chefcount);
 		ord1.setWaitercount(waitercount);
 		System.out.println(ord1.toString());
+		Boolean enough = true;
+
+
+		Streamable<User> chefcountRep = userRepository.getUserByPositionIn(List.of(Position.COOK)); 
+		Streamable<User> waitercountRep = userRepository.getUserByPositionIn(List.of(Position.WAITER, Position.EXPERIENCED_WAITER));
+		if(chefcountRep.toList().size() < chefcount || waitercountRep.toList().size() < waitercount){
+			enough = false;
+			return "redirect:/eventcateringform";
+		}
+
+
 		cart.addOrUpdateItem(ware, Quantity.of(number));
 		model.addAttribute("order", ord1);
 		model.addAttribute("orderOut", new Order());
@@ -193,6 +206,12 @@ public class OrderController {
 		}
 		for(Option o : catalog.findByName("Galadinner")){
 			cart.addOrUpdateItem(o, eventcatering.getGaladinner());
+		}
+		for(Option o : catalog.findByName("Alkoholische Getränke")){
+			cart.addOrUpdateItem(o, eventcatering.getAlk());
+		}
+		for(Option o : catalog.findByName("Alkoholfreie Getränke")){
+			cart.addOrUpdateItem(o, eventcatering.getNoalk());
 		}
 		return "orderreview";
 	}
@@ -248,6 +267,12 @@ public class OrderController {
 		}
 		for(Option o : catalog.findByName("Meeresfrüchte")){
 			cart.addOrUpdateItem(o, partyservice.getSeafood());
+		}
+		for(Option o : catalog.findByName("Alkoholische Getränke")){
+			cart.addOrUpdateItem(o, partyservice.getAlk());
+		}
+		for(Option o : catalog.findByName("Alkoholfreie Getränke")){
+			cart.addOrUpdateItem(o, partyservice.getNoalk());
 		}
 
 		System.out.println("ppppppppppppppppppppp");
@@ -323,6 +348,9 @@ public class OrderController {
 		for(Option o : catalog.findByName("Frühstück")){
 			cart.addOrUpdateItem(o, mobilebreakfast.getBreakfast());
 		}
+		for(Option o : catalog.findByName("Alkoholfreie Getränke")){
+			cart.addOrUpdateItem(o, mobilebreakfast.getNoalk());
+		}
 
 		System.out.println(ord4.toString());
 
@@ -383,24 +411,70 @@ public class OrderController {
 		return userAccount.map(account -> {
 			var order = new org.salespointframework.order.Order(account, Cash.CASH);
 
-
+			
 			System.out.println("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx");
 			for (CartItem ci : cart){ 
 				System.out.println("x");
-				if(ci.getProductName() != "Eventcatering" ||ci.getProductName() != "PartyService" ||
-					ci.getProductName() != "Rent a cook" || ci.getProductName() != "Mobilebreakfast"){
-					saveInventoryItem(ci);
+				long amount = orderOut.getChefcount()/4*10;
+				if (ci.getProductName().equals("Eventcatering")){
+					saveInventoryItem(catalog.findByName("Blumen").stream().findFirst().get(), amount);
+					saveInventoryItem(catalog.findByName("Servietten").stream().findFirst().get(), amount);
+					saveInventoryItem(catalog.findByName("Dekoration").stream().findFirst().get(), amount);
+					saveInventoryItem(catalog.findByName("Geschirr").stream().findFirst().get(), amount);
+					saveInventoryItem(catalog.findByName("Tischtücher").stream().findFirst().get(), amount/6);
+					saveInventoryItem(catalog.findByName("Buffet").stream().findFirst().get(), amount);
+					saveInventoryItem(catalog.findByName("Galadinner").stream().findFirst().get(), amount);
+					saveInventoryItem(catalog.findByName("Alkoholfreie Getränke").stream().findFirst().get(), amount);
+					saveInventoryItem(catalog.findByName("Alkoholische Getränke").stream().findFirst().get(), amount);
+					}
+				else if(ci.getProductName().equals("Partyservice")){
+					saveInventoryItem(catalog.findByName("Servietten").stream().findFirst().get(), amount);
+					saveInventoryItem(catalog.findByName("Geschirr").stream().findFirst().get(), amount);
+					saveInventoryItem(catalog.findByName("Schinkenplatte").stream().findFirst().get(), amount/5);
+					saveInventoryItem(catalog.findByName("Käseplatte").stream().findFirst().get(), amount/3);
+					saveInventoryItem(catalog.findByName("Eierplatte").stream().findFirst().get(), amount/3);
+					saveInventoryItem(catalog.findByName("Fischplatte").stream().findFirst().get(), amount/6);
+					saveInventoryItem(catalog.findByName("Obstplatte").stream().findFirst().get(), amount/4);
+					saveInventoryItem(catalog.findByName("Salatplatte").stream().findFirst().get(), amount/4);
+					saveInventoryItem(catalog.findByName("Sushi-Abend").stream().findFirst().get(), amount/10);
+					saveInventoryItem(catalog.findByName("Pizza-Runde").stream().findFirst().get(), amount/10);
+					saveInventoryItem(catalog.findByName("Meeresfrüchte-Menü").stream().findFirst().get(), amount/10);
+					saveInventoryItem(catalog.findByName("Torten-Auswahl").stream().findFirst().get(), amount/10);
+					saveInventoryItem(catalog.findByName("Alkoholfreie Getränke").stream().findFirst().get(), amount);
+					saveInventoryItem(catalog.findByName("Alkoholische Getränke").stream().findFirst().get(), amount);
 				}
+				else if(ci.getProductName().equals("Rent a cook")){
+					saveInventoryItem(catalog.findByName("Servietten").stream().findFirst().get(), amount);
+					saveInventoryItem(catalog.findByName("Geschirr").stream().findFirst().get(), amount);
+					saveInventoryItem(catalog.findByName("Blumen").stream().findFirst().get(), amount);
+					saveInventoryItem(catalog.findByName("Dekoration").stream().findFirst().get(), amount);
+					saveInventoryItem(catalog.findByName("Tischtücher").stream().findFirst().get(), amount/6);
+					
+
+				}
+				else if(ci.getProductName().equals("Mobilebreakfast")){
+					saveInventoryItem(catalog.findByName("Servietten").stream().findFirst().get(), amount);
+					saveInventoryItem(catalog.findByName("Geschirr").stream().findFirst().get(), amount);
+					saveInventoryItem(catalog.findByName("Alkoholfreie Getränke").stream().findFirst().get(), amount);
+					saveInventoryItem(catalog.findByName("Frühstück").stream().findFirst().get(), amount);
+				}
+				
+				
+					
+				
+				
+				
 				System.out.println(ci.getProductName());
 				System.out.println(ci.getQuantity());
 			}
-
+			
 			cart.addItemsTo(order);
 
 
 			
 
 			oOrderManagement.payOrder(order);
+			System.out.print(order.getOrderStatus());
 			oOrderManagement.completeOrder(order);
 
 
@@ -522,18 +596,20 @@ public class OrderController {
 
 	}
 
-	private void saveInventoryItem(CartItem cartItem) {
+	private void saveInventoryItem(Option option, long amount) {
 
-        Option option = catalog.findByName(cartItem.getProductName()).stream().findFirst().get();
+		/*Option option;
+		if (cartItem.getProductName() == "Eventcatering" || cartItem.getProductName() == "PartyService" ||
+			cartItem.getProductName() == "Rent a cook" || cartItem.getProductName() == "Mobilebreakfast"){
+
+			}*/ 
+        //Option option = catalog.findByName(cartItem.getProductName()).stream().findFirst().get(); 
         UniqueInventoryItem item = inventory.findByProduct(option).get();
 
 
-        Quantity quantityInput = cartItem.getQuantity();
-        if (item.getQuantity().add(quantityInput).isNegative()) {
+        Quantity quantityInput = Quantity.of(amount);
+        
             item.decreaseQuantity(item.getQuantity());
-        } else {
-            item.increaseQuantity(quantityInput);
-        }
 
         inventory.save(item);
     }
