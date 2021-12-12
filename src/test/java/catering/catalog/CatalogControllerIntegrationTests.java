@@ -26,6 +26,13 @@ class CatalogControllerIntegrationTests {
 	}
 
 	@Test
+	void showsOption() throws Exception {
+		mvc.perform(get("/partyservice")) //
+				.andExpect(status().isOk())
+				.andExpect(content().string(containsString("Servietten")));
+	}
+
+	@Test
 	void sampleMvcIntegrationTest() throws Exception {
 
 		mvc.perform(get("/mobilebreakfast")). //
