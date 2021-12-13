@@ -9,6 +9,8 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.HashMap;
@@ -62,10 +64,35 @@ public class OrderController {
 		}
 	}
 
-	@GetMapping("/order-list")
-	String list(Model model){
-		model.addAttribute("ordersCompleted", orderManagement.findBy(OrderStatus.COMPLETED));
-		model.addAttribute("ordersPaid", orderManagement.findBy(OrderStatus.PAID));
+	@PostMapping("/setstatus")
+	String list2(@RequestParam("status") String status){
+
+		System.out.println(status);
+		return "redirect:/order-list/" + status;
+	}
+
+	@GetMapping("/order-list/{status}")
+	String list(Model model, @PathVariable("status") OrderStatus status){
+
+		Iterable<CateringOrder> orders = orderManagement.findBy(status);
+		model.addAttribute("orders", orders);
+
+
+		/*Iterable<CateringOrder> ordersOpen = orderManagement.findBy(OrderStatus.OPEN);
+		model.addAttribute("ordersOpen", ordersOpen);
+		Iterable<CateringOrder> ordersPaid = orderManagement.findBy(OrderStatus.PAID);
+		model.addAttribute("ordersPaid", ordersPaid);
+		Iterable<CateringOrder> ordersCompleted = orderManagement.findBy(OrderStatus.COMPLETED);
+		model.addAttribute("ordersCompleted", ordersCompleted);
+		Iterable<CateringOrder> ordersCancelled = orderManagement.findBy(OrderStatus.CANCELLED);
+		model.addAttribute("ordersCancelled", ordersCancelled); */
 		return "order-list";
+	}
+
+	@GetMapping("/order-details/{order-id}")
+	String details(Model model, @PathVariable("order-id") OrderIdentifier parameter){
+		model.addAttribute("order", orderManagement.get(parameter).get());
+		model.addAttribute("account", orderManagement.get(parameter));
+		return "order-details";
 	}
 }
