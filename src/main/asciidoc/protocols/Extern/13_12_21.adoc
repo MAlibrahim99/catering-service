@@ -1,0 +1,35 @@
+= Protokoll Gruppe 27
+
+Treffen am Mo. 13.12.2021
+
+Ort:      Online (BBB) +
+Beginn:   15:00 Uhr +
+Ende:     15:30 Uhr
+
+__Schriftführer:__ Mohamad Alibrahim
+
+*Nächstes Treffen:* +
+20.12.2021, 15:00 Uhr, Online (BBB)
+
+__Teilnehmer:__
+//Tabellarisch oder Aufzählung, Kennzeichnung von Teilnehmern mit besonderer Rolle (z.B. Kunde)
+
+- Phillipp Zschiedrich (Tutor)
+- Lennart Obermüller (Scrum Master)
+- Dan Nguyen
+- Konrad Schneider
+- Lisa-Marie Müller
+- Mohamad Alibrahim
+- Rosa Splittgerber
+
+== Bemerkungen
+n.V.
+
+== Ereignisse
+- Was ist bis her geschehen
+- Fragen an Tutor gestellt
+- Hinweis auf Unittests vom Tutor erhalten
+
+== Aktueller Stand
+- Fertigstellung der Musskriterien, Unittests und Javadokumantation in +
+den etwickelten Klassen.
