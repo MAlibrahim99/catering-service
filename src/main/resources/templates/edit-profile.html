@@ -8,22 +8,27 @@
 </head>
 <body>
 <section layout:fragment="content">
-    <h2 class="underlined-text">Profil</h2>
+    <h2 class="underlined-text">Profil bearbeiten</h2>
     <form class="ui form container" th:action="@{/update-profile}" method="post" th:object="${profileForm}">
     <table>
         <tr>
             <td>Vorname:</td>
-            <td ><input type="text" th:field="*{firstName}" required></td>
+            <td><input type="text" name="firstName" th:field="*{firstName}" required></td>
         </tr>
         <tr>
             <td>Nachname:</td>
-            <td ><input type="text" th:field="*{lastName}" required></td>
+            <td ><input type="text" name="lastName" th:field="*{lastName}" required></td>
         </tr>
-        
+         <div class="ui red message ten wide field" th:if="${usernameAlreadyExists}"
+              th:text="#{update.name.exists.error}">User name already exists
+        </div>
         <tr>
             <td>E-Mail:</td>
-            <td ><input type="email" th:field="*{email}" required></td>
+            <td ><input type="email" name="email" th:field="*{email}" required></td>
         </tr>
+        <div class="ui red message" th:if="${emailAddressAlreadyExists}"
+             th:text="#{update.email.exists.error}">Email already exists
+        </div>
         <tr>
         <td>Adresse:</td>
         <td ><input type="text" th:field="*{address}"></td>
