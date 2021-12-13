@@ -55,9 +55,11 @@ public User updateUser(ProfileForm data, User user) {
 		userAccount.setLastname(data.getLastName());
 		userAccount.setEmail(data.getEmail());
 		user.setAddress(data.getAddress());
+		
 		return users.save(user);
 	}
 	
+
 	
 	public boolean deleteUser(long id){
 		if(id < 0 || !users.existsById(id)){
@@ -81,6 +83,22 @@ public User updateUser(ProfileForm data, User user) {
 				}
 			}
 			return null;
+	}
+	
+	public User findByEmail(String email) {
+		if(email == null) {
+			throw new NullPointerException("Id can not be enull");
+		}
+		if(email.isEmpty()) {
+			throw new IllegalArgumentException("Id can not be empty");
+		}
+		List<User> allUsers = users.findAll().toList();
+		for(User u: allUsers) {
+			if(u.getUserAccount().getEmail().equals(email)) {
+				return u;
+			}
+		}
+		return null;
 	}
 
 	public Streamable<User> findAllByRole(String role){
