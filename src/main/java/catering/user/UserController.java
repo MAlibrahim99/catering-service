@@ -100,7 +100,8 @@ public class UserController {
 	}
 	
 	@PostMapping("/update-profile")
-	public String updateUserAccount(@Valid @ModelAttribute("profileForm") ProfileForm data, User user, @LoggedIn UserAccount account, Model model){
+	public String updateUserAccount(@Valid @ModelAttribute("profileForm") ProfileForm data,  @LoggedIn UserAccount account, Model model){
+		User user = userManagement.findByEmail(account.getEmail());
 		if (!account.getUsername().equals(data.getUsername())) {
 			if(userManagement.usernameAlreadyExists(data.getUsername())){
 				model.addAttribute("usernameAlreadyExists", true);
@@ -116,12 +117,12 @@ public class UserController {
 			return "edit-profile";
 		}
 		userManagement.updateUser(data, user);
-		return "redirect:/profile";
+		return "index";
 		
 	}
 	
 	
-	@RequestMapping(value="/delete-account/{id}", method=RequestMethod.GET)
+	@GetMapping("/delete-account/{id}")
 	@PreAuthorize(value="isAuthenticated()")
 	public String deleteUseraccount(@PathVariable ("id") long userId, @LoggedIn UserAccount user) {
 		if(user.hasRole(Role.of("CUSTOMER"))) {
