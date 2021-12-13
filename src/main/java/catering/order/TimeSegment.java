@@ -1,4 +1,4 @@
-package catering.catalog;
+package catering.order;
 
 
 public enum TimeSegment {
