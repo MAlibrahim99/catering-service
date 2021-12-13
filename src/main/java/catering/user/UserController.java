@@ -100,26 +100,26 @@ public class UserController {
 	}
 	
 	@PostMapping("/update-profile")
-	public String updateUserAccount(@Valid @ModelAttribute("profileForm") ProfileForm data, Model model){
-		if(userManagement.usernameAlreadyExists(data.getUsername())){
-			model.addAttribute("usernameAlreadyExists", true);
+	public String updateUserAccount(@Valid @ModelAttribute("profileForm") ProfileForm data, User user, @LoggedIn UserAccount account, Model model){
+		if (!account.getUsername().equals(data.getUsername())) {
+			if(userManagement.usernameAlreadyExists(data.getUsername())){
+				model.addAttribute("usernameAlreadyExists", true);
+			}
 		}
-		if(userManagement.emailAlreadyExists(data.getEmail())){
-			model.addAttribute("emailAddressAlreadyExists", true);
+		if (!account.getEmail().equals(data.getEmail())) {
+			if(userManagement.emailAlreadyExists(data.getEmail())){
+				model.addAttribute("emailAddressAlreadyExists", true);
+			}
 		}
-		if(model.containsAttribute("usernameAlreadyExists") || model.containsAttribute("emailAddressAlreadyExists")){
-			return "profile";
-		} else {
-//		userManagement.updateUser(data, data.getAddress());
-		return "welcome";
+		if(model.containsAttribute("usernameAlreadyExists") ||
+				model.containsAttribute("emailAddressAlreadyExists")){
+			return "edit-profile";
 		}
+		userManagement.updateUser(data, user);
+		return "redirect:/profile";
+		
 	}
 	
-	@GetMapping("/update-profile")
-	public String update(ProfileForm data, Model model) {
-		model.addAttribute("profileForm", data);
-		return "welcome";
-	}
 	
 	@RequestMapping(value="/delete-account/{id}", method=RequestMethod.GET)
 	@PreAuthorize(value="isAuthenticated()")
