@@ -65,7 +65,7 @@ public class CateringOrder extends Order {
 		return completionDate;
 	}
 
-	public TimeSegement getTime() {
+	public TimeSegment getTime() {
 		return time;
 	}
 	
