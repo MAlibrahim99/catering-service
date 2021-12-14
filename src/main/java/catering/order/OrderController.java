@@ -421,7 +421,7 @@ public class OrderController {
 			   @ModelAttribute ("orderOut") CateringOrder orderOut) {
 
 		return userAccount.map(account -> {
-			var order = new CateringOrder(account, Cash.CASH, orderOut.getCompletionDate(), orderOut.getAddress());
+			var order = new CateringOrder(account, Cash.CASH, orderOut.getCompletionDate(),orderOut.getTime(), orderOut.getAddress());
 
 			
 			System.out.println("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx");

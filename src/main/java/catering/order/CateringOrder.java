@@ -13,6 +13,7 @@ import javax.persistence.Entity;
 import javax.persistence.OneToMany;
 import javax.persistence.CascadeType;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -27,10 +28,11 @@ public class CateringOrder extends Order {
 	private String address;
 	private int waitercount;
 	private int chefcount;
-	private TimeSegment time;
+	//private TimeSegment time;
+	private String time;
 	private String service;
 
-	public CateringOrder(UserAccount userAccount, LocalDate completionDate, String address, TimeSegment time, String service) {
+	public CateringOrder(UserAccount userAccount, LocalDate completionDate, String address, String time, String service) {
 		super(userAccount);
 
 		this.allocStaff = new ArrayList<>();
@@ -41,14 +43,14 @@ public class CateringOrder extends Order {
 	}
 
 	public CateringOrder(UserAccount userAccount, PaymentMethod paymentMethod,
-						 LocalDate completionDate, TimeSegment time, String address, String service) {
+						 LocalDate completionDate, String time, String address/*, String service*/) {
 		super(userAccount, paymentMethod);
 
 		this.allocStaff = new ArrayList<>();
 		this.completionDate = completionDate;
 		this.time = time;
 		this.address = address;
-		this.service = service;
+		//this.service = service;
 	}
 
 	// Author Mohamad: ich bekomme: "No default constructor for entity:  : catering.order.CateringOrder", wenn dieser
@@ -68,7 +70,11 @@ public class CateringOrder extends Order {
 		return completionDate;
 	}
 
-	public TimeSegment getTime() {
+	/*public TimeSegment getTime() {
+		return time;
+	}*/
+
+	public String getTime() {
 		return time;
 	}
 	
@@ -97,7 +103,11 @@ public class CateringOrder extends Order {
 	} 
 
 
-    public void setTime(String time){
+    /*public void setTime(TimeSegment time){
+        this.time = time;
+    }*/
+
+	public void setTime(String time){
         this.time = time;
     }
 
