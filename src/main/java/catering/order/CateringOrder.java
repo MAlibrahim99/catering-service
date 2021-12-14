@@ -6,28 +6,31 @@ import org.salespointframework.order.Order;
 import org.salespointframework.payment.PaymentMethod;
 import org.salespointframework.useraccount.Role;
 import org.salespointframework.useraccount.UserAccount;
-
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.util.Assert;
 
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
 import javax.persistence.CascadeType;
-import java.time.LocalDate;
+
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-
 
 @Entity
 public class CateringOrder extends Order {
 
 	@OneToMany(cascade = {CascadeType.ALL})
 	private List<User> allocStaff;
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private LocalDate completionDate;
-	private TimeSegment time;
 	private String address;
+	private int waitercount;
+	private int chefcount;
+	private TimeSegment time;
 	private String service;
 
-	public CateringOrder(UserAccount userAccount, LocalDate completionDate, TimeSegment time, String address, String service) {
+	public CateringOrder(UserAccount userAccount, LocalDate completionDate, String address, TimeSegment time, String service) {
 		super(userAccount);
 
 		this.allocStaff = new ArrayList<>();
@@ -75,5 +78,30 @@ public class CateringOrder extends Order {
 	
 	public String getService() {
 		return service;
+	}
+
+	public int getChefcount(){
+		return chefcount;
+	}
+
+	public void setChefcount(int chefcount){
+		this.chefcount = chefcount;
+	}
+
+	public int getWaitercount(){
+		return waitercount;
+	}
+
+	public void setWaitercount(int waitercount) {
+		this.waitercount = waitercount;	
+	} 
+
+
+    public void setTime(String time){
+        this.time = time;
+    }
+
+	public List<User> getAllocstaff(List<User> allocStaff){
+		return allocStaff;
 	}
 }
