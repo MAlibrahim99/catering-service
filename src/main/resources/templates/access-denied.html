@@ -3,19 +3,19 @@
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{layout}"><head>
     <meta charset="UTF-8">
-    <title>Access denied</title>
+    <title>Zugriff verweigert</title>
 </head>
 <body>
 <nav th:replace="navigation :: navigation"></nav>
 <section layout:fragment="content">
     <div class="ui error message">
         <div class="header">
-            Access denied:
+            Zugriff verweigert:
         </div>
         <ul class="list">
-            <li>Oops. You don't have the privileges to access this page</li>
-            <li>Do you have admin account?<a class="link" href="/login"><strong> Login with admin account</strong></a></li>
-            <li><a href="/"><strong>go to Home page</strong></a></li>
+            <li>Oops. Sie haben nicht die Rechte, auf diese Seite zu greifen</li>
+            <li>Haben Sie Admin-Konto?<a class="link" href="/login"><strong>Mit Admin-Konto anmelden</strong></a></li>
+            <li><a href="/"><strong>zur Startseite</strong></a></li>
         </ul>
     </div>
 </section>

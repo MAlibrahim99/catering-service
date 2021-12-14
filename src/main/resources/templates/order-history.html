@@ -16,26 +16,22 @@
     <table th:if="${userOrders.iterator().hasNext()}" class="ui striped center aligned table">
         <thead>
         	<tr class="bold">
-				<th>ID</th>
-            	<th>Angebottyp</th>
+				<th>Nummer</th>
+            	<th>Service</th>
 				<th>Veranstaltungsdatum</th>
 				<th>Aktionen</th>
        		 </tr>
        	</thead>
        	<tbody>
-	        <tr th:each="order : ${userOrders}">
-	            <td th:text="${order.id}">000</td>
-				<!--TODO handle das Abrufen von Angebottyp
-				<td th:text="${orderTypes.get(order.id)}">Event Catering</td>-->
-				<td>Platz halter für Angebottyp</td>
+	        <tr	th:each="order, iter : ${userOrders}">
+	            <td th:text="${iter.count}">000</td>
+				<td th:value="${order.service}">Event Catering</td>
 				<td th:text="${#conversions.convert(order.completionDate, 'String')}">TT.MM.JJJJ</td>
 				<td><a class="ui black basic button" th:href="@{/order-details/{order-id}(order-id=${order.id})}">Zu Details</a>
 					<!--Stornierenform-->
-					<form th:if="${order.orderStatus.toString().equals('OPEN') || order.orderStatus.toString().equals('PAID')}"
-							th:action="@{/cancel-order}" method="get" th:object="${orderForm}"
-							style="display: inline;"
+					<form th:if="${order.orderStatus.toString().equals('PAID') || order.orderStatus.toString().equals('OPEN')}"
+							th:action="@{/cancel-order}" method="get" style="display: inline;"
 							onsubmit="return confirm('Möchen Sie Diese Bestellung stornieren?')">
-						<input type="hidden" th:value="${orderForm}">
 						<input type="hidden" name="orderId" th:value="${order.id}">
 						<button type="submit" class="ui red basic button">Bestellung stornieren</button>
 					</form>
