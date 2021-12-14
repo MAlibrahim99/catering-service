@@ -42,12 +42,12 @@
             <!--das ist removable wenn du cart.total nutzt hier nur zum checken da-->
             <p style="margin-left: 87%; transform: translateX(-87%);" class="value"><span th:text="${{cart.price}}">1111</span></p>
             <form class="ui form"  method="post" th:action="@{/checkout}" th:object="${orderOut}" style="margin-left: 87%; transform: translateX(-87%);">
-                <input type="hidden" name="date"  th:value="${order.date}"/>
+                <input type="hidden" name="date"  th:value="${order.completionDate}"/>
                 <input type="hidden" name="time"  th:value="${order.time}"/>
-                <input type="hidden" name="location"  th:value="${order.location}"/>
+                <input type="hidden" name="location"  th:value="${order.address}"/>
                 <input type="hidden" name="chefcount"  th:value="${order.chefcount}"/>
                 <input type="hidden" name="waitercount"  th:value="${order.waitercount}"/>
-                <input type="hidden" name="staffList"  th:value="${order.staffList}"/>
+                <input type="hidden" name="staffList"  th:value="${order.allocStaff}"/>
                 <button type="submit" class="btn btn-outline-primary btn-md" th:text="#{cart.buy}">Buy Now</button>
             </form>
         </div>

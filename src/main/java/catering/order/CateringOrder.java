@@ -6,12 +6,14 @@ import org.salespointframework.order.Order;
 import org.salespointframework.payment.PaymentMethod;
 import org.salespointframework.useraccount.Role;
 import org.salespointframework.useraccount.UserAccount;
-
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.util.Assert;
 
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
 import javax.persistence.CascadeType;
+
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -22,19 +24,24 @@ public class CateringOrder extends Order {
 
 	@OneToMany(cascade = {CascadeType.ALL})
 	private List<User> allocStaff;
-	private LocalDateTime completionDate;
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
+	private LocalDate completionDate;
 	private String address;
+	private int waitercount;
+	private int chefcount;
+	private String time;
 
-	public CateringOrder(UserAccount userAccount, LocalDateTime completionDate, String address) {
+	public CateringOrder(UserAccount userAccount, LocalDate completionDate, String address) {
 		super(userAccount);
 
 		this.allocStaff = new ArrayList<>();
 		this.completionDate = completionDate;
 		this.address = address;
+		this.time = time;
 	}
 
 	public CateringOrder(UserAccount userAccount, PaymentMethod paymentMethod,
-						 LocalDateTime completionDate,String address) {
+						 LocalDate completionDate,String address) {
 		super(userAccount, paymentMethod);
 
 		this.allocStaff = new ArrayList<>();
@@ -55,11 +62,39 @@ public class CateringOrder extends Order {
 		this.allocStaff.add(user);
 	}
 
-	public LocalDateTime getCompletionDate() {
+	public LocalDate getCompletionDate() {
 		return completionDate;
 	}
 
 	public String getAddress() {
 		return address;
+	}
+
+	public int getChefcount(){
+		return chefcount;
+	}
+
+	public void setChefcount(int chefcount){
+		this.chefcount = chefcount;
+	}
+
+	public int getWaitercount(){
+		return waitercount;
+	}
+
+	public void setWaitercount(int waitercount) {
+		this.waitercount = waitercount;	
+	} 
+
+	public String getTime(){
+        return time;
+    }
+
+    public void setTime(String time){
+        this.time = time;
+    }
+
+	public List<User> getAllocstaff(List<User> allocStaff){
+		return allocStaff;
 	}
 }

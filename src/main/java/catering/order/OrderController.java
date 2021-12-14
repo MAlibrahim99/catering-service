@@ -403,7 +403,7 @@ public class OrderController {
 		model.addAttribute("catalog", cCatalog.findByType(ServiceType.RENTACOOK));
 		model.addAttribute("option", catalog.findByCategory("rentacook"));
 		model.addAttribute("rentacook", rentacook);
-		model.addAttribute("Corder", order3);
+		model.addAttribute("order", order3);
 
 		return "rentacookform";
 	}
@@ -422,7 +422,7 @@ public class OrderController {
 			   @ModelAttribute ("orderOut") CateringOrder orderOut) {
 
 		return userAccount.map(account -> {
-			var order = new org.salespointframework.order.Order(account, Cash.CASH);
+			var order = new CateringOrder(account, Cash.CASH, orderOut.getCompletionDate(), orderOut.getAddress());
 
 			
 			System.out.println("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx");
@@ -541,8 +541,8 @@ public class OrderController {
 					userRepository.save(u);
 					
 				}
-
-				orderOut.setStafflist(allstaff);
+				//TODO 
+				//orderOut.setStafflist(allstaff);
 				System.out.println("llllllllllllllllllll");
 				System.out.println(userRepository.getUserByPositionIn(List.of(Position.EXPERIENCED_WAITER,
 						Position.WAITER,Position.COOK)).toList().size());

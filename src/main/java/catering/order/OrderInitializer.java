@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Component
@@ -41,24 +42,24 @@ public class OrderInitializer implements DataInitializer {
 		// Bestellungen von account1 Zeile 41
 		System.out.println("initilizing orders 1");
 		orderManagement.save(new CateringOrder(account1, paymentMethod,
-				LocalDateTime.of(2020, 9, 1, 0, 0), "some Address"));
+				LocalDate.of(2020, 9, 1), "some Address"));
 		orderManagement.save(new CateringOrder(account1, paymentMethod,
-				LocalDateTime.of(2019, 4, 1, 0, 0), "some Address"));
+				LocalDate.of(2019, 4, 1), "some Address"));
 		orderManagement.save(new CateringOrder(account1, paymentMethod,
-				LocalDateTime.of(2018, 10, 1, 0, 0), "some Address"));
+				LocalDate.of(2018, 10, 1), "some Address"));
 		orderManagement.save(new CateringOrder(account1, paymentMethod,
-				LocalDateTime.of(2017, 12, 1, 0, 0), "some Address"));
+				LocalDate.of(2017, 12, 1), "some Address"));
 
 		// Bestellungenn vom account2 Zeile 42
 		System.out.println("initilizing orders 1");
 		orderManagement.save(new CateringOrder(account2, paymentMethod,
-				LocalDateTime.of(2018, 6, 21, 0, 0), "some Address"));
+				LocalDate.of(2018, 6, 21), "some Address"));
 		orderManagement.save(new CateringOrder(account2, paymentMethod,
-				LocalDateTime.of(2018, 7, 23, 0, 0), "some Address"));
+				LocalDate.of(2018, 7, 23), "some Address"));
 		orderManagement.save(new CateringOrder(account2, paymentMethod,
-				LocalDateTime.of(2018, 9, 16, 0, 0), "some Address"));
+				LocalDate.of(2018, 9, 16), "some Address"));
 		orderManagement.save(new CateringOrder(account2, paymentMethod,
-				LocalDateTime.of(2018, 8, 5, 0, 0), "some Address"));
+				LocalDate.of(2018, 8, 5), "some Address"));
 
 	}
 }

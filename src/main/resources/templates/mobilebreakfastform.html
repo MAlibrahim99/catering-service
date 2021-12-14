@@ -36,7 +36,7 @@
                         <input id="noalk" type="number" name="noalk" min="0" max="100" step="1" value="0" required th:value="${mobilebreakfast.noalk}"/><br/><br/>
                     </div>
                         <label for="date">Datum:</label><br/>
-                        <input id="date" type="date" name="date" required th:field="${order.date}"/><br/><br/>
+                        <input id="date" type="date" name="date" required th:field="${order.completionDate}"/><br/><br/>
                         <p>Zeitraum:</p>
                         <input type="radio" id="frühs" name="time" value="Frühs" required th:value="${order.time}">
                         <label for="Frühs">Frühs</label><br/>
@@ -45,7 +45,7 @@
                         <input type="radio" id="abends" name="time" value="Abends" required th:value="${order.time}">
                         <label for="Abends">Abends</label><br/><br/>
                         <label for="location">Veranstaltungsort</label><br/>
-                        <input type="text" name="location" required th:value="${order.location}"/><br/><br/>
+                        <input type="text" name="location" required th:value="${order.address}"/><br/><br/>
                     <button class="btn btn-outline-primary" type="submit" th:text="#{shop.addToBasket}"> Kaufen</button>
                 </form>
                 </div>
