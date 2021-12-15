@@ -27,7 +27,7 @@
 	            <td th:text="${iter.count}">000</td>
 				<td th:value="${order.service}">Event Catering</td>
 				<td th:text="${#conversions.convert(order.completionDate, 'String')}">TT.MM.JJJJ</td>
-				<td><a class="ui black basic button" th:href="@{/order-details/{order-id}(order-id=${order.id})}">Zu Details</a>
+				<td><a class="ui black basic button" th:href="@{/order-details/{order-id}(order-id=${order.id})}">Mehr Details</a>
 					<!--Stornierenform-->
 					<form th:if="${order.orderStatus.toString().equals('PAID') || order.orderStatus.toString().equals('OPEN')}"
 							th:action="@{/cancel-order}" method="get" style="display: inline;"
