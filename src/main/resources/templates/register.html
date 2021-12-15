@@ -54,15 +54,20 @@
             </div>
             <div class="five wide field">
                 <label>Position</label>
-                <select class="ui search dropdown" name="position" th:field="*{position}" th:default="'COOK'">
-                    <option th:each="position : ${T(catering.user.Position).values()}"
-                            th:if="${!position.equals('None')}" th:value="${position}"  th:text="${position}"></option>
+                <select class="ui search dropdown" th:field="*{position}" th:default="${#arrays.toArray(positions)[0]}">
+                    <option th:value="${#arrays.toArray(positions)[0]}">Koch</option>
+                    <option th:value="${#arrays.toArray(positions)[1]}">Erfahrner Kellner</option>
+                    <option th:value="${#arrays.toArray(positions)[2]}">Kellner</option>
                 </select>
             </div>
         </div>
 
-        <button sec:authorize="!hasRole('ADMIN')" type="submit" name="action" value="register-user" class="ui basic black button">Register</button>
-        <button sec:authorize="hasRole('ADMIN')" type="submit" name="action" value="register-staff" class="ui basic black button">Register Staff</button>
+        <button sec:authorize="!hasRole('ADMIN')" type="submit" name="action" value="register-user"
+                class="ui basic black button">Register
+        </button>
+        <button sec:authorize="hasRole('ADMIN')" type="submit" name="action" value="register-staff"
+                class="ui basic black button">Register Staff
+        </button>
     </form>
 </section>
 </body>
