@@ -130,3 +130,14 @@ header {
 	font-size: 20px;
 	margin-top: 1em;
 }
+
+.tab{
+	font-size: 15px;
+	border-spacing: 120px 25px;
+	border-collapse: separate;
+
+}
+
+.lab{
+	font-size: 15px;
+}

@@ -46,8 +46,8 @@ public class CatalogInitializer implements DataInitializer{
 
 		LOG.info("Creating default catalog entries.");
 
-        cateringCatalog.save(new Ware("Eventcatering", Money.of(500, EURO), "fda", ServiceType.EVENTCATERING));
-        cateringCatalog.save(new Ware("PartyService", Money.of(400, EURO), "sad" ,ServiceType.PARTYSERVICE));
+        cateringCatalog.save(new Ware("Eventcatering", Money.of(300, EURO), "fda", ServiceType.EVENTCATERING));
+        cateringCatalog.save(new Ware("PartyService", Money.of(250, EURO), "sad" ,ServiceType.PARTYSERVICE));
         cateringCatalog.save(new Ware("Rent a cook", Money.of(150, EURO),"hdg" ,ServiceType.RENTACOOK));
         cateringCatalog.save(new Ware("Mobilebreakfast", Money.of(100, EURO),"hgh" ,ServiceType.MOBILEBREAKFAST));
 

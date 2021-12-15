@@ -40,9 +40,11 @@ import catering.catalog.Ware.ServiceType;
 import catering.user.Position;
 import catering.user.User;
 import catering.user.UserRepository;
+import org.springframework.web.bind.annotation.SessionAttributes;
 
 @Controller
 //@PreAuthorize(value = "isAuthenticated()")
+@SessionAttributes("cart")
 public class OrderController {
 	private OrderManagement<CateringOrder> orderManagement;
 	private OrderManagement<org.salespointframework.order.Order> oOrderManagement;
