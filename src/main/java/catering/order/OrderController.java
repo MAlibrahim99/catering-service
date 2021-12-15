@@ -1,53 +1,40 @@
 package catering.order;
-import catering.catalog.services.*;
-import catering.inventory.InventoryFormitem;
-
-import org.salespointframework.catalog.Product;
-import org.salespointframework.inventory.UniqueInventory;
-import org.salespointframework.inventory.UniqueInventoryItem;
-import org.salespointframework.order.*;
-import org.springframework.validation.Errors;
-
-import org.salespointframework.order.OrderIdentifier;
-import org.salespointframework.order.OrderManagement;
-import org.salespointframework.useraccount.UserAccount;
-import org.salespointframework.useraccount.web.LoggedIn;
-import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.SessionAttributes;
-
-import antlr.debug.Event;
-
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Optional;
-import java.util.stream.Stream;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-
-import org.salespointframework.payment.Cash;
-import org.salespointframework.quantity.Quantity;
-import org.springframework.data.util.Streamable;
-import org.springframework.util.Assert;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
 
 import catering.catalog.CateringCatalog;
-import catering.catalog.OptionCatalog;
 import catering.catalog.Option;
+import catering.catalog.OptionCatalog;
 import catering.catalog.Ware;
 import catering.catalog.Ware.ServiceType;
+import catering.catalog.services.Eventcatering;
+import catering.catalog.services.Mobilebreakfast;
+import catering.catalog.services.Partyservice;
+import catering.catalog.services.Rentacook;
 import catering.user.Position;
 import catering.user.User;
 import catering.user.UserRepository;
+
+import org.salespointframework.inventory.UniqueInventory;
+import org.salespointframework.inventory.UniqueInventoryItem;
+import org.salespointframework.order.Cart;
+import org.salespointframework.order.CartItem;
+import org.salespointframework.order.OrderIdentifier;
+import org.salespointframework.order.OrderManagement;
+import org.salespointframework.payment.Cash;
+import org.salespointframework.quantity.Quantity;
+import org.salespointframework.useraccount.UserAccount;
+import org.salespointframework.useraccount.web.LoggedIn;
+
+import org.springframework.data.util.Streamable;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.util.Assert;
+import org.springframework.validation.Errors;
+import org.springframework.web.bind.annotation.*;
+
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.*;
 
 
 @Controller
@@ -121,15 +108,15 @@ public class OrderController {
 	@GetMapping("/income-overview")
 	public String displayIncomeOverview(@RequestParam("startDate") Optional<String> startDate,
 										@RequestParam("endDate") Optional<String> endDate, Model model) {
-		LocalDateTime start;
-		LocalDateTime end;
+		LocalDate start;
+		LocalDate end;
 		if (startDate.isEmpty() || endDate.isEmpty()) {
-			start = LocalDateTime.now().minusDays(30L);
-			end = LocalDateTime.now().minusDays(1L);
+			start = LocalDate.now().minusDays(30L);
+			end = LocalDate.now().minusDays(1L);
 		} else {
 			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-			start = LocalDate.parse(startDate.get(), formatter).atStartOfDay();
-			end = LocalDate.parse(endDate.get(), formatter).atStartOfDay();
+			start = LocalDate.parse(startDate.get(), formatter);
+			end = LocalDate.parse(endDate.get(), formatter);
 		}
 
 		if (start.isAfter(end)) {
@@ -138,8 +125,8 @@ public class OrderController {
 
 		model.addAttribute("totalIncome", incomeOverview.totalIncome(start, end));
 		model.addAttribute("statusPercentages", incomeOverview.statusPercentages(start, end));
-		model.addAttribute("start", start.toLocalDate());
-		model.addAttribute("end", end.toLocalDate());
+		model.addAttribute("start", start);
+		model.addAttribute("end", end);
 
 		return "income-overview";
 	}

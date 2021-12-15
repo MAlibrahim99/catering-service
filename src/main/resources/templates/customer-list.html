@@ -19,11 +19,11 @@
 	        		</tr>
 	        	</thead>
 	        	<tbody>
-	        		<tr th:each= "customers : ${allCustomers}">
-		        		<td th:text="${customers.userAccount.lastname}">Kunde</td>
-		        		<td th:text="${customers.userAccount.firstname}">Test<td>
-	                    <td th:text="${customers.userAccount.email}">test@kunde.de</td>
-	                    <td th:text="${customers.id}">0001</td>
+	        		<tr th:each= "customer : ${allCustomers}">
+		        		<td th:text="${customer.userAccount.lastname}">Kunde</td>
+		        		<td th:text="${customer.userAccount.firstname}">Test</td>
+	                    <td th:text="${customer.userAccount.email}">test@kunde.de</td>
+	                    <td th:text="${customer.id}">0001</td>
                     </tr>
                 </tbody>
             </table>
