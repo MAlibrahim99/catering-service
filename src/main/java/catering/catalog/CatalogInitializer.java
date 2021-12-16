@@ -44,47 +44,36 @@ public class CatalogInitializer implements DataInitializer{
 			return;
 		}
 
-		LOG.info("Creating default catalog entries.");
+		catalog.save(new Option("Buffet", Money.of(13, EURO), 1, OptionType.FOOD, new String[] {"eventcatering"}));
+		catalog.save(new Option("Galadinner", Money.of(25, EURO), 1, OptionType.FOOD, new String[] {"eventcatering"}));
 
-        cateringCatalog.save(new Ware("Eventcatering", Money.of(50, EURO), "Dieses Angebot beinhaltet ein Buffet sowie das Galadinner, zudem wird Ihnen alokoholische sowie alkoholfreie Getränke zur Verfügung gestellt.", 
-		ServiceType.EVENTCATERING));
-        cateringCatalog.save(new Ware("PartyService", Money.of(35, EURO), "Dieses Angebot beinhaltet eine große Auswahl an Platten verschiedenster Geschmäcker, sowie Sushi, Pizza und/oder ein Meeresfrüchten-Menü. Zudem bieten wir als Desert eine Auswahl an Torten an." ,
-		ServiceType.PARTYSERVICE));
-        cateringCatalog.save(new Ware("Rent a cook", Money.of(20, EURO),"In diesem Angebot stellen, wir Ihnen einen unsere Köche zur Verfügung, der Ihnen nach Wünschen etwas zubereitet." ,
-		ServiceType.RENTACOOK));
-        cateringCatalog.save(new Ware("Mobilebreakfast", Money.of(15, EURO),"In diesem Angebot bringen wir Ihnen das Frühstück an einen Wunschort" ,ServiceType.MOBILEBREAKFAST));
+		catalog.save(new Option("Schinkenplatte", Money.of(20, EURO), 5, OptionType.FOOD, new String[] {"partyservice"}));
+		catalog.save(new Option("Käseplatte", Money.of(12.5, EURO), 3, OptionType.FOOD, new String[] {"partyservice"}));
+		catalog.save(new Option("Eierplatte", Money.of(14, EURO), 3, OptionType.FOOD, new String[] {"partyservice"}));
+		catalog.save(new Option("Fischplatte", Money.of(32, EURO), 6, OptionType.FOOD, new String[] {"partyservice"}));
+		catalog.save(new Option("Obstplatte", Money.of(25, EURO), 4, OptionType.FOOD, new String[] {"partyservice"}));
+		catalog.save(new Option("Salatplatte", Money.of(25, EURO), 4, OptionType.FOOD, new String[] {"partyservice"}));
+		catalog.save(new Option("Sushi-Abend", Money.of(150, EURO), 10, OptionType.FOOD, new String[] {"partyservice"}));
+		catalog.save(new Option("Pizza-Runde", Money.of(110, EURO), 10, OptionType.FOOD, new String[] {"partyservice"}));
+		catalog.save(new Option("Meeresfrüchte-Menü", Money.of(170, EURO), 10, OptionType.FOOD, new String[] {"partyservice"}));
+		catalog.save(new Option("Torten-Auswahl", Money.of(120, EURO), 10, OptionType.FOOD, new String[] {"partyservice"}));
 
-        catalog.save(new Option("Blumen", Money.of(5, EURO), OptionType.GOODS,
-				new String[] {"eventcatering", "rentacook"}));
-		catalog.save(new Option("Servietten", Money.of(0.2, EURO), OptionType.GOODS,
-				new String[] {"eventcatering", "partyservice", "mobilebreakfast", "rentacook"}));
+		catalog.save(new Option("Alkoholfreie Getränke", Money.of(9, EURO), 1, OptionType.FOOD, new String[] {"eventcatering",
+				"partyservice", "mobilebreakfast"}));
+		catalog.save(new Option("Alkoholische Getränke", Money.of(14, EURO), 1, OptionType.FOOD, new String[] {"eventcatering",
+				"partyservice"}));
 
-		catalog.save(new Option("Dekoration", Money.of(3, EURO), OptionType.EQUIP,
-				new String[] {"eventcatering", "rentacook"}));
-		catalog.save(new Option("Geschirr", Money.of(5, EURO), OptionType.EQUIP,
-				new String[] {"eventcatering", "partyservice", "mobilebreakfast", "rentacook"}));
-		catalog.save(new Option("Tischtücher", Money.of(30, EURO), OptionType.EQUIP,
-				new String[] {"eventcatering", "rentacook"}));
+		catalog.save(new Option("Standard-Frühstück", Money.of(7, EURO), 1, OptionType.FOOD, new String[] {"mobilebreakfast"}));
 
-		catalog.save(new Option("Buffet", Money.of(10, EURO), OptionType.FOOD, new String[] {"eventcatering"}));
-		catalog.save(new Option("Galadinner", Money.of(25, EURO), OptionType.FOOD, new String[] {"eventcatering"}));
+		catalog.save(new Option("Blumen", Money.of(9, EURO), 1, OptionType.GOODS, new String[] {"eventcatering", "rentacook"}));
+		catalog.save(new Option("Servietten", Money.of(0.75, EURO), 1, OptionType.GOODS, new String[] {"eventcatering",
+				"partyservice", "mobilebreakfast", "rentacook"}));
 
-		catalog.save(new Option("Schinkenplatte", Money.of(20, EURO), OptionType.FOOD, new String[] {"partyservice"}));
-		catalog.save(new Option("Käseplatte", Money.of(12.5, EURO), OptionType.FOOD, new String[] {"partyservice"}));
-		catalog.save(new Option("Eierplatte", Money.of(14, EURO), OptionType.FOOD, new String[] {"partyservice"}));
-		catalog.save(new Option("Fischplatte", Money.of(25, EURO), OptionType.FOOD, new String[] {"partyservice"}));
-		catalog.save(new Option("Obstplatte", Money.of(10, EURO), OptionType.FOOD, new String[] {"partyservice"}));
-		catalog.save(new Option("Salatplatte", Money.of(10, EURO), OptionType.FOOD, new String[] {"partyservice"}));
-		catalog.save(new Option("Sushi", Money.of(100, EURO), OptionType.FOOD, new String[] {"partyservice"}));
-		catalog.save(new Option("Pizza", Money.of(90, EURO), OptionType.FOOD, new String[] {"partyservice"}));
-		catalog.save(new Option("Meeresfrüchte-Menü", Money.of(130, EURO), OptionType.FOOD, new String[] {"partyservice"}));
-		catalog.save(new Option("Torten-Auswahl", Money.of(120, EURO), OptionType.FOOD, new String[] {"partyservice"}));
-		catalog.save(new Option("Alkoholfreie Getränke", Money.of(9, EURO), OptionType.FOOD, new String[] {"eventcatering",
-                "partyservice", "mobilebreakfast"}));
-		catalog.save(new Option("Alkoholische Getränke", Money.of(9, EURO), OptionType.FOOD, new String[] {"eventcatering",
-                "partyservice", "mobilebreakfast"}));
-		
-		catalog.save(new Option("Frühstück", Money.of(10, EURO), OptionType.FOOD, new String[] {"mobilebreakfast"}));
-    }
-
+		catalog.save(new Option("Dekoration", Money.of(4, EURO), 1, OptionType.EQUIP, new String[] {"eventcatering",
+				"rentacook"}));
+		catalog.save(new Option("Geschirr", Money.of(8, EURO), 1, OptionType.EQUIP, new String[] {"eventcatering",
+				"partyservice", "mobilebreakfast", "rentacook"}));
+		catalog.save(new Option("Tischtücher", Money.of(25, EURO), 6, OptionType.EQUIP, new String[] {"eventcatering",
+				"rentacook"}));
+	}
 }

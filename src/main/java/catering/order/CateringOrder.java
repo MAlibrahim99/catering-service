@@ -23,16 +23,15 @@ public class CateringOrder extends Order {
 
 	@OneToMany(cascade = {CascadeType.ALL})
 	private List<User> allocStaff;
-	@DateTimeFormat(pattern = "yyyy-MM-dd")
+	@DateTimeFormat(pattern= "yyyy-MM-dd")
 	private LocalDate completionDate;
 	private String address;
+	private String service;
+	private String time;
 	private int waitercount;
 	private int chefcount;
-	//private TimeSegment time;
-	private String time;
-	private String service;
 
-	public CateringOrder(UserAccount userAccount, LocalDate completionDate, String address, String time, String service) {
+	public CateringOrder(UserAccount userAccount, LocalDate completionDate, String time, String address, String service) {
 		super(userAccount);
 
 		this.allocStaff = new ArrayList<>();
@@ -42,15 +41,16 @@ public class CateringOrder extends Order {
 		this.service = service;
 	}
 
-	public CateringOrder(UserAccount userAccount, PaymentMethod paymentMethod,
-						 LocalDate completionDate, String time, String address/*, String service*/) {
+	public CateringOrder(UserAccount userAccount, PaymentMethod paymentMethod, LocalDate completionDate, String address,
+						String time, String service) {
 		super(userAccount, paymentMethod);
 
 		this.allocStaff = new ArrayList<>();
 		this.completionDate = completionDate;
 		this.time = time;
 		this.address = address;
-		//this.service = service;
+		this.time = time;
+		this.service = service;
 	}
 
 	// Author Mohamad: ich bekomme: "No default constructor for entity:  : catering.order.CateringOrder", wenn dieser
@@ -62,7 +62,7 @@ public class CateringOrder extends Order {
 	}
 
 	public void addToAllocStaff(User user) {
-		Assert.isTrue(user.getUserAccount().hasRole(Role.of("STAFF")), "User must have Role STAFF");
+		//Assert.isTrue(user.getUserAccount().hasRole(Role.of("STAFF")), "User must have Role STAFF");
 		this.allocStaff.add(user);
 	}
 
@@ -70,20 +70,16 @@ public class CateringOrder extends Order {
 		return completionDate;
 	}
 
-	/*public TimeSegment getTime() {
-		return time;
-	}*/
-
-	public String getTime() {
-		return time;
+	public void setCompletionDate(LocalDate completionDate){
+		this.completionDate = completionDate;
 	}
-	
+
 	public String getAddress() {
 		return address;
 	}
-	
-	public String getService() {
-		return service;
+
+	public void setAddress(String address){
+		this.address = address;
 	}
 
 	public int getChefcount(){
@@ -98,20 +94,27 @@ public class CateringOrder extends Order {
 		return waitercount;
 	}
 
-	public void setWaitercount(int waitercount) {
-		this.waitercount = waitercount;	
-	} 
+	public void setWaitercount(int waitercount){
+		this.waitercount = waitercount;
+	}
 
+	public String getService(){
+		return service;
+	}
 
-    /*public void setTime(TimeSegment time){
-        this.time = time;
-    }*/
+	public void setService(String service){
+		this.service = service;
+	}
+
+	public String getTime(){
+		return time;
+	}
 
 	public void setTime(String time){
-        this.time = time;
-    }
+		this.time = time;
+	}
 
-	public List<User> getAllocstaff(List<User> allocStaff){
-		return allocStaff;
+	public String toString(){
+		return service + " " + completionDate + " " + time + " " + address + " " + waitercount + " " + chefcount;
 	}
 }

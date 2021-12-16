@@ -42,24 +42,24 @@ public class OrderInitializer implements DataInitializer {
 		// Bestellungen von account1 Zeile 41
 		System.out.println("initilizing orders 1");
 		orderManagement.save(new CateringOrder(account1, paymentMethod,
-				LocalDate.of(2020, 9, 1),"Früh", "some Address"));
+				LocalDate.of(2020, 9, 1),"Früh", "some Address", "eventcatering"));
 		orderManagement.save(new CateringOrder(account1, paymentMethod,
-				LocalDate.of(2019, 4, 1),"Früh", "some Address"));
+				LocalDate.of(2019, 4, 1),"Früh", "some Address", "eventcatering"));
 		orderManagement.save(new CateringOrder(account1, paymentMethod,
-				LocalDate.of(2018, 10, 1),"Früh", "some Address"));
+				LocalDate.of(2018, 10, 1),"Früh", "some Address", "eventcatering"));
 		orderManagement.save(new CateringOrder(account1, paymentMethod,
-				LocalDate.of(2017, 12, 1),"Früh", "some Address"));
+				LocalDate.of(2017, 12, 1),"Früh", "some Address", "eventcatering"));
 
 		// Bestellungenn vom account2 Zeile 42
 		System.out.println("initilizing orders 1");
 		orderManagement.save(new CateringOrder(account2, paymentMethod,
-				LocalDate.of(2018, 6, 21),"Früh", "some Address"));
+				LocalDate.of(2018, 6, 21),"Früh", "some Address", "eventcatering"));
 		orderManagement.save(new CateringOrder(account2, paymentMethod,
-				LocalDate.of(2018, 7, 23),"Früh", "some Address"));
+				LocalDate.of(2018, 7, 23),"Früh", "some Address", "eventcatering"));
 		orderManagement.save(new CateringOrder(account2, paymentMethod,
-				LocalDate.of(2018, 9, 16),"Früh", "some Address"));
+				LocalDate.of(2018, 9, 16),"Früh", "some Address", "eventcatering"));
 		orderManagement.save(new CateringOrder(account2, paymentMethod,
-				LocalDate.of(2018, 8, 5),"Früh", "some Address"));
+				LocalDate.of(2018, 8, 5),"Früh", "some Address", "eventcatering"));
 
 	}
 }
