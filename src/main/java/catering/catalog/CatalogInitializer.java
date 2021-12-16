@@ -18,14 +18,10 @@ public class CatalogInitializer implements DataInitializer{
 
     private static final Logger LOG = LoggerFactory.getLogger(CatalogInitializer.class);
 
-	private final CateringCatalog cateringCatalog;
     private final OptionCatalog catalog;
 
-	CatalogInitializer(CateringCatalog cateringCatalog, OptionCatalog catalog) {
+	CatalogInitializer(OptionCatalog catalog) {
 
-		Assert.notNull(cateringCatalog, "CateringCatalog must not be null!");
-
-		this.cateringCatalog = cateringCatalog;
 
         Assert.notNull(catalog, "Catalog must not be null!");
 
@@ -37,9 +33,7 @@ public class CatalogInitializer implements DataInitializer{
     public void initialize() {
         // TODO Auto-generated method stub
         
-        if (cateringCatalog.findAll().iterator().hasNext()) {
-			return;
-		}
+
         if (catalog.findAll().iterator().hasNext()) {
 			return;
 		}
