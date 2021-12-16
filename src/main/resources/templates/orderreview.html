@@ -54,7 +54,8 @@
 
 
 
-            <form class="ui form"  method="post" th:action="@{/checkout}" th:object="${orderOut}" style="margin-left: 87%; transform: translateX(-87%);">
+            <form class="ui form"  method="post" th:action="@{/checkout}" th:object="${orderOut}"
+                  style="margin-left: 87%; transform: translateX(-87%);">
                 <input type="hidden" name="date"  th:value="${order.date}"/>
                 <input type="hidden" name="time"  th:value="${order.time}"/>
                 <input type="hidden" name="location"  th:value="${order.location}"/>
