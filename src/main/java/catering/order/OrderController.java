@@ -73,13 +73,6 @@ public class OrderController {
 	public String getOrderHistoryForCurrentUser(@LoggedIn UserAccount account, Model model) {
 		Iterable<CateringOrder> userOrders = orderManagement.findBy(account);
 		Map<OrderIdentifier, String> orderTypes = new HashMap<>();
-		// TODO die Implementation ist nicht vollständig, denn Infos für Bestellungen werden aus anderen Klassen benötigt
-		/*for(CateringOrder order : userOrders){
-			Ware ware = (Ware) order.getOrderLines().toList().get(0);
-			orderTypes.put(order.getId(), ware.getDescription);
-		}
-		model.addAttribute("orderTypes", orderTypes);*/
-//		model.addAttribute("orderForm", new CateringOrder());
 		model.addAttribute("userOrders", userOrders);
 		return "order-history";
 	}
@@ -125,6 +118,7 @@ public class OrderController {
 
 		model.addAttribute("totalIncome", incomeOverview.totalIncome(start, end));
 		model.addAttribute("statusPercentages", incomeOverview.statusPercentages(start, end));
+		model.addAttribute("servicePercentages" , incomeOverview.servicePercentages(start, end));
 		model.addAttribute("start", start);
 		model.addAttribute("end", end);
 
