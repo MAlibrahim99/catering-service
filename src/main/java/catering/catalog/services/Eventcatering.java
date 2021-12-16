@@ -6,15 +6,19 @@ public class Eventcatering extends Mainservice {
     private int tablecloth;
     private int buffet;
     private int galadinner;
+    private int alk;
+    private int noalk;
 
     public Eventcatering(int serviette, int dishes, int flowers, int decoration,
-						 int tablecloth, int buffet, int galadinner){
+						 int tablecloth, int buffet, int galadinner, int alk, int noalk){
         super(serviette, dishes);
         this.flowers = flowers;
         this.decoration = decoration;
         this.tablecloth = tablecloth;
         this.buffet = buffet;
         this.galadinner = galadinner;
+        this.alk = alk;
+        this.noalk = noalk;
 
 
     }
@@ -62,6 +66,22 @@ public class Eventcatering extends Mainservice {
 
     public void setGaladinner(int galadinner){
         this.galadinner = galadinner;
+    }
+
+    public int getAlk(){
+        return alk;
+    }
+
+    public void setAlk(int alk){
+        this.alk = alk;
+    }
+
+    public int getNoalk(){
+        return noalk;
+    }
+
+    public void setNoalk(int noalk){
+        this.noalk = noalk;
     }
 }
 

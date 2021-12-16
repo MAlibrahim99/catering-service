@@ -12,11 +12,12 @@
         	<h2 class="underlined-text">MobileBreakfast Bestellformular</h2>
             <div class="ui card" th:each="ware : ${catalog}">
                 <div>
-                <h3>TEST</h3>
+                
                 <h3 class="card-title" th:text="${ware.name}">MobileBreakfast</h3>
                 <hr>
                 <p class="card-text" th:text="${ware.description}">This is a desctiptive text telling you why you would wanna buy this book this should be limited as noone likes to read essays.</p>
                 <hr>
+                <h4>Grundpreis pro Person:</h4>
                 <h4 class="card-text" th:text="${ware.price}">Grundpreis: 50,00€</h4>
                 <hr>
                 <form class="ui form" method="post" th:action="@{/cartadd4}">
@@ -31,15 +32,17 @@
                         <input id="dishes" type="number" name="dishes" min="0" max="10" step="1" value="0" required th:value="${mobilebreakfast.dishes}"/><br/><br/>
                         <label for="breakfast">Anzahl des Frühstücks:</label><br/>
                         <input id="breakfast" type="number" name="breakfast" min="0" max="10" step="1" value="0" required th:value="${mobilebreakfast.breakfast}"/><br/><br/>
+                        <label for="noalk">Anzahl für alkohofreie Getränke:</label><br/>
+                        <input id="noalk" type="number" name="noalk" min="0" max="100" step="1" value="0" required th:value="${mobilebreakfast.noalk}"/><br/><br/>
                     </div>
                         <label for="date">Datum:</label><br/>
                         <input id="date" type="date" name="date" required th:field="${order.date}"/><br/><br/>
                         <p>Zeitraum:</p>
                         <input type="radio" id="frühs" name="time" value="Frühs" required th:value="${order.time}">
                         <label for="Frühs">Frühs</label><br/>
-                        <input type="radio" id="mittag" name="time" value="Mittag" required th:value="${order.time}">>
+                        <input type="radio" id="mittag" name="time" value="Mittag" required th:value="${order.time}">
                         <label for="Mittag">Mittag</label><br/>
-                        <input type="radio" id="abends" name="time" value="Abends" required th:value="${order.time}">>
+                        <input type="radio" id="abends" name="time" value="Abends" required th:value="${order.time}">
                         <label for="Abends">Abends</label><br/><br/>
                         <label for="location">Veranstaltungsort</label><br/>
                         <input type="text" name="location" required th:value="${order.location}"/><br/><br/>

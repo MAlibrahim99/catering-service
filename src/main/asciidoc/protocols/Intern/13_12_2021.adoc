@@ -1,0 +1,32 @@
+= Protokoll Gruppe 27
+
+Treffen am 13.12.2021
+
+Ort:      Online (Discord) +
+Beginn:   15:45 Uhr +
+Ende:     18:15 Uhr
+
+__Schriftführer:__ Mohamad Alibrahim
+
+*Nächstes Treffen:*
+Nicht festgelet
+
+__Teilnehmer:__
+//Tabellarisch oder Aufzählung, Kennzeichnung von Teilnehmern mit besonderer Rolle (z.B. Kunde)
+
+- Lennart Obermüller (Scrum Master)
+- Dan Nguyen
+- Konrad Schneider
+- Mohamad Alibrahim
+- Rosa Splittgerber
+
+== Bemerkungen
+n.v.
+
+== Ereignisse
+- Was ist bisher geschehen besprochen
+- aktuelle Probleme besprochen
+- Musskriterien mit dem aktuellen Stand der Application verglichen
+
+== Aktueller Stand
+- Unittests erstellen + Musskriterien fertigstellen

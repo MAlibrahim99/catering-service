@@ -12,10 +12,13 @@ public class Partyservice extends Mainservice{
     private int sushi;
     private int pizza;
     private int seafood;
+    private int alk;
+    private int noalk;
 
 
     public Partyservice(int serviette, int dishes, int hamplate, int cheeseplate,
-						int eggplate, int fishplate, int fruitplate, int saladplate, int sushi, int pizza, int seafood){
+						int eggplate, int fishplate, int fruitplate, int saladplate, 
+                        int sushi, int pizza, int seafood, int alk, int noalk){
         super(serviette, dishes);
         this.hamplate = hamplate;
         this.cheeseplate = cheeseplate;
@@ -26,6 +29,8 @@ public class Partyservice extends Mainservice{
         this.sushi = sushi;
         this.pizza = pizza;
         this.seafood = seafood;
+        this.alk = alk;
+        this.noalk = noalk;
     }
     
     public Partyservice(){
@@ -102,6 +107,22 @@ public class Partyservice extends Mainservice{
 
     public void setSeafood(int seafood){
         this.seafood = seafood;
+    }
+
+    public int getAlk(){
+        return alk;
+    }
+
+    public void setAlk(int alk){
+        this.alk = alk;
+    }
+
+    public int getNoalk(){
+        return noalk;
+    }
+
+    public void setNoalk(int noalk){
+        this.noalk = noalk;
     }
  
     

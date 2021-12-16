@@ -12,7 +12,7 @@ import org.springframework.util.Assert;
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
 import javax.persistence.CascadeType;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,24 +22,30 @@ public class CateringOrder extends Order {
 
 	@OneToMany(cascade = {CascadeType.ALL})
 	private List<User> allocStaff;
-	private LocalDateTime completionDate;
+	private LocalDate completionDate;
+	private TimeSegment time;
 	private String address;
+	private String service;
 
-	public CateringOrder(UserAccount userAccount, LocalDateTime completionDate, String address) {
+	public CateringOrder(UserAccount userAccount, LocalDate completionDate, TimeSegment time, String address, String service) {
 		super(userAccount);
 
 		this.allocStaff = new ArrayList<>();
 		this.completionDate = completionDate;
+		this.time = time;
 		this.address = address;
+		this.service = service;
 	}
 
 	public CateringOrder(UserAccount userAccount, PaymentMethod paymentMethod,
-						 LocalDateTime completionDate,String address) {
+						 LocalDate completionDate, TimeSegment time, String address, String service) {
 		super(userAccount, paymentMethod);
 
 		this.allocStaff = new ArrayList<>();
 		this.completionDate = completionDate;
+		this.time = time;
 		this.address = address;
+		this.service = service;
 	}
 
 	// Author Mohamad: ich bekomme: "No default constructor for entity:  : catering.order.CateringOrder", wenn dieser
@@ -55,11 +61,19 @@ public class CateringOrder extends Order {
 		this.allocStaff.add(user);
 	}
 
-	public LocalDateTime getCompletionDate() {
+	public LocalDate getCompletionDate() {
 		return completionDate;
 	}
 
+	public TimeSegment getTime() {
+		return time;
+	}
+	
 	public String getAddress() {
 		return address;
+	}
+	
+	public String getService() {
+		return service;
 	}
 }

@@ -46,10 +46,13 @@ public class CatalogInitializer implements DataInitializer{
 
 		LOG.info("Creating default catalog entries.");
 
-        cateringCatalog.save(new Ware("Eventcatering", Money.of(300, EURO), "fda", ServiceType.EVENTCATERING));
-        cateringCatalog.save(new Ware("PartyService", Money.of(250, EURO), "sad" ,ServiceType.PARTYSERVICE));
-        cateringCatalog.save(new Ware("Rent a cook", Money.of(150, EURO),"hdg" ,ServiceType.RENTACOOK));
-        cateringCatalog.save(new Ware("Mobilebreakfast", Money.of(100, EURO),"hgh" ,ServiceType.MOBILEBREAKFAST));
+        cateringCatalog.save(new Ware("Eventcatering", Money.of(50, EURO), "Dieses Angebot beinhaltet ein Buffet sowie das Galadinner, zudem wird Ihnen alokoholische sowie alkoholfreie Getränke zur Verfügung gestellt.", 
+		ServiceType.EVENTCATERING));
+        cateringCatalog.save(new Ware("PartyService", Money.of(35, EURO), "Dieses Angebot beinhaltet eine große Auswahl an Platten verschiedenster Geschmäcker, sowie Sushi, Pizza und/oder ein Meeresfrüchten-Menü. Zudem bieten wir als Desert eine Auswahl an Torten an." ,
+		ServiceType.PARTYSERVICE));
+        cateringCatalog.save(new Ware("Rent a cook", Money.of(20, EURO),"In diesem Angebot stellen, wir Ihnen einen unsere Köche zur Verfügung, der Ihnen nach Wünschen etwas zubereitet." ,
+		ServiceType.RENTACOOK));
+        cateringCatalog.save(new Ware("Mobilebreakfast", Money.of(15, EURO),"In diesem Angebot bringen wir Ihnen das Frühstück an einen Wunschort" ,ServiceType.MOBILEBREAKFAST));
 
         catalog.save(new Option("Blumen", Money.of(5, EURO), OptionType.GOODS,
 				new String[] {"eventcatering", "rentacook"}));
@@ -77,6 +80,8 @@ public class CatalogInitializer implements DataInitializer{
 		catalog.save(new Option("Meeresfrüchte-Menü", Money.of(130, EURO), OptionType.FOOD, new String[] {"partyservice"}));
 		catalog.save(new Option("Torten-Auswahl", Money.of(120, EURO), OptionType.FOOD, new String[] {"partyservice"}));
 		catalog.save(new Option("Alkoholfreie Getränke", Money.of(9, EURO), OptionType.FOOD, new String[] {"eventcatering",
+                "partyservice", "mobilebreakfast"}));
+		catalog.save(new Option("Alkoholische Getränke", Money.of(9, EURO), OptionType.FOOD, new String[] {"eventcatering",
                 "partyservice", "mobilebreakfast"}));
 		
 		catalog.save(new Option("Frühstück", Money.of(10, EURO), OptionType.FOOD, new String[] {"mobilebreakfast"}));
