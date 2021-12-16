@@ -29,6 +29,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttributes;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -151,12 +152,69 @@ public class OrderController {
 		cart.clear();
 
 		int guestcount = form.getPersons();
-		int chefcount = guestcount * 3;
-		System.out.println(chefcount);
-        int waitercount = guestcount * 4;
-		System.out.println(waitercount);
-        order.setChefcount(chefcount);
-        order.setWaitercount(waitercount);
+		System.out.println(form.getPersons());
+
+
+		if (form.getService().equals("eventcatering")){
+			System.out.println("True");
+		}
+		
+		if (form.getService().equals("eventcatering")){
+			guestcount = guestcount / 10;
+			if (guestcount == 0){
+				guestcount = 1;
+			}
+			int chefcount = guestcount * 4;
+			System.out.println(chefcount);
+			int waitercount = guestcount * 5;
+			System.out.println(waitercount);
+			order.setChefcount(chefcount);
+        	order.setWaitercount(waitercount);
+		}
+		else if (form.getService().equals("partyservice")){
+			guestcount = guestcount / 10;
+			if (guestcount == 0){
+				guestcount = 1;
+			}
+			int chefcount = guestcount * 3;
+			System.out.println(chefcount);
+			int waitercount = guestcount * 4;
+			System.out.println(waitercount);
+			order.setChefcount(chefcount);
+        	order.setWaitercount(waitercount);
+		}
+		else if (form.getService().equals("rentacook")){
+			guestcount = guestcount / 5;
+			if (guestcount == 0){
+				guestcount = 1;
+			}
+			int chefcount = guestcount * 2;
+			System.out.println(chefcount);
+			int waitercount = guestcount * 2;
+			System.out.println(waitercount);
+			order.setChefcount(chefcount);
+        	order.setWaitercount(waitercount);
+		}
+		else if (form.getService().equals("mobilebreakfast")){
+			guestcount = guestcount / 3;
+			if (guestcount == 0){
+				guestcount = 1;
+			}
+			int chefcount = 1;
+			System.out.println(chefcount);
+			int waitercount = guestcount;
+			System.out.println(waitercount);
+			order.setChefcount(chefcount);
+        	order.setWaitercount(waitercount);
+		}
+
+
+        
+		
+
+
+		System.out.println("-------------------------------");
+		System.out.println(order.toString());
 
 		Streamable<User> chefcountRep = userRepository.getUserByPositionIn(List.of(Position.COOK)); 
         Streamable<User> waitercountRep = userRepository.getUserByPositionIn(List.of(Position.WAITER, Position.EXPERIENCED_WAITER));
@@ -205,7 +263,7 @@ public class OrderController {
 
 
 	@PostMapping("/clearcart")
-    String clear(@ModelAttribute ("orderOut") CateringOrder orderOut, @ModelAttribute Cart cart, @ModelAttribute ("form") OrderForm form){
+    String clear(@ModelAttribute Cart cart, @ModelAttribute ("form") OrderForm form){
 			System.out.println(form.getService());
 			if (form.getService().equals("rentacook")){
                 cart.clear();
@@ -237,9 +295,10 @@ public class OrderController {
 				orderManagement.payOrder(order);
 				orderManagement.completeOrder(order);
 
+				System.out.print("checkout tostring()");
 				System.out.println(orderOut.toString());
 
-				/*
+				
 				ArrayList<User> staffList = new ArrayList<>();
 
 				sort(staffList, staffList.size());
@@ -280,6 +339,7 @@ public class OrderController {
 						allstaff.add(staffList.get(i));
 					}
 					for (User u : allstaff){
+						
 						u.setWorkcount(u.getWorkcount()+1);
 						System.out.println(u);
 						System.out.println(u.getWorkcount());
@@ -288,18 +348,29 @@ public class OrderController {
 					}
 					//TODO 
 					//orderOut.setStafflist(allstaff);
+
+					
+					System.out.println("order-stafflist");
+					for (User u : allstaff){
+						order.addToAllocStaff(u);
+						System.out.println(u);
+					}
+
+
 					System.out.println("llllllllllllllllllll");
-					System.out.println(userRepository.getUserByPositionIn(List.of(Position.EXPERIENCED_WAITER,
+					/*System.out.println(userRepository.getUserByPositionIn(List.of(Position.EXPERIENCED_WAITER,
 							Position.WAITER,Position.COOK)).toList().size());
 
 					for (User u: userRepository.getUserByPositionIn(List.of(Position.EXPERIENCED_WAITER,
 							Position.WAITER,Position.COOK)).toList()){
 						System.out.println(u);
 						System.out.println(u.getWorkcount());
-					}
+					}*/
+
+					System.out.println(order.toString());
 				}
 
-				*/
+				
 
 
 
@@ -310,6 +381,24 @@ public class OrderController {
 	
 				return "redirect:/";
 			}).orElse("redirect:/");
+		}
+
+
+		public void sort(ArrayList<User> list, int n){
+			if (n==0){
+				return;
+			}
+			if (n ==1){
+				return;
+			}
+	
+			for (int i=0; i<n-1; i++){
+				if (list.get(i).workCount>list.get(i+1).workCount){
+					Collections.swap(list, i, i+1);
+				}
+			}
+			sort(list, n-1);
+	
 		}
 
 }

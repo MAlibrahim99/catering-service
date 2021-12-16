@@ -62,9 +62,10 @@ public class CateringOrder extends Order {
 	}
 
 	public void addToAllocStaff(User user) {
-		Assert.isTrue(user.getUserAccount().hasRole(Role.of("STAFF")), "User must have Role STAFF");
+		//Assert.isTrue(user.getUserAccount().hasRole(Role.of("STAFF")), "User must have Role STAFF");
 		this.allocStaff.add(user);
 	}
+
 
 	public LocalDate getCompletionDate() {
 		return completionDate;
