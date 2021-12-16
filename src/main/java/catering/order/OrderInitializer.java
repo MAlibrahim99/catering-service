@@ -45,7 +45,6 @@ public class OrderInitializer implements DataInitializer {
 		int randUser, randDay, randMonth, randYear, randDayTime, randServiceType, randStatus;
 		TimeSegment [] timeSegments = TimeSegment.values();
 		String [] serviceType = {"Eventcatering", "MobileBreakfast", "Partyservice", "RentACook"};
-		OrderStatus [] statuses = {OrderStatus.COMPLETED, OrderStatus.CANCELLED, OrderStatus.PAID};
 		CateringOrder order;
 		Random random = new Random();
 
