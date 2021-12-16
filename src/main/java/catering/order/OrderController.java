@@ -7,7 +7,10 @@ import catering.user.Position;
 import catering.user.User;
 import catering.user.UserRepository;
 
+import org.salespointframework.inventory.UniqueInventory;
+import org.salespointframework.inventory.UniqueInventoryItem;
 import org.salespointframework.order.Cart;
+import org.salespointframework.order.CartItem;
 import org.salespointframework.order.OrderIdentifier;
 import org.salespointframework.order.OrderManagement;
 import org.salespointframework.payment.Cash;
@@ -49,13 +52,16 @@ public class OrderController {
 	private final CateringOrderRepository orderRepository;
 	private final OptionCatalog catalog;
 	private final UserRepository userRepository;
+	private UniqueInventory<UniqueInventoryItem> inventory;
 
 	public OrderController(OrderManagement<CateringOrder> orderManagement, CateringOrderRepository orderRepository, 
-							OptionCatalog catalog, UserRepository userRepository) {
+							OptionCatalog catalog, UserRepository userRepository, UniqueInventory<UniqueInventoryItem> inventory) {
 		this.orderManagement = orderManagement;
 		this.orderRepository = orderRepository;
 		this.catalog = catalog;
 		this.userRepository = userRepository;
+		this.inventory = inventory;
+
 	}
 
 	@GetMapping(value = "/order-history")
@@ -290,6 +296,12 @@ public class OrderController {
         	return userAccount.map(account -> {
 				var order = new CateringOrder(account, Cash.CASH, orderOut.getCompletionDate(),orderOut.getTime(), orderOut.getAddress(), orderOut.getService());
 
+				for (CartItem ci : cart){
+					if(catalog.findByName(ci.getProductName()).stream().findFirst().get().getType() == OptionType.EQUIP){
+						saveInventoryItem(catalog.findByName(ci.getProductName()).stream().findFirst().get(), ci.getQuantity());
+					}
+				}
+
 				cart.addItemsTo(order);
 				
 				orderManagement.payOrder(order);
@@ -399,6 +411,24 @@ public class OrderController {
 			}
 			sort(list, n-1);
 	
+		}
+
+		private void saveInventoryItem(Option option, Quantity quantity) {
+
+			/*Option option;
+			if (cartItem.getProductName() == "Eventcatering"  cartItem.getProductName() == "PartyService" 
+				cartItem.getProductName() == "Rent a cook" || cartItem.getProductName() == "Mobilebreakfast"){
+	
+				}*/
+			//Option option = catalog.findByName(cartItem.getProductName()).stream().findFirst().get();
+			UniqueInventoryItem item = inventory.findByProduct(option).get();
+	
+	
+			Quantity quantityInput = quantity;
+	
+				item.increaseQuantity(quantity);
+	
+			inventory.save(item);
 		}
 
 }
