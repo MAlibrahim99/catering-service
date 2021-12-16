@@ -3,9 +3,15 @@ package catering.order;
 import catering.catalog.Option;
 import catering.catalog.OptionCatalog;
 import catering.catalog.OptionType;
+import catering.user.Position;
+import catering.user.User;
+import catering.user.UserRepository;
 
+import org.salespointframework.order.Cart;
 import org.salespointframework.order.OrderIdentifier;
 import org.salespointframework.order.OrderManagement;
+import org.salespointframework.payment.Cash;
+import org.salespointframework.quantity.Quantity;
 import org.salespointframework.useraccount.UserAccount;
 import org.salespointframework.useraccount.web.LoggedIn;
 
@@ -14,31 +20,41 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.Assert;
+import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.SessionAttributes;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Optional;
+
+import org.springframework.web.bind.annotation.RequestBody;
+
 
 
 @Controller
 @PreAuthorize(value = "isAuthenticated()")
+@SessionAttributes("cart")
 public class OrderController {
 
 	private final OrderManagement<CateringOrder> orderManagement;
 	private final CateringOrderRepository orderRepository;
 	private final OptionCatalog catalog;
+	private final UserRepository userRepository;
 
-	public OrderController(OrderManagement<CateringOrder> orderManagement, CateringOrderRepository orderRepository, OptionCatalog catalog) {
+	public OrderController(OrderManagement<CateringOrder> orderManagement, CateringOrderRepository orderRepository, 
+							OptionCatalog catalog, UserRepository userRepository) {
 		this.orderManagement = orderManagement;
 		this.orderRepository = orderRepository;
 		this.catalog = catalog;
+		this.userRepository = userRepository;
 	}
 
 	@GetMapping(value = "/order-history")
@@ -78,8 +94,13 @@ public class OrderController {
 		}
 	}
 
+	@ModelAttribute("cart")
+    Cart initializeCart(){
+        return new Cart();
+    }
+
 	@GetMapping("/order/{service}")
-	public String getOrderForm(@PathVariable String service, Model model) {
+	public String getOrderForm(@PathVariable String service, Model model, CateringOrder order) {
 
 		Assert.isTrue((service.equals("eventcatering") || service.equals("partyservice") || service.equals("rentacook") ||
 				service.equals("mobilebreakfast")), "Service must be valid");
@@ -103,6 +124,7 @@ public class OrderController {
 		form.setEquipList(equipFormitemList);
 
 		model.addAttribute("form", form);
+		model.addAttribute("order", order);
 
 		return "order_form";
 	}
@@ -122,4 +144,174 @@ public class OrderController {
 		}
 		return "redirect:/";
 	}
+
+	@PostMapping("/cartadd")
+	String addtoCart(Model model, @ModelAttribute ("order") CateringOrder order, @ModelAttribute ("form") OrderForm form,
+					 @ModelAttribute Cart cart ){
+		cart.clear();
+
+		int guestcount = form.getPersons();
+		int chefcount = guestcount * 3;
+		System.out.println(chefcount);
+        int waitercount = guestcount * 4;
+		System.out.println(waitercount);
+        order.setChefcount(chefcount);
+        order.setWaitercount(waitercount);
+
+		Streamable<User> chefcountRep = userRepository.getUserByPositionIn(List.of(Position.COOK)); 
+        Streamable<User> waitercountRep = userRepository.getUserByPositionIn(List.of(Position.WAITER, Position.EXPERIENCED_WAITER));
+        /*if(chefcountRep.toList().size() < chefcount || waitercountRep.toList().size() < waitercount){
+            if (form.getService().equals("eventcatering")){
+				return "redirect:/order/eventcatering";
+			}
+			else if (form.getService().equals("partyservice")){
+				return "redirect:/order/partyservice";
+			}
+			else if (form.getService().equals("rentacook")){
+				return "redirect:/order/rentacook";
+			}
+			else if (form.getService().equals("mobilebreakfast")){
+				return "redirect:/order/mobilebreakast";
+			}
+			else{
+				return "redirect:/";
+			}
+        }*/
+
+		for (OrderFormitem optionItem : form.getFoodList()) {
+			if (optionItem.getAmount() != 0){
+				System.out.println(optionItem.getName() + " : " + optionItem.getAmount());
+				cart.addOrUpdateItem(catalog.findByName(optionItem.getName()).stream().findFirst().get(), Quantity.of(optionItem.getAmount()));
+			}
+		}
+
+		for (OrderFormitem optionItem : form.getEquipList()) {
+			if (optionItem.getAmount() != 0){
+				System.out.println(optionItem.getName() + " : " + optionItem.getAmount());
+				cart.addOrUpdateItem(catalog.findByName(optionItem.getName()).stream().findFirst().get(), Quantity.of(optionItem.getAmount()));
+			}		
+		}
+
+		model.addAttribute("order", order);
+		model.addAttribute("orderOut", new CateringOrder());
+		model.addAttribute("form", form);
+	
+
+
+		return "orderreview";
+
+	}
+
+
+
+	@PostMapping("/clearcart")
+    String clear(@ModelAttribute ("orderOut") CateringOrder orderOut, @ModelAttribute Cart cart, @ModelAttribute ("form") OrderForm form){
+			System.out.println(form.getService());
+			if (form.getService().equals("rentacook")){
+                cart.clear();
+                return "redirect:/order/rentacook";
+            }else if (form.getService().equals("eventcatering")){
+                cart.clear();
+                return "redirect:/order/eventcatering";
+            }else if (form.getService().equals("partyservice")){
+                cart.clear();
+                return "redirect:/order/partyservice";
+            }else if (form.getService().equals("mobilebreakfast")){
+                cart.clear();
+                return "redirect:/order/mobilebreakfast";
+            }
+        cart.clear();
+        return "redirect:/";
+    }
+
+	@PostMapping("/checkout")
+    String buy(@ModelAttribute Cart cart, @LoggedIn Optional<UserAccount> userAccount, Errors help,
+               @ModelAttribute ("order") CateringOrder orderOut) {
+
+				
+        	return userAccount.map(account -> {
+				var order = new CateringOrder(account, Cash.CASH, orderOut.getCompletionDate(),orderOut.getTime(), orderOut.getAddress(), orderOut.getService());
+
+				cart.addItemsTo(order);
+				
+				orderManagement.payOrder(order);
+				orderManagement.completeOrder(order);
+
+				System.out.println(orderOut.toString());
+
+				/*
+				ArrayList<User> staffList = new ArrayList<>();
+
+				sort(staffList, staffList.size());
+				System.out.println(staffList.size());
+				
+				ArrayList<User> orderStaffList = new ArrayList<>();
+				Streamable<User> staff = userRepository.getUserByPositionIn(List.of(Position.EXPERIENCED_WAITER, Position.WAITER));
+				System.out.println(staff.toList().size());
+				for (User u : staff){
+					staffList.add(u);
+				}
+
+				ArrayList<User> chefList = new ArrayList<>();
+				Streamable<User> chef = userRepository.getUserByPositionIn(List.of(Position.COOK));
+				for (User u : chef){
+					chefList.add(u);
+				}
+
+
+				sort(staffList, staffList.size());
+				sort(chefList, chefList.size());
+				System.out.println("oooooooooooooooooooooooooooo");
+				System.out.println(staffList.size());
+				System.out.println(chefList.size());
+				for (User u: staffList){
+					System.out.println(u);
+				}
+				
+
+				if(chefList.size() >= orderOut.getChefcount() && staffList.size() >= orderOut.getWaitercount()){
+					
+					
+					ArrayList<User> allstaff = new ArrayList<>();
+					for (int i=0; i<orderOut.getChefcount();i++){
+						allstaff.add(chefList.get(i));
+					}
+					for (int i=0; i<orderOut.getWaitercount();i++){
+						allstaff.add(staffList.get(i));
+					}
+					for (User u : allstaff){
+						u.setWorkcount(u.getWorkcount()+1);
+						System.out.println(u);
+						System.out.println(u.getWorkcount());
+						userRepository.save(u);
+						
+					}
+					//TODO 
+					//orderOut.setStafflist(allstaff);
+					System.out.println("llllllllllllllllllll");
+					System.out.println(userRepository.getUserByPositionIn(List.of(Position.EXPERIENCED_WAITER,
+							Position.WAITER,Position.COOK)).toList().size());
+
+					for (User u: userRepository.getUserByPositionIn(List.of(Position.EXPERIENCED_WAITER,
+							Position.WAITER,Position.COOK)).toList()){
+						System.out.println(u);
+						System.out.println(u.getWorkcount());
+					}
+				}
+
+				*/
+
+
+
+				if (help.hasErrors()){
+					return "cart";
+				}
+				cart.clear();
+	
+				return "redirect:/";
+			}).orElse("redirect:/");
+		}
+
 }
+
+

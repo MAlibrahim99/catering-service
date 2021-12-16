@@ -1,0 +1,56 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+
+    <body>
+        
+
+        <div class="table-responsive">
+            <table class="table table-hover align-middle">
+                <thead>
+                    <tr>
+                        <th th:text="#{cart.service}">Service</th>
+                        <th th:text="#{cart.price}">Preis</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="item : ${cart} ">
+                        
+                        <td th:text="${item.productName}">productname</td>
+                        <!--<td th:text="${item.description}">details</td>-->
+                        <!--preis hier -->
+                        <td th:text="${item.price}">11111</td>
+                            <!-- remove item  hier-->
+                    </tr>
+                </tbody>
+                <tfoot>
+                    <tr>
+                    </tr>
+                </tfoot>
+            </table>
+            <form class="ui form" method="post" th:action="@{/clearcart}" th:object="${form}">  
+                <input type="hidden" name="service"  th:value="${form.service}"/>
+                <button class="btn btn-secondary" type="submit" th:text="#{cart.removeItem}">  <!--clear cart-->
+                </button>
+            </form>
+        </div>
+        
+        <!--hier buy button mit summe-->
+        <div>
+            <p style="margin-left: 87%; transform: translateX(-87%);" class="label" th:text="#{cart.total}">Summe</p>
+            <!--das ist removable wenn du cart.total nutzt hier nur zum checken da-->
+            <p style="margin-left: 87%; transform: translateX(-87%);" class="value"><span th:text="${{cart.price}}">1111</span></p>
+            <form class="ui form"  method="post" th:action="@{/checkout}" th:object="${orderOut}" style="margin-left: 87%; transform: translateX(-87%);">
+                <input type="hidden" name="date"  th:value="${order.completionDate}"/>
+                <input type="hidden" name="time"  th:value="${order.time}"/>
+                <input type="hidden" name="location"  th:value="${order.address}"/>
+                <input type="hidden" name="chefcount"  th:value="${order.chefcount}"/>
+                <input type="hidden" name="waitercount"  th:value="${order.waitercount}"/>
+                <input type="hidden" name="staffList"  th:value="${order.allocStaff}"/>
+                <button type="submit" class="btn btn-outline-primary btn-md" th:text="#{cart.buy}">Buy Now</button>
+            </form>
+        </div>
+    </body>
+      
+      
+      
+</html>

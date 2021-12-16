@@ -15,4 +15,7 @@ public interface OptionCatalog extends Catalog<Option> {
 		return findByType(type, DEFAULT_SORT);
 	}
 
+
+	
+
 }

@@ -44,7 +44,7 @@ public class CatalogController {
 		String headline = "Eventcatering";
 		model.addAttribute("headline", headline);
 		model.addAttribute("catalog", catalog.findByCategory("eventcatering"));
-		String order = "/eventcateringform";
+		String order = "/order/eventcatering";
 		model.addAttribute("orderformular", order);
 		String price = "eventcatering";
 		model.addAttribute("price", price);
@@ -58,7 +58,7 @@ public class CatalogController {
 		String headline = "Partyservice";
 		model.addAttribute("headline", headline);
 		model.addAttribute("catalog", catalog.findByCategory("partyservice"));
-		String order = "/partyserviceform";
+		String order = "/order/partyservice";
 		model.addAttribute("orderformular", order);
 		String price = "partyservice";
 		model.addAttribute("price", price);
@@ -81,7 +81,7 @@ public class CatalogController {
 		model.addAttribute("info", info);
 
 		model.addAttribute("catalog", catalog.findByCategory("rentacook"));
-		String order = "/rentacookform";
+		String order = "/order/rentacook";
 		model.addAttribute("orderformular", order);
 		String price = "rentacook";
 		model.addAttribute("price", price);
@@ -95,7 +95,7 @@ public class CatalogController {
 		String headline = "Mobile Breakfast";
 		model.addAttribute("headline", headline);
 		model.addAttribute("catalog", catalog.findByCategory("mobilebreakfast"));
-		String order = "/mobilebreakfastform";
+		String order = "/order/mobilebreakfast";
 		model.addAttribute("orderformular", order);
 		String price = "mobilebreakfast";
 		model.addAttribute("price", price);
