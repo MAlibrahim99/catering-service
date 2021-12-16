@@ -9,22 +9,22 @@
 <body>
 <div th:replace="navigation :: navigation"></div>
 <section layout:fragment="content">
-    <h2 class="underlined-text">Staff</h2>
+    <h2 class="underlined-text">Personal</h2>
 	<div th:if="${!allStaff.iterator().hasNext()}" class="ui message">
 		<div class="header">
-			Empty List
+			Leere Liste
 		</div>
-		<p>There is currently no accounts. Click on "Add new Staff" to add a new account</p>
+		<p>Drücken Sie auf "Neues Konto erstellen"</p>
 	</div>
     <table th:if="${allStaff.iterator().hasNext()}" class="ui striped center aligned table">
         <thead><!--TODO implementeire die Sortierfunktion nach Name, Nachname und Position-->
         	<tr class="bold">
 				<th>ID</th>
-            	<th>Last Name</th>
-				<th>Name</th>
-				<th>E-Mail Address</th>
+            	<th>Nachname</th>
+				<th>Vorname</th>
+				<th>Email-Adresse</th>
            		<th>Position</th>
-				<th>Actions</th>
+				<th>Aktionen</th>
        		 </tr>
        	</thead>
        	<tbody>
@@ -33,13 +33,13 @@
 				<td th:text="${staff.userAccount.lastname}">Antoinette</td>
 				<td th:text="${staff.userAccount.firstname}">Marie</td>
 				<td th:text="${staff.userAccount.email}">kuchen@leute.de</td>
-				<td th:text="${staff.position}">Staff position</td>
+				<td th:text="${staff.position}">Personal position</td>
 	            <th><a th:href="@{/profile/{username}(username=${staff.userAccount.username})}"
-					   class="ui button">Edit/Delete Account</a></th>
+					   class="ui button">bearbeiten/löschen</a></th>
 	        </tr>
 		</tbody>
     </table>
-	<a th:href="@{/register}" class="ui button">Add new Staff</a>
+	<a th:href="@{/register}" class="ui button">Neues Konto erstellen</a>
 </section>
 </body>
 </html>

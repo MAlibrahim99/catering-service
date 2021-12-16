@@ -1,12 +1,14 @@
 package catering.order;
 
 import org.javamoney.moneta.Money;
+import org.salespointframework.order.OrderLine;
 import org.salespointframework.order.OrderStatus;
 import org.springframework.data.util.Streamable;
 import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.*;
 
@@ -21,12 +23,12 @@ public class IncomeOverview {
 		this.orderRepository = orderRepository;
 	}
 
-	public Money totalIncome(LocalDateTime start, LocalDateTime end) {
+	public Money totalIncome(LocalDate start, LocalDate end) {
 		validateArguments(start, end);
 		// prüfe, ob das Startsdatum bzw. Endsdatum  in der Zukunft liegt oder der aktuelle tag ist ->
 		// berechnung geht bis dem Vortag
-		if (end.isAfter(LocalDateTime.now()) || end.isEqual(LocalDateTime.now())) {
-			end = LocalDateTime.now().minusDays(1L);
+		if (end.isAfter(LocalDate.now()) || end.isEqual(LocalDate.now())) {
+			end = LocalDate.now().minusDays(1L);
 		}
 		if (start.isAfter(end) || start.isEqual(end)) {
 			start = end.minusDays(30L);
@@ -42,41 +44,31 @@ public class IncomeOverview {
 		return totalIncome;
 	}
 
-//	public Map<String, BigDecimal>servicePercentages(LocalDateTime start, LocalDateTime end) {
+//	public Map<String, String> servicePercentages(LocalDate start, LocalDate end) {
 //		validateArguments(start, end);
-//		if (end.isAfter(LocalDateTime.now()) || end.isEqual(LocalDateTime.now())) {
-//			end = LocalDateTime.now().minusDays(1L);
+//		if (end.isAfter(LocalDate.now()) || end.isEqual(LocalDate.now())) {
+//			end = LocalDate.now().minusDays(1L);
 //		}
 //
-//		if (start.isAfter(LocalDateTime.now()) || start.isEqual(LocalDateTime.now())) {
-//			start = LocalDateTime.now().minusDays(30L);
+//		if (start.isAfter(LocalDate.now()) || start.isEqual(LocalDate.now())) {
+//			start = LocalDate.now().minusDays(30L);
 //		}
 //
-//		ServiceType[] serviceTypes = ServiceType.values();
 //		Streamable<CateringOrder> orders = orderRepository.findByCompletionDateBetween(start, end);
 //		BigDecimal countOfAllOrders = BigDecimal.valueOf(orders.toList().size());
 //		BigDecimal countOfSameTypeOrders = BigDecimal.valueOf(0.00);
-//		Map<String, BigDecimal> percentages = new HashMap<String, BigDecimal>();
+//		Map<String, String> percentages = new HashMap<>();
 //
-//		for(ServiceType type: serviceTypes) {
 //			for (CateringOrder order : orders) {
-//				for (OrderLine line : order.getOrderLines()) {
-//					if(line instanceof ware){
-//						line = (ware) line;
-//						if(line.getServiceType().equals(type)) {
-//							countOfSameTypeOrders = countOfSameTypeOrders.add(BigDecimal.valueOf(1));
-//						}
-//					}
-//				}
+//
+//				percentages.put(type.toString().toLowerCase(),
+//						countOfSameTypeOrders.divide(countOfAllOrders, RoundingMode.CEILING).multiply(BigDecimal.valueOf(100)));
+//				countOfSameTypeOrders = BigDecimal.valueOf(0.00);
 //			}
-//			percentages.put(type.toString().toLowerCase(),
-//					countOfSameTypeOrders.divide(countOfAllOrders, RoundingMode.CEILING).multiply(BigDecimal.valueOf(100)));
-//			countOfSameTypeOrders = BigDecimal.valueOf(0.00);
-//		}
 //		return percentages;
-//	}
+//}
 
-	public Map<String, String> statusPercentages(LocalDateTime start, LocalDateTime end) {
+	public Map<String, String> statusPercentages(LocalDate start, LocalDate end) {
 		validateArguments(start, end);
 		if (start.isAfter(end) || start.isEqual(end)) {
 			start = end.minusDays(30L);
@@ -101,7 +93,7 @@ public class IncomeOverview {
 		return percentages;
 	}
 
-	private void validateArguments(LocalDateTime start, LocalDateTime end) {
+	private void validateArguments(LocalDate start, LocalDate end) {
 		if (start == null || end == null) {
 			throw new IllegalArgumentException("Date can not be null in this call");
 		}

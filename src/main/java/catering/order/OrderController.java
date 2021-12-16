@@ -1,54 +1,45 @@
 package catering.order;
-import catering.catalog.services.*;
-import catering.inventory.InventoryFormitem;
 
-import org.salespointframework.catalog.Product;
+import catering.catalog.CateringCatalog;
+import catering.catalog.Option;
+import catering.catalog.OptionCatalog;
+import catering.catalog.Ware;
+import catering.catalog.Ware.ServiceType;
+import catering.catalog.services.Eventcatering;
+import catering.catalog.services.Mobilebreakfast;
+import catering.catalog.services.Partyservice;
+import catering.catalog.services.Rentacook;
+import catering.user.Position;
+import catering.user.User;
+import catering.user.UserRepository;
+
 import org.salespointframework.inventory.UniqueInventory;
 import org.salespointframework.inventory.UniqueInventoryItem;
-import org.salespointframework.order.*;
-import org.springframework.validation.Errors;
-
+import org.salespointframework.order.Cart;
+import org.salespointframework.order.CartItem;
 import org.salespointframework.order.OrderIdentifier;
 import org.salespointframework.order.OrderManagement;
+import org.salespointframework.payment.Cash;
+import org.salespointframework.quantity.Quantity;
+import org.salespointframework.order.OrderStatus;
 import org.salespointframework.useraccount.UserAccount;
 import org.salespointframework.useraccount.web.LoggedIn;
+
+import org.springframework.data.util.Streamable;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.SessionAttributes;
-
-import antlr.debug.Event;
+import org.springframework.util.Assert;
+import org.springframework.validation.Errors;
+import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Optional;
-import java.util.stream.Stream;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-
-import org.salespointframework.payment.Cash;
-import org.salespointframework.quantity.Quantity;
-import org.springframework.data.util.Streamable;
-import org.springframework.util.Assert;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-
-import catering.catalog.CateringCatalog;
-import catering.catalog.OptionCatalog;
-import catering.catalog.Option;
-import catering.catalog.Ware;
-import catering.catalog.Ware.ServiceType;
-import catering.user.Position;
-import catering.user.User;
-import catering.user.UserRepository;
-import org.springframework.web.bind.annotation.SessionAttributes;
+import java.util.*;
 
 
 @Controller
@@ -63,7 +54,7 @@ public class OrderController {
 	private UserRepository userRepository;
 	private IncomeOverview incomeOverview;
 	private UniqueInventory<UniqueInventoryItem> inventory;
-	
+
 
 	public OrderController(UserRepository userRepository, OrderManagement<org.salespointframework.order.Order> oOrderManagement,
 						   OrderManagement<CateringOrder> orderManagement, CateringOrderRepository orderRepository,
@@ -76,7 +67,7 @@ public class OrderController {
 		this.cCatalog = cCatalog;
 		this.catalog = catalog;
 		this.incomeOverview = incomeOverview;
-						
+
 		this.userRepository = userRepository;
 
 		this.inventory = inventory;
@@ -122,15 +113,15 @@ public class OrderController {
 	@GetMapping("/income-overview")
 	public String displayIncomeOverview(@RequestParam("startDate") Optional<String> startDate,
 										@RequestParam("endDate") Optional<String> endDate, Model model) {
-		LocalDateTime start;
-		LocalDateTime end;
+		LocalDate start;
+		LocalDate end;
 		if (startDate.isEmpty() || endDate.isEmpty()) {
-			start = LocalDateTime.now().minusDays(30L);
-			end = LocalDateTime.now().minusDays(1L);
+			start = LocalDate.now().minusDays(30L);
+			end = LocalDate.now().minusDays(1L);
 		} else {
 			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-			start = LocalDate.parse(startDate.get(), formatter).atStartOfDay();
-			end = LocalDate.parse(endDate.get(), formatter).atStartOfDay();
+			start = LocalDate.parse(startDate.get(), formatter);
+			end = LocalDate.parse(endDate.get(), formatter);
 		}
 
 		if (start.isAfter(end)) {
@@ -139,14 +130,14 @@ public class OrderController {
 
 		model.addAttribute("totalIncome", incomeOverview.totalIncome(start, end));
 		model.addAttribute("statusPercentages", incomeOverview.statusPercentages(start, end));
-		model.addAttribute("start", start.toLocalDate());
-		model.addAttribute("end", end.toLocalDate());
+		model.addAttribute("start", start);
+		model.addAttribute("end", end);
 
 		return "income-overview";
 	}
-	
 
-	
+
+
 	@ModelAttribute("cart")
 	Cart initializeCart(){
 		/*Cart cart = new Cart();
@@ -174,7 +165,7 @@ public class OrderController {
 		Boolean enough = true;
 
 
-		Streamable<User> chefcountRep = userRepository.getUserByPositionIn(List.of(Position.COOK)); 
+		Streamable<User> chefcountRep = userRepository.getUserByPositionIn(List.of(Position.COOK));
 		Streamable<User> waitercountRep = userRepository.getUserByPositionIn(List.of(Position.WAITER, Position.EXPERIENCED_WAITER));
 		if(chefcountRep.toList().size() < chefcount || waitercountRep.toList().size() < waitercount){
 			enough = false;
@@ -232,7 +223,7 @@ public class OrderController {
 		ord2.setWaitercount(waitercount);
 		System.out.println(ord2.toString());
 
-		Streamable<User> chefcountRep = userRepository.getUserByPositionIn(List.of(Position.COOK)); 
+		Streamable<User> chefcountRep = userRepository.getUserByPositionIn(List.of(Position.COOK));
 		Streamable<User> waitercountRep = userRepository.getUserByPositionIn(List.of(Position.WAITER, Position.EXPERIENCED_WAITER));
 		if(chefcountRep.toList().size() < chefcount || waitercountRep.toList().size() < waitercount){
 			return "redirect:/partyserviceform";
@@ -241,7 +232,7 @@ public class OrderController {
 		cart.addOrUpdateItem(ware, Quantity.of(number));
 		model.addAttribute("order", ord2);
 		model.addAttribute("orderOut", new Order());
-	
+
 
 		for(Option o : catalog.findByName("Servietten")){
 			cart.addOrUpdateItem(o, partyservice.getServiette());
@@ -306,11 +297,11 @@ public class OrderController {
         int waitercount = guestcount * 2;
 		ord3.setChefcount(chefcount);
 		ord3.setWaitercount(waitercount);
-		
+
 		System.out.println(ord3.toString());
 		System.out.println(ord3.getTime());
 
-		Streamable<User> chefcountRep = userRepository.getUserByPositionIn(List.of(Position.COOK)); 
+		Streamable<User> chefcountRep = userRepository.getUserByPositionIn(List.of(Position.COOK));
 		Streamable<User> waitercountRep = userRepository.getUserByPositionIn(List.of(Position.WAITER, Position.EXPERIENCED_WAITER));
 		if(chefcountRep.toList().size() < chefcount || waitercountRep.toList().size() < waitercount){
 			return "redirect:/rentacookform";
@@ -335,7 +326,7 @@ public class OrderController {
 		cart.addOrUpdateItem(ware, Quantity.of(number));
 		model.addAttribute("order", ord3);
 		model.addAttribute("orderOut", new Order());
-		
+
 		return "orderreview";
 	}
 
@@ -351,12 +342,12 @@ public class OrderController {
 		int chefcount = 1;
         int waitercount = guestcount;
 
-		Streamable<User> chefcountRep = userRepository.getUserByPositionIn(List.of(Position.COOK)); 
+		Streamable<User> chefcountRep = userRepository.getUserByPositionIn(List.of(Position.COOK));
 		Streamable<User> waitercountRep = userRepository.getUserByPositionIn(List.of(Position.WAITER, Position.EXPERIENCED_WAITER));
 		if(chefcountRep.toList().size() < chefcount || waitercountRep.toList().size() < waitercount){
 			return "redirect:/eventcateringform";
 		}
-		
+
 		ord4.setChefcount(chefcount);
 		ord4.setWaitercount(waitercount);
 		System.out.println(mobilebreakfast.getDishes());
@@ -378,7 +369,7 @@ public class OrderController {
 		cart.addOrUpdateItem(ware, Quantity.of(number));
 		model.addAttribute("order", ord4);
 		model.addAttribute("orderOut", new Order());
-		
+
 		return "orderreview";
 	}
 
@@ -432,9 +423,9 @@ public class OrderController {
 		return userAccount.map(account -> {
 			var order = new org.salespointframework.order.Order(account, Cash.CASH);
 
-			
+
 			System.out.println("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx");
-			/*for (CartItem ci : cart){ 
+			/*for (CartItem ci : cart){
 				System.out.println("x");
 				long amount = orderOut.getChefcount()/4*10;
 				if (ci.getProductName().equals("Eventcatering")){
@@ -470,7 +461,7 @@ public class OrderController {
 					saveInventoryItem(catalog.findByName("Blumen").stream().findFirst().get(), amount);
 					saveInventoryItem(catalog.findByName("Dekoration").stream().findFirst().get(), amount);
 					saveInventoryItem(catalog.findByName("Tischtücher").stream().findFirst().get(), amount/6);
-					
+
 
 				}
 				else if(ci.getProductName().equals("Mobilebreakfast")){
@@ -479,20 +470,20 @@ public class OrderController {
 					saveInventoryItem(catalog.findByName("Alkoholfreie Getränke").stream().findFirst().get(), amount);
 					saveInventoryItem(catalog.findByName("Frühstück").stream().findFirst().get(), amount);
 				}
-				
-				
-					
-				
-				
-				
+
+
+
+
+
+
 				System.out.println(ci.getProductName());
 				System.out.println(ci.getQuantity());
 			}*/
-			
+
 			cart.addItemsTo(order);
 
 
-			
+
 
 			oOrderManagement.payOrder(order);
 			System.out.print(order.getOrderStatus());
@@ -507,7 +498,7 @@ public class OrderController {
 
 			sort(staffList, staffList.size());
 			System.out.println(staffList.size());
-			
+
 			ArrayList<User> orderStaffList = new ArrayList<>();
 			Streamable<User> staff = userRepository.getUserByPositionIn(List.of(Position.EXPERIENCED_WAITER, Position.WAITER));
 			System.out.println(staff.toList().size());
@@ -530,11 +521,11 @@ public class OrderController {
 			for (User u: staffList){
 				System.out.println(u);
 			}
-			
+
 
 			if(chefList.size() >= orderOut.getChefcount() && staffList.size() >= orderOut.getWaitercount()){
-				
-				
+
+
 				ArrayList<User> allstaff = new ArrayList<>();
 				for (int i=0; i<orderOut.getChefcount();i++){
 					allstaff.add(chefList.get(i));
@@ -547,7 +538,7 @@ public class OrderController {
 					System.out.println(u);
 					System.out.println(u.getWorkcount());
 					userRepository.save(u);
-					
+
 				}
 
 				orderOut.setStafflist(allstaff);
@@ -599,7 +590,7 @@ public class OrderController {
 
 
 
-	
+
 	public void sort(ArrayList<User> list, int n){
 		if (n==0){
 			return;
@@ -607,7 +598,7 @@ public class OrderController {
 		if (n ==1){
 			return;
 		}
-		
+
 		for (int i=0; i<n-1; i++){
 			if (list.get(i).workCount>list.get(i+1).workCount){
 				Collections.swap(list, i, i+1);
@@ -623,16 +614,48 @@ public class OrderController {
 		if (cartItem.getProductName() == "Eventcatering" || cartItem.getProductName() == "PartyService" ||
 			cartItem.getProductName() == "Rent a cook" || cartItem.getProductName() == "Mobilebreakfast"){
 
-			}*/ 
-        //Option option = catalog.findByName(cartItem.getProductName()).stream().findFirst().get(); 
+			}*/
+        //Option option = catalog.findByName(cartItem.getProductName()).stream().findFirst().get();
         UniqueInventoryItem item = inventory.findByProduct(option).get();
 
 
         Quantity quantityInput = Quantity.of(amount);
-        
+
             item.decreaseQuantity(item.getQuantity());
 
         inventory.save(item);
     }
 
+
+	@PostMapping("/setstatus")
+	String list2(@RequestParam("status") String status){
+
+		System.out.println(status);
+		return "redirect:/order-list/" + status;
+	}
+
+	@GetMapping("/order-list/{status}")
+	String list(Model model, @PathVariable("status") OrderStatus status){
+
+		Iterable<CateringOrder> orders = orderManagement.findBy(status);
+		model.addAttribute("orders", orders);
+
+
+		/*Iterable<CateringOrder> ordersOpen = orderManagement.findBy(OrderStatus.OPEN);
+		model.addAttribute("ordersOpen", ordersOpen);
+		Iterable<CateringOrder> ordersPaid = orderManagement.findBy(OrderStatus.PAID);
+		model.addAttribute("ordersPaid", ordersPaid);
+		Iterable<CateringOrder> ordersCompleted = orderManagement.findBy(OrderStatus.COMPLETED);
+		model.addAttribute("ordersCompleted", ordersCompleted);
+		Iterable<CateringOrder> ordersCancelled = orderManagement.findBy(OrderStatus.CANCELLED);
+		model.addAttribute("ordersCancelled", ordersCancelled); */
+		return "order-list";
+	}
+
+	@GetMapping("/order-details/{order-id}")
+	String details(Model model, @PathVariable("order-id") OrderIdentifier parameter){
+		model.addAttribute("order", orderManagement.get(parameter).get());
+		model.addAttribute("account", orderManagement.get(parameter));
+		return "order-details";
+	}
 }

@@ -3,10 +3,10 @@ package catering.catalog;
 import org.salespointframework.catalog.Catalog;
 
 import org.springframework.data.domain.Sort;
+import org.springframework.stereotype.Service;
 
 
-
-
+@Service
 public interface OptionCatalog extends Catalog<Option> {
 
 	Sort DEFAULT_SORT = Sort.by("productIdentifier").descending();
