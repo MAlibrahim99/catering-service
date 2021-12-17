@@ -47,12 +47,19 @@
             Anzahl Personen: <input type="number" min="1" id="persons" onchange="calc(event);" th:field="${form.persons}"/>
             <div>    
                 Datum:   <input id="date" type="date" name="date" required th:field="${order.completionDate}"/><br/><br/>
-                <input type="radio" id="frühs" name="time" value="Frühs" required th:value="${order.time}"/>
-                <label for="Frühs">Frühs</label><br/>
-                <input type="radio" id="mittag" name="time" value="Mittag" required th:value="${order.time}"/>
+                <input type="radio" id="frühs" name="time" value="Früh" required th:field="${order.time}" th:value="${order.time}"/>
+                <label for="Frühs">Früh</label><br/>
+                <input type="radio" id="mittag" name="time" value="Mittag" required th:field="${order.time}" th:value="${order.time}"/>
                 <label for="Mittag">Mittag</label><br/>
-                <input type="radio" id="abends" name="time" value="Abends" required th:value="${order.time}"/>
-                <label for="Abends">Abends</label><br/><br/>
+                <input type="radio" id="abends" name="time" value="Abend" required th:field="${order.time}" th:value="${order.time}"/>
+                <label for="Abends">Abend</label><br/><br/>
+                <!--><label for="timesegment">Gewünschter Zeitraum:</label>
+                <select name="timesegment" id="timesegment">
+                    <option th:each="time : ${T(catering.order).value()}" th:value="${time}" th:text="{time}" th:field="${order.time}">Früh</option>
+                </select>
+                <br/><br/>-->
+
+
                 <label for="location">Veranstaltungsort:</label><br/>
                 <input type="text" name="location" required th:field="${order.address}"/><br/><br/>
             </div>

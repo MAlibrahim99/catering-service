@@ -157,6 +157,7 @@ public class OrderController {
 					 @ModelAttribute Cart cart ){
 		cart.clear();
 
+		
 		int guestcount = form.getPersons();
 		System.out.println(form.getPersons());
 
