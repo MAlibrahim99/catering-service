@@ -42,24 +42,9 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr>
-                    <!--        <tr th:each="service : ${services}">-->
-                    <!--            <td th:text="${service.name}">Vorschau</td>-->
-                    <!--            <td th:text="${service.percent}">Vorschau</td>-->
-                    <td>Event catering</td>
-                    <td>38%</td>
-                </tr>
-                <tr>
-                    <td>Party service</td>
-                    <td>40%</td>
-                </tr>
-                <tr>
-                    <td>Breakfast</td>
-                    <td>13%</td>
-                </tr>
-                <tr>
-                    <td>Rent a cook</td>
-                    <td>9%</td>
+                <tr th:each="key : ${servicePercentages.keySet}">
+                    <td th:text="${key}">Test Angebot</td>
+                    <td th:text="${servicePercentages.get(key) + ' %'}">0.0%</td>
                 </tr>
                 </tbody>
             </table>

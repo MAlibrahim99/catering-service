@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
-      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
-      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta http-equiv="content-type" content="text/html; charset=UTF-8"/>
 
@@ -45,7 +44,7 @@
             <a class="link" th:href="@{/income-overview}"
                th:text="#{nav.incomeoverview}" sec:authorize="hasRole('ADMIN')">Einkommensübersicht</a>
 
-            <a class="link" th:href="@{/profile/{username}(username=${#authentication.name})}" sec:authorize="hasRole('CUSTOMER')"
+            <a class="link" th:href="@{/profile}" sec:authorize="hasRole('CUSTOMER')"
                th:text="#{nav.profile}">Profile</a>
 
 
