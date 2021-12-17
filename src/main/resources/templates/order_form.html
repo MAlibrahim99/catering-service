@@ -54,7 +54,7 @@
                 <input type="radio" id="abends" name="time" value="Abends" required th:value="${order.time}"/>
                 <label for="Abends">Abends</label><br/><br/>
                 <label for="location">Veranstaltungsort:</label><br/>
-                <input type="text" name="location" required th:value="${order.address}"/><br/><br/>
+                <input type="text" name="location" required th:field="${order.address}"/><br/><br/>
             </div>
             <div th:unless="${form.service == 'rentacook'}">
                 

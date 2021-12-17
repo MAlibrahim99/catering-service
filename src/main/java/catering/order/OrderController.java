@@ -224,7 +224,7 @@ public class OrderController {
 
 		Streamable<User> chefcountRep = userRepository.getUserByPositionIn(List.of(Position.COOK)); 
         Streamable<User> waitercountRep = userRepository.getUserByPositionIn(List.of(Position.WAITER, Position.EXPERIENCED_WAITER));
-        /*if(chefcountRep.toList().size() < chefcount || waitercountRep.toList().size() < waitercount){
+        if(chefcountRep.toList().size() < order.getChefcount() || waitercountRep.toList().size() < order.getWaitercount()){
             if (form.getService().equals("eventcatering")){
 				return "redirect:/order/eventcatering";
 			}
@@ -240,7 +240,7 @@ public class OrderController {
 			else{
 				return "redirect:/";
 			}
-        }*/
+        }
 
 		for (OrderFormitem optionItem : form.getFoodList()) {
 			if (optionItem.getAmount() != 0){
@@ -257,7 +257,7 @@ public class OrderController {
 		}
 
 		model.addAttribute("order", order);
-		model.addAttribute("orderOut", new CateringOrder());
+		//model.addAttribute("orderOut", new CateringOrder());
 		model.addAttribute("form", form);
 	
 
@@ -292,7 +292,9 @@ public class OrderController {
     String buy(@ModelAttribute Cart cart, @LoggedIn Optional<UserAccount> userAccount, Errors help,
                @ModelAttribute ("order") CateringOrder orderOut) {
 
-				
+				System.out.println(orderOut.toString());
+
+
         	return userAccount.map(account -> {
 				var order = new CateringOrder(account, Cash.CASH, orderOut.getCompletionDate(),orderOut.getTime(), orderOut.getAddress(), orderOut.getService());
 
@@ -366,6 +368,7 @@ public class OrderController {
 					for (User u : allstaff){
 						order.addToAllocStaff(u);
 						System.out.println(u);
+						System.out.println(u.getPosition());
 					}
 
 
