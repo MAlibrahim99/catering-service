@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+layout:decorate="~{layout}">
+<head>
+</head>
+<body>
+<div th:replace="navigation :: navigation"></div>
+<section layout:fragment="content">
+  <h2 class="underlined-text">Liste aller Bestellungen</h2>
+
+  <form method="post" th:action="@{/setstatus}">
+      <div>
+        <input type="radio" id="paid" name="status" value="PAID" checked>
+        <label for="paid">Bezahlt</label>
+      </div>
+      <div>
+        <input type="radio" id="completed" name="status" value="COMPLETED">
+        <label for="completed">Beendet</label>
+      </div>
+      <div>
+        <input type="radio" id="cancelled" name="status" value="CANCELLED">
+        <label for="cancelled">Storniert</label>
+      </div>
+      <div>
+        <input type="radio" id="open" name="status" value="OPEN">
+        <label for="open">Offen</label>
+      </div>
+      <input type="submit" value="Bestätigen"/>
+  </form>
+
+  <table class="ui striped center aligned table">
+    <thead>
+      <tr class="bold">
+        <th>Name</th>
+        <th>Typ</th>
+        <th>Termin</th>
+        <th>Kosten</th>
+        <th>Status</th>
+        <th>Details</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr th:each="order : *{orders}">
+        <td th:text="${order.userAccount.getLastname()}"></td>
+        <td></td>
+        <td th:text="${#conversions.convert(order.completionDate, 'String')}"></td>
+        <td th:text="${order.total}"></td>
+        <td th:text="${order.orderStatus}"></td>
+        <td><a class="ui black basic button" th:href="@{/order-details/{order-id}(order-id=${order.id})}">Zu Details</a>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</section>
+</body>

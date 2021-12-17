@@ -1,33 +1,33 @@
 <!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout.html}">
 
-    <body>
-        
+<body>
 
+    <div th:replace="navigation :: navigation"></div>
+    <section layout:fragment="content">
+
+        <h1 style="font-size: 34px; color: #943f3f; margin-bottom: 40px;"
+            align="left" th:text="#{cart.headline}">headline</h1>
         <div class="table-responsive">
-            <table class="table table-hover align-middle">
+            <table class="tab">
                 <thead>
-                    <tr>
-                        <th th:text="#{cart.service}">Service</th>
-                        <th th:text="#{cart.price}">Preis</th>
-                        <th th:text="${order.toString()}"></th>
-                    </tr>
+                <tr>
+                    <th align="center" th:text="#{cart.service}">Service</th>
+                    <th align="center" th:text="#{cart.price}">Preis</th>
+                </tr>
                 </thead>
                 <tbody>
-                    <tr th:each="item : ${cart} ">
-                        
-                        <td th:text="${item.productName}">productname</td>
-                        
-                        <!--<td th:text="${item.description}">details</td>-->
-                        <!--preis hier -->
-                        <td th:text="${item.price}">11111</td>
-                            <!-- remove item  hier-->
-                    </tr>
+                <tr th:each="item : ${cart} ">
+
+                    <td th:text="${item.productName}">productname</td>
+                    <!--<td th:text="${item.description}">details</td>-->
+                    <!--preis hier -->
+                    <td th:text="${item.price}">11111</td>
+                    <!-- remove item  hier-->
+                </tr>
                 </tbody>
-                <tfoot>
-                    <tr>
-                    </tr>
-                </tfoot>
             </table>
             <form class="ui form" method="post" th:action="@{/clearcart}" th:object="${form}">  
                 <input type="hidden" name="service"  th:value="${form.service}"/>
@@ -35,10 +35,16 @@
                 </button>
             </form>
         </div>
-        
+
         <!--hier buy button mit summe-->
         <div>
-            <p style="margin-left: 87%; transform: translateX(-87%);" class="label" th:text="#{cart.total}">Summe</p>
+            <p style="margin-left: 87%; transform: translateX(-87%); font-size: 15px;
+            font-weight: bold;" class="label" th:text="#{cart.location}">location</p>
+            <p style="margin-left: 87%; transform: translateX(-87%); font-size: 15px; margin-bottom: 30px;" class="value">
+                <span th:text="${{order.location}}">street</span></p>
+
+            <p style="margin-left: 87%; transform: translateX(-87%); font-size: 15px;
+            font-weight: bold;" class="label" th:text="#{cart.total}">Summe</p>
             <!--das ist removable wenn du cart.total nutzt hier nur zum checken da-->
             <p style="margin-left: 87%; transform: translateX(-87%);" class="value"><span th:text="${{cart.price}}">1111</span></p>
             <form class="ui form"  method="post" th:action="@{/checkout}" th:object="${order}" style="margin-left: 87%; transform: translateX(-87%);">
@@ -52,8 +58,6 @@
                 <button type="submit" class="btn btn-outline-primary btn-md" th:text="#{cart.buy}">Buy Now</button>
             </form>
         </div>
-    </body>
-      
-      
-      
+    </section>
+</body>
 </html>

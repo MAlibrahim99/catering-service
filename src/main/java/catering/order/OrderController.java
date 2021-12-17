@@ -3,6 +3,15 @@ package catering.order;
 import catering.catalog.Option;
 import catering.catalog.OptionCatalog;
 import catering.catalog.OptionType;
+import catering.catalog.CateringCatalog;
+import catering.catalog.Option;
+import catering.catalog.OptionCatalog;
+import catering.catalog.Ware;
+import catering.catalog.Ware.ServiceType;
+import catering.catalog.services.Eventcatering;
+import catering.catalog.services.Mobilebreakfast;
+import catering.catalog.services.Partyservice;
+import catering.catalog.services.Rentacook;
 import catering.user.Position;
 import catering.user.User;
 import catering.user.UserRepository;
@@ -15,6 +24,7 @@ import org.salespointframework.order.OrderIdentifier;
 import org.salespointframework.order.OrderManagement;
 import org.salespointframework.payment.Cash;
 import org.salespointframework.quantity.Quantity;
+import org.salespointframework.order.OrderStatus;
 import org.salespointframework.useraccount.UserAccount;
 import org.salespointframework.useraccount.web.LoggedIn;
 
@@ -25,22 +35,16 @@ import org.springframework.ui.Model;
 import org.springframework.util.Assert;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.SessionAttributes;
+import org.springframework.util.Assert;
+import org.springframework.validation.Errors;
+import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Optional;
-
-import org.springframework.web.bind.annotation.RequestBody;
-
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.*;
 
 
 @Controller
@@ -53,12 +57,15 @@ public class OrderController {
 	private final OptionCatalog catalog;
 	private final UserRepository userRepository;
 	private UniqueInventory<UniqueInventoryItem> inventory;
+	private IncomeOverview incomeOverview;
 
 	public OrderController(OrderManagement<CateringOrder> orderManagement, CateringOrderRepository orderRepository, 
-							OptionCatalog catalog, UserRepository userRepository, UniqueInventory<UniqueInventoryItem> inventory) {
+							OptionCatalog catalog, UserRepository userRepository, IncomeOverview incomeOverview, UniqueInventory<UniqueInventoryItem> inventory) {
 		this.orderManagement = orderManagement;
 		this.orderRepository = orderRepository;
 		this.catalog = catalog;
+		this.incomeOverview = incomeOverview;
+
 		this.userRepository = userRepository;
 		this.inventory = inventory;
 
@@ -105,6 +112,29 @@ public class OrderController {
     Cart initializeCart(){
         return new Cart();
     }
+	// Initial wird eine Übersicht der letzten 30 Tage zurückgegeben, exeklusive des aktuellen Tages
+	@GetMapping("/income-overview")
+	public String displayIncomeOverview(@RequestParam("startDate") Optional<String> startDate,
+										@RequestParam("endDate") Optional<String> endDate, Model model) {
+		LocalDate start;
+		LocalDate end;
+		if (startDate.isEmpty() || endDate.isEmpty()) {
+			start = LocalDate.now().minusDays(30L);
+			end = LocalDate.now().minusDays(1L);
+		} else {
+			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+			start = LocalDate.parse(startDate.get(), formatter);
+			end = LocalDate.parse(endDate.get(), formatter);
+		}
+
+		model.addAttribute("totalIncome", incomeOverview.totalIncome(start, end));
+		model.addAttribute("statusPercentages", incomeOverview.statusPercentages(start, end));
+		model.addAttribute("start", start);
+		model.addAttribute("end", end);
+
+		return "income-overview";
+
+	}
 
 	@GetMapping("/order/{service}")
 	public String getOrderForm(@PathVariable String service, Model model, CateringOrder order) {
@@ -362,8 +392,7 @@ public class OrderController {
 						userRepository.save(u);
 						
 					}
-					//TODO 
-					//orderOut.setStafflist(allstaff);
+					
 
 					
 					System.out.println("order-stafflist");
@@ -436,6 +465,38 @@ public class OrderController {
 			inventory.save(item);
 		}
 
+
+
+
+	@PostMapping("/setstatus")
+	String list2(@RequestParam("status") String status){
+
+		System.out.println(status);
+		return "redirect:/order-list/" + status;
+	}
+
+	@GetMapping("/order-list/{status}")
+	String list(Model model, @PathVariable("status") OrderStatus status){
+
+		Iterable<CateringOrder> orders = orderManagement.findBy(status);
+		model.addAttribute("orders", orders);
+
+
+		/*Iterable<CateringOrder> ordersOpen = orderManagement.findBy(OrderStatus.OPEN);
+		model.addAttribute("ordersOpen", ordersOpen);
+		Iterable<CateringOrder> ordersPaid = orderManagement.findBy(OrderStatus.PAID);
+		model.addAttribute("ordersPaid", ordersPaid);
+		Iterable<CateringOrder> ordersCompleted = orderManagement.findBy(OrderStatus.COMPLETED);
+		model.addAttribute("ordersCompleted", ordersCompleted);
+		Iterable<CateringOrder> ordersCancelled = orderManagement.findBy(OrderStatus.CANCELLED);
+		model.addAttribute("ordersCancelled", ordersCancelled); */
+		return "order-list";
+	}
+
+	@GetMapping("/order-details/{order-id}")
+	String details(Model model, @PathVariable("order-id") OrderIdentifier parameter){
+		model.addAttribute("order", orderManagement.get(parameter).get());
+		model.addAttribute("account", orderManagement.get(parameter));
+		return "order-details";
+	}
 }
-
-

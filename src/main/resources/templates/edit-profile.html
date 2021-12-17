@@ -4,7 +4,7 @@
       layout:decorate="~{layout}">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Profil bearbeiten</title>
 </head>
 <body>
 <section layout:fragment="content">
@@ -20,14 +20,14 @@
             <td ><input type="text" name="lastName" th:field="*{lastName}" required></td>
         </tr>
          <div class="ui red message ten wide field" th:if="${usernameAlreadyExists}"
-              th:text="#{update.name.exists.error}">User name already exists
+              th:text="#{update.name.exists.error}">Nutzername existiert bereits!
         </div>
         <tr>
             <td>E-Mail:</td>
             <td ><input type="email" name="email" th:field="*{email}" required></td>
         </tr>
         <div class="ui red message" th:if="${emailAddressAlreadyExists}"
-             th:text="#{update.email.exists.error}">Email already exists
+             th:text="#{update.email.exists.error}">Email existiert bereits!
         </div>
         <tr>
         <td>Adresse:</td>
