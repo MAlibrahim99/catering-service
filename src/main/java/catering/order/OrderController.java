@@ -15,7 +15,10 @@ import catering.user.Position;
 import catering.user.User;
 import catering.user.UserRepository;
 
+import org.salespointframework.inventory.UniqueInventory;
+import org.salespointframework.inventory.UniqueInventoryItem;
 import org.salespointframework.order.Cart;
+import org.salespointframework.order.CartItem;
 import org.salespointframework.order.OrderIdentifier;
 import org.salespointframework.order.OrderManagement;
 import org.salespointframework.payment.Cash;
@@ -63,13 +66,16 @@ public class OrderController {
 	private final CateringOrderRepository orderRepository;
 	private final OptionCatalog catalog;
 	private final UserRepository userRepository;
+	private UniqueInventory<UniqueInventoryItem> inventory;
 
 	public OrderController(OrderManagement<CateringOrder> orderManagement, CateringOrderRepository orderRepository, 
-							OptionCatalog catalog, UserRepository userRepository) {
+							OptionCatalog catalog, UserRepository userRepository, UniqueInventory<UniqueInventoryItem> inventory) {
 		this.orderManagement = orderManagement;
 		this.orderRepository = orderRepository;
 		this.catalog = catalog;
 		this.userRepository = userRepository;
+		this.inventory = inventory;
+
 	}
 
 	@GetMapping(value = "/order-history")
@@ -231,7 +237,7 @@ public class OrderController {
 
 		Streamable<User> chefcountRep = userRepository.getUserByPositionIn(List.of(Position.COOK)); 
         Streamable<User> waitercountRep = userRepository.getUserByPositionIn(List.of(Position.WAITER, Position.EXPERIENCED_WAITER));
-        /*if(chefcountRep.toList().size() < chefcount || waitercountRep.toList().size() < waitercount){
+        if(chefcountRep.toList().size() < order.getChefcount() || waitercountRep.toList().size() < order.getWaitercount()){
             if (form.getService().equals("eventcatering")){
 				return "redirect:/order/eventcatering";
 			}
@@ -247,7 +253,7 @@ public class OrderController {
 			else{
 				return "redirect:/";
 			}
-        }*/
+        }
 
 		for (OrderFormitem optionItem : form.getFoodList()) {
 			if (optionItem.getAmount() != 0){
@@ -264,7 +270,7 @@ public class OrderController {
 		}
 
 		model.addAttribute("order", order);
-		model.addAttribute("orderOut", new CateringOrder());
+		//model.addAttribute("orderOut", new CateringOrder());
 		model.addAttribute("form", form);
 	
 
@@ -299,9 +305,17 @@ public class OrderController {
     String buy(@ModelAttribute Cart cart, @LoggedIn Optional<UserAccount> userAccount, Errors help,
                @ModelAttribute ("order") CateringOrder orderOut) {
 
-				
+				System.out.println(orderOut.toString());
+
+
         	return userAccount.map(account -> {
 				var order = new CateringOrder(account, Cash.CASH, orderOut.getCompletionDate(),orderOut.getTime(), orderOut.getAddress(), orderOut.getService());
+
+				for (CartItem ci : cart){
+					if(catalog.findByName(ci.getProductName()).stream().findFirst().get().getType() == OptionType.EQUIP){
+						saveInventoryItem(catalog.findByName(ci.getProductName()).stream().findFirst().get(), ci.getQuantity());
+					}
+				}
 
 				cart.addItemsTo(order);
 				
@@ -367,6 +381,7 @@ public class OrderController {
 					for (User u : allstaff){
 						order.addToAllocStaff(u);
 						System.out.println(u);
+						System.out.println(u.getPosition());
 					}
 
 
@@ -412,6 +427,24 @@ public class OrderController {
 			}
 			sort(list, n-1);
 	
+		}
+
+		private void saveInventoryItem(Option option, Quantity quantity) {
+
+			/*Option option;
+			if (cartItem.getProductName() == "Eventcatering"  cartItem.getProductName() == "PartyService" 
+				cartItem.getProductName() == "Rent a cook" || cartItem.getProductName() == "Mobilebreakfast"){
+	
+				}*/
+			//Option option = catalog.findByName(cartItem.getProductName()).stream().findFirst().get();
+			UniqueInventoryItem item = inventory.findByProduct(option).get();
+	
+	
+			Quantity quantityInput = quantity;
+	
+				item.increaseQuantity(quantity);
+	
+			inventory.save(item);
 		}
 
 }
