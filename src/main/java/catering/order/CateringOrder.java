@@ -30,6 +30,7 @@ public class CateringOrder extends Order {
 	private TimeSegment time;
 	private int waitercount;
 	private int chefcount;
+	private String timeString;
 
 	public CateringOrder(UserAccount userAccount, LocalDate completionDate, TimeSegment time, String address, String service) {
 		super(userAccount);
@@ -116,5 +117,13 @@ public class CateringOrder extends Order {
 
 	public String toString(){
 		return service + " " + completionDate + " " + time + " " + address + " " + waitercount + " " + chefcount;
+	}
+
+	public String getTimeString(){
+		return timeString;
+	}
+
+	public void setTimeString(String timeString){
+		this.timeString = timeString;
 	}
 }

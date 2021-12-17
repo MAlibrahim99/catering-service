@@ -191,6 +191,16 @@ public class OrderController {
 		int guestcount = form.getPersons();
 		System.out.println(form.getPersons());
 
+		if(order.getTimeString().equals("Früh")){
+			order.setTime(TimeSegment.FRÜH);
+		}
+		else if(order.getTimeString().equals("Mittag")){
+			order.setTime(TimeSegment.MITTAG);
+		}
+		else if(order.getTimeString().equals("Abend")){
+			order.setTime(TimeSegment.ABEND);
+		}
+
 
 		if (form.getService().equals("eventcatering")){
 			System.out.println("True");
@@ -252,6 +262,7 @@ public class OrderController {
 
 		System.out.println("-------------------------------");
 		System.out.println(order.toString());
+		System.out.println(order.getTimeString());
 
 		Streamable<User> chefcountRep = userRepository.getUserByPositionIn(List.of(Position.COOK)); 
         Streamable<User> waitercountRep = userRepository.getUserByPositionIn(List.of(Position.WAITER, Position.EXPERIENCED_WAITER));
