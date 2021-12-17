@@ -1,12 +1,4 @@
 package catering.order;
-import catering.catalog.services.*;
-import catering.inventory.InventoryFormitem;
-
-import org.salespointframework.catalog.Product;
-import org.salespointframework.inventory.UniqueInventory;
-import org.salespointframework.inventory.UniqueInventoryItem;
-import org.salespointframework.order.*;
-import org.springframework.validation.Errors;
 
 import catering.catalog.Option;
 import catering.catalog.OptionCatalog;
@@ -38,12 +30,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttributes;
-
-import antlr.debug.Event;
-
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -109,7 +95,8 @@ public class OrderController {
 				}
 			}
 			return "redirect:/order-history";
-		}else{
+		}
+		else{
 			return "redirect:/login";
 		}
 	}
@@ -238,6 +225,7 @@ public class OrderController {
 		Streamable<User> chefcountRep = userRepository.getUserByPositionIn(List.of(Position.COOK)); 
         Streamable<User> waitercountRep = userRepository.getUserByPositionIn(List.of(Position.WAITER, Position.EXPERIENCED_WAITER));
         if(chefcountRep.toList().size() < order.getChefcount() || waitercountRep.toList().size() < order.getWaitercount()){
+			//model.addAttribute("not", )
             if (form.getService().equals("eventcatering")){
 				return "redirect:/order/eventcatering";
 			}

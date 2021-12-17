@@ -27,11 +27,11 @@ public class CateringOrder extends Order {
 	private LocalDate completionDate;
 	private String address;
 	private String service;
-	private String time;
+	private TimeSegment time;
 	private int waitercount;
 	private int chefcount;
 
-	public CateringOrder(UserAccount userAccount, LocalDate completionDate, String time, String address, String service) {
+	public CateringOrder(UserAccount userAccount, LocalDate completionDate, TimeSegment time, String address, String service) {
 		super(userAccount);
 
 		this.allocStaff = new ArrayList<>();
@@ -41,8 +41,8 @@ public class CateringOrder extends Order {
 		this.service = service;
 	}
 
-	public CateringOrder(UserAccount userAccount, PaymentMethod paymentMethod, LocalDate completionDate, String address,
-						String time, String service) {
+	public CateringOrder(UserAccount userAccount, PaymentMethod paymentMethod, LocalDate completionDate, TimeSegment time, String address,
+						 String service) {
 		super(userAccount, paymentMethod);
 
 		this.allocStaff = new ArrayList<>();
@@ -106,11 +106,11 @@ public class CateringOrder extends Order {
 		this.service = service;
 	}
 
-	public String getTime(){
+	public TimeSegment getTime(){
 		return time;
 	}
 
-	public void setTime(String time){
+	public void setTime(TimeSegment time){
 		this.time = time;
 	}
 
