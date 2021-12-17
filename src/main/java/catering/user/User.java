@@ -17,7 +17,7 @@ public class User{
 	private String address;
 	@Enumerated(EnumType.STRING)
 	private Position position;
-    public int workCount = 0;
+	public int workCount = 0;
 
 	public User() {
 	}
@@ -60,19 +60,11 @@ public class User{
 		this.position = position;
 	}
 
-    public int getWorkcount(){
-        return workCount;
-    }
+	public int getWorkcount(){
+		return workCount;
+	}
 
-    public void setWorkcount(int workCount){
-        this.workCount = workCount;
-    }
-
-
-
-
-
-
-
- 
+	public void setWorkcount(int workCount){
+		this.workCount = workCount;
+	}
 }

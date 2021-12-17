@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout}">
+<head>
+</head>
+<body>
+<div th:replace="navigation :: navigation"></div>
+<section layout:fragment="content">
+    <h2 class="underlined-text">Details der Bestellung</h2>
+    <table th:object="${order}">
+        <tr>
+            <td class="p-1-rem">Vorname:</td>
+            <td th:text="*{userAccount.getFirstname()}" class="p-1-rem"></td>
+        </tr>
+        <tr>
+            <td class="p-1-rem">Nachname:</td>
+            <td th:text="*{userAccount.getLastname()}" class="p-1-rem"></td>
+        </tr>
+        <tr>
+            <td class="p-1-rem">Datum:</td>
+            <td th:text="*{completionDate}" class="p-1-rem"></td>
+        </tr>
+        <!--TODO Zeitraum
+        <tr>
+            <td class="p-1-rem">Zeit:</td>
+            <td th:text="*{}" class="p-1-rem"></td>
+        </tr>-->
+        <tr>
+            <td class="p-1-rem">E-Mail:</td>
+            <td th:text="*{userAccount.email}" class="p-1-rem"></td>
+        </tr>
+        <tr>
+            <td class="p-1-rem">Address:</td>
+            <td th:text="*{address}" class="p-1-rem">musterStr. 23 <br>12345 City</td>
+        </tr>
+        <!--TODO Zeitraum
+        <tr>
+            <td class="p-1-rem">ausgewählte Details:</td>
+            <td th:text="*{}" class="p-1-rem"></td>
+        </tr>-->
+        <tr>
+        <td class="p-1-rem">Kosten:</td>
+        <td th:text="*{total}" class="p-1-rem"></td>
+        </tr>
+    </table>
+</section>
+</body>

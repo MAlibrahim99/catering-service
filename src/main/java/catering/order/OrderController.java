@@ -1,5 +1,8 @@
 package catering.order;
 
+import catering.catalog.Option;
+import catering.catalog.OptionCatalog;
+import catering.catalog.OptionType;
 import catering.catalog.CateringCatalog;
 import catering.catalog.Option;
 import catering.catalog.OptionCatalog;
@@ -21,6 +24,7 @@ import org.salespointframework.order.OrderIdentifier;
 import org.salespointframework.order.OrderManagement;
 import org.salespointframework.payment.Cash;
 import org.salespointframework.quantity.Quantity;
+import org.salespointframework.order.OrderStatus;
 import org.salespointframework.useraccount.UserAccount;
 import org.salespointframework.useraccount.web.LoggedIn;
 
@@ -28,6 +32,12 @@ import org.springframework.data.util.Streamable;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.Assert;
+import org.springframework.validation.Errors;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.util.Assert;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
@@ -38,34 +48,27 @@ import java.util.*;
 
 
 @Controller
-//@PreAuthorize(value = "isAuthenticated()")
+@PreAuthorize(value = "isAuthenticated()")
 @SessionAttributes("cart")
 public class OrderController {
-	private OrderManagement<CateringOrder> orderManagement;
-	private OrderManagement<org.salespointframework.order.Order> oOrderManagement;
-	private CateringOrderRepository orderRepository;
-	private CateringCatalog cCatalog;
-	private OptionCatalog catalog;
-	private UserRepository userRepository;
-	private IncomeOverview incomeOverview;
-	private UniqueInventory<UniqueInventoryItem> inventory;
-	
 
-	public OrderController(UserRepository userRepository, OrderManagement<org.salespointframework.order.Order> oOrderManagement,
-						   OrderManagement<CateringOrder> orderManagement, CateringOrderRepository orderRepository,
-						   CateringCatalog cCatalog, OptionCatalog catalog, IncomeOverview incomeOverview, UniqueInventory<UniqueInventoryItem> inventory) {
+	private final OrderManagement<CateringOrder> orderManagement;
+	private final CateringOrderRepository orderRepository;
+	private final OptionCatalog catalog;
+	private final UserRepository userRepository;
+	private UniqueInventory<UniqueInventoryItem> inventory;
+	private IncomeOverview incomeOverview;
+
+	public OrderController(OrderManagement<CateringOrder> orderManagement, CateringOrderRepository orderRepository, 
+							OptionCatalog catalog, UserRepository userRepository, IncomeOverview incomeOverview, UniqueInventory<UniqueInventoryItem> inventory) {
 		this.orderManagement = orderManagement;
 		this.orderRepository = orderRepository;
-
-		Assert.notNull(orderManagement, "OrderManagement must not be null!");
-		this.oOrderManagement = oOrderManagement;
-		this.cCatalog = cCatalog;
 		this.catalog = catalog;
 		this.incomeOverview = incomeOverview;
-						
-		this.userRepository = userRepository;
 
+		this.userRepository = userRepository;
 		this.inventory = inventory;
+
 	}
 
 	@GetMapping(value = "/order-history")
@@ -92,11 +95,16 @@ public class OrderController {
 				}
 			}
 			return "redirect:/order-history";
-		}else{
+		}
+		else{
 			return "redirect:/login";
 		}
 	}
 
+	@ModelAttribute("cart")
+    Cart initializeCart(){
+        return new Cart();
+    }
 	// Initial wird eine Übersicht der letzten 30 Tage zurückgegeben, exeklusive des aktuellen Tages
 	@GetMapping("/income-overview")
 	public String displayIncomeOverview(@RequestParam("startDate") Optional<String> startDate,
@@ -112,10 +120,6 @@ public class OrderController {
 			end = LocalDate.parse(endDate.get(), formatter);
 		}
 
-		if (start.isAfter(end)) {
-			start = end.minusDays(30L);
-		}
-
 		model.addAttribute("totalIncome", incomeOverview.totalIncome(start, end));
 		model.addAttribute("statusPercentages", incomeOverview.statusPercentages(start, end));
 		model.addAttribute("servicePercentages" , incomeOverview.servicePercentages(start, end));
@@ -123,496 +127,370 @@ public class OrderController {
 		model.addAttribute("end", end);
 
 		return "income-overview";
-	}
-	
 
-	
-	@ModelAttribute("cart")
-	Cart initializeCart(){
-		/*Cart cart = new Cart();
-		for (ware ware1 : cCatalog.findByName("Eventcatering")){
-		cart.addOrUpdateItem(ware1, 1);
-		}
-		return /*new Cart() cart;*/
-		return new Cart();
 	}
 
-	@PostMapping("/cartadd1")
-	String addToCart1(Model model, Eventcatering eventcatering, @RequestParam("pid") Ware ware,
-					  @RequestParam("number") int number, @ModelAttribute Cart cart,
-					  @ModelAttribute ("order") Order ord1){
-		cart.clear();
-		int guestcount = number / 10;
-		if (guestcount == 0){
-			guestcount = 1;
-		}
-		int chefcount = guestcount * 4;
-        int waitercount = guestcount * 5;
-		ord1.setChefcount(chefcount);
-		ord1.setWaitercount(waitercount);
-		System.out.println(ord1.toString());
-		Boolean enough = true;
+	@GetMapping("/order/{service}")
+	public String getOrderForm(@PathVariable String service, Model model, CateringOrder order) {
 
+		Assert.isTrue((service.equals("eventcatering") || service.equals("partyservice") || service.equals("rentacook") ||
+				service.equals("mobilebreakfast")), "Service must be valid");
 
-		Streamable<User> chefcountRep = userRepository.getUserByPositionIn(List.of(Position.COOK)); 
-		Streamable<User> waitercountRep = userRepository.getUserByPositionIn(List.of(Position.WAITER, Position.EXPERIENCED_WAITER));
-		if(chefcountRep.toList().size() < chefcount || waitercountRep.toList().size() < waitercount){
-			enough = false;
-			return "redirect:/eventcateringform";
-		}
+		Streamable<Option> optionStreamable = catalog.findByCategory(service);
 
-
-		cart.addOrUpdateItem(ware, Quantity.of(number));
-		model.addAttribute("order", ord1);
-		model.addAttribute("orderOut", new Order());
-
-
-		for(Option o : catalog.findByName("Servietten")){
-			cart.addOrUpdateItem(o, eventcatering.getServiette());
-		}
-		for(Option o : catalog.findByName("Geschirr")){
-			cart.addOrUpdateItem(o, eventcatering.getDishes());
-		}
-		for(Option o : catalog.findByName("Blumen")){
-			cart.addOrUpdateItem(o, eventcatering.getFlowers());
-		}
-		for(Option o : catalog.findByName("Dekoration")){
-			cart.addOrUpdateItem(o, eventcatering.getDecoration());
-		}
-		for(Option o : catalog.findByName("Tischtücher")){
-			cart.addOrUpdateItem(o, eventcatering.getTablecloth());
-		}
-		for(Option o : catalog.findByName("Buffet")){
-			cart.addOrUpdateItem(o, eventcatering.getBuffet());
-		}
-		for(Option o : catalog.findByName("Galadinner")){
-			cart.addOrUpdateItem(o, eventcatering.getGaladinner());
-		}
-		for(Option o : catalog.findByName("Alkoholische Getränke")){
-			cart.addOrUpdateItem(o, eventcatering.getAlk());
-		}
-		for(Option o : catalog.findByName("Alkoholfreie Getränke")){
-			cart.addOrUpdateItem(o, eventcatering.getNoalk());
-		}
-		return "orderreview";
-	}
-
-	@PostMapping("/cartadd2")
-	String addToCart2(Model model, @RequestParam("pid") Ware ware, @RequestParam("number") int number,
-					  @ModelAttribute Cart cart, @ModelAttribute ("order") Order ord2,
-					  Partyservice partyservice){
-		cart.clear();
-		int guestcount = number / 10;
-		if (guestcount == 0){
-			guestcount = 1;
-		}
-		int chefcount = guestcount * 3;
-        int waitercount = guestcount * 4;
-		ord2.setChefcount(chefcount);
-		ord2.setWaitercount(waitercount);
-		System.out.println(ord2.toString());
-
-		Streamable<User> chefcountRep = userRepository.getUserByPositionIn(List.of(Position.COOK)); 
-		Streamable<User> waitercountRep = userRepository.getUserByPositionIn(List.of(Position.WAITER, Position.EXPERIENCED_WAITER));
-		if(chefcountRep.toList().size() < chefcount || waitercountRep.toList().size() < waitercount){
-			return "redirect:/partyserviceform";
-		}
-
-		cart.addOrUpdateItem(ware, Quantity.of(number));
-		model.addAttribute("order", ord2);
-		model.addAttribute("orderOut", new Order());
-	
-
-		for(Option o : catalog.findByName("Servietten")){
-			cart.addOrUpdateItem(o, partyservice.getServiette());
-		}
-		for(Option o : catalog.findByName("Geschirr")){
-			cart.addOrUpdateItem(o, partyservice.getDishes());
-		}
-		for(Option o : catalog.findByName("Schinkenplatte")){
-			cart.addOrUpdateItem(o, partyservice.getHamplate());
-		}
-		for(Option o : catalog.findByName("Käseplatte")){
-			cart.addOrUpdateItem(o, partyservice.getCheeseplate());
-		}
-		for(Option o : catalog.findByName("Eierplatte")){
-			cart.addOrUpdateItem(o, partyservice.getEggplate());
-		}
-		for(Option o : catalog.findByName("Fischlatte")){
-			cart.addOrUpdateItem(o, partyservice.getFishplate());
-		}
-		for(Option o : catalog.findByName("Obstplatte")){
-			cart.addOrUpdateItem(o, partyservice.getFruitplate());
-		}
-		for(Option o : catalog.findByName("Salatplatte")){
-			cart.addOrUpdateItem(o, partyservice.getSaladplate());
-		}
-		for(Option o : catalog.findByName("Sushi")){
-			cart.addOrUpdateItem(o, partyservice.getSushi());
-		}
-		for(Option o : catalog.findByName("Pizza")){
-			cart.addOrUpdateItem(o, partyservice.getPizza());
-		}
-		for(Option o : catalog.findByName("Meeresfrüchte")){
-			cart.addOrUpdateItem(o, partyservice.getSeafood());
-		}
-		for(Option o : catalog.findByName("Alkoholische Getränke")){
-			cart.addOrUpdateItem(o, partyservice.getAlk());
-		}
-		for(Option o : catalog.findByName("Alkoholfreie Getränke")){
-			cart.addOrUpdateItem(o, partyservice.getNoalk());
-		}
-
-		System.out.println("ppppppppppppppppppppp");
-		for (CartItem ci : cart){
-			System.out.println(ci.getProductName());
-		}
-		return "orderreview";
-	}
-
-
-	@PostMapping("/cartadd3")
-	String addToCart3(Model model, @RequestParam("pid") Ware ware, Rentacook rentacook,
-					  @RequestParam("number") int number, @ModelAttribute Cart cart,
-					  @ModelAttribute ("order") Order ord3){
-		cart.clear();
-		int guestcount = number / 5;
-		System.out.println(number);
-		if (guestcount == 0){
-			guestcount = 1;
-		}
-		System.out.println(guestcount);
-		int chefcount = guestcount * 2;
-        int waitercount = guestcount * 2;
-		ord3.setChefcount(chefcount);
-		ord3.setWaitercount(waitercount);
-		
-		System.out.println(ord3.toString());
-		System.out.println(ord3.getTime());
-
-		Streamable<User> chefcountRep = userRepository.getUserByPositionIn(List.of(Position.COOK)); 
-		Streamable<User> waitercountRep = userRepository.getUserByPositionIn(List.of(Position.WAITER, Position.EXPERIENCED_WAITER));
-		if(chefcountRep.toList().size() < chefcount || waitercountRep.toList().size() < waitercount){
-			return "redirect:/rentacookform";
-		}
-
-		for(Option o : catalog.findByName("Servietten")){
-			cart.addOrUpdateItem(o, rentacook.getServiette());
-		}
-		for(Option o : catalog.findByName("Geschirr")){
-			cart.addOrUpdateItem(o, rentacook.getDishes());
-		}
-		for(Option o : catalog.findByName("Blumen")){
-			cart.addOrUpdateItem(o, rentacook.getDishes());
-		}
-		for(Option o : catalog.findByName("Dekoration")){
-			cart.addOrUpdateItem(o, rentacook.getDecoration());
-		}
-		for(Option o : catalog.findByName("Tischtücher")){
-			cart.addOrUpdateItem(o, rentacook.getTablecloth());
-		}
-
-		cart.addOrUpdateItem(ware, Quantity.of(number));
-		model.addAttribute("order", ord3);
-		model.addAttribute("orderOut", new Order());
-		
-		return "orderreview";
-	}
-
-	@PostMapping("/cartadd4")
-	String addToCart4(Model model, @RequestParam("pid") Ware ware, @RequestParam("number") int number,
-					  @ModelAttribute Cart cart, @ModelAttribute ("order") Order ord4,
-					  @ModelAttribute ("mobilebreakfast") Mobilebreakfast mobilebreakfast){
-		cart.clear();
-		int guestcount = number / 3;
-		if (guestcount == 0){
-			guestcount = 1;
-		}
-		int chefcount = 1;
-        int waitercount = guestcount;
-
-		Streamable<User> chefcountRep = userRepository.getUserByPositionIn(List.of(Position.COOK)); 
-		Streamable<User> waitercountRep = userRepository.getUserByPositionIn(List.of(Position.WAITER, Position.EXPERIENCED_WAITER));
-		if(chefcountRep.toList().size() < chefcount || waitercountRep.toList().size() < waitercount){
-			return "redirect:/eventcateringform";
-		}
-		
-		ord4.setChefcount(chefcount);
-		ord4.setWaitercount(waitercount);
-		System.out.println(mobilebreakfast.getDishes());
-		for(Option o : catalog.findByName("Servietten")){
-			cart.addOrUpdateItem(o, mobilebreakfast.getServiette());
-		}
-		for(Option o : catalog.findByName("Geschirr")){
-			cart.addOrUpdateItem(o, mobilebreakfast.getDishes());
-		}
-		for(Option o : catalog.findByName("Frühstück")){
-			cart.addOrUpdateItem(o, mobilebreakfast.getBreakfast());
-		}
-		for(Option o : catalog.findByName("Alkoholfreie Getränke")){
-			cart.addOrUpdateItem(o, mobilebreakfast.getNoalk());
-		}
-
-		System.out.println(ord4.toString());
-
-		cart.addOrUpdateItem(ware, Quantity.of(number));
-		model.addAttribute("order", ord4);
-		model.addAttribute("orderOut", new Order());
-		
-		return "orderreview";
-	}
-
-	@GetMapping("/orderreview")
-	String orderreview(){
-		return "orderreview";
-	}
-
-
-	@GetMapping("/eventcateringform")
-	String eventcateringform(Model model, Order order1, Eventcatering eventcatering){
-		model.addAttribute("catalog", cCatalog.findByType(ServiceType.EVENTCATERING));
-		model.addAttribute("option", catalog.findByCategory("eventcatering"));
-		model.addAttribute("eventcatering", eventcatering);
-		model.addAttribute("order", order1);
-		return "eventcateringform";
-	}
-
-	@GetMapping("/partyserviceform")
-	String partyserviceform(Model model, Order order2, Partyservice partyservice){
-		model.addAttribute("catalog", cCatalog.findByType(ServiceType.PARTYSERVICE));
-		model.addAttribute("option", catalog.findByCategory("partyservice"));
-		model.addAttribute("partyservice", partyservice);
-		model.addAttribute("order", order2);
-		return "partyserviceform";
-	}
-
-	@GetMapping("/rentacookform")
-	String rentacookform(Model model, Order order3, Rentacook rentacook){
-		model.addAttribute("catalog", cCatalog.findByType(ServiceType.RENTACOOK));
-		model.addAttribute("option", catalog.findByCategory("rentacook"));
-		model.addAttribute("rentacook", rentacook);
-		model.addAttribute("order", order3);
-
-		return "rentacookform";
-	}
-
-	@GetMapping("/mobilebreakfastform")
-	String mobilebreakfastform(Model model, Order order4, Mobilebreakfast mobilebreakfast){
-		model.addAttribute("catalog", cCatalog.findByType(ServiceType.MOBILEBREAKFAST));
-		model.addAttribute("option", catalog.findByCategory("mobilebreakfast"));
-		model.addAttribute("mobilebreakfast", mobilebreakfast);
-		model.addAttribute("order", order4);
-		return "mobilebreakfastform";
-	}
-
-	@PostMapping("/checkout")
-	String buy(@ModelAttribute Cart cart, @LoggedIn Optional<UserAccount> userAccount, Errors help,
-			   @ModelAttribute ("orderOut") Order orderOut) {
-
-		return userAccount.map(account -> {
-			var order = new org.salespointframework.order.Order(account, Cash.CASH);
-
-			
-			System.out.println("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx");
-			/*for (CartItem ci : cart){ 
-				System.out.println("x");
-				long amount = orderOut.getChefcount()/4*10;
-				if (ci.getProductName().equals("Eventcatering")){
-					saveInventoryItem(catalog.findByName("Blumen").stream().findFirst().get(), amount);
-					saveInventoryItem(catalog.findByName("Servietten").stream().findFirst().get(), amount);
-					saveInventoryItem(catalog.findByName("Dekoration").stream().findFirst().get(), amount);
-					saveInventoryItem(catalog.findByName("Geschirr").stream().findFirst().get(), amount);
-					saveInventoryItem(catalog.findByName("Tischtücher").stream().findFirst().get(), amount/6);
-					saveInventoryItem(catalog.findByName("Buffet").stream().findFirst().get(), amount);
-					saveInventoryItem(catalog.findByName("Galadinner").stream().findFirst().get(), amount);
-					saveInventoryItem(catalog.findByName("Alkoholfreie Getränke").stream().findFirst().get(), amount);
-					saveInventoryItem(catalog.findByName("Alkoholische Getränke").stream().findFirst().get(), amount);
-					}
-				else if(ci.getProductName().equals("Partyservice")){
-					saveInventoryItem(catalog.findByName("Servietten").stream().findFirst().get(), amount);
-					saveInventoryItem(catalog.findByName("Geschirr").stream().findFirst().get(), amount);
-					saveInventoryItem(catalog.findByName("Schinkenplatte").stream().findFirst().get(), amount/5);
-					saveInventoryItem(catalog.findByName("Käseplatte").stream().findFirst().get(), amount/3);
-					saveInventoryItem(catalog.findByName("Eierplatte").stream().findFirst().get(), amount/3);
-					saveInventoryItem(catalog.findByName("Fischplatte").stream().findFirst().get(), amount/6);
-					saveInventoryItem(catalog.findByName("Obstplatte").stream().findFirst().get(), amount/4);
-					saveInventoryItem(catalog.findByName("Salatplatte").stream().findFirst().get(), amount/4);
-					saveInventoryItem(catalog.findByName("Sushi-Abend").stream().findFirst().get(), amount/10);
-					saveInventoryItem(catalog.findByName("Pizza-Runde").stream().findFirst().get(), amount/10);
-					saveInventoryItem(catalog.findByName("Meeresfrüchte-Menü").stream().findFirst().get(), amount/10);
-					saveInventoryItem(catalog.findByName("Torten-Auswahl").stream().findFirst().get(), amount/10);
-					saveInventoryItem(catalog.findByName("Alkoholfreie Getränke").stream().findFirst().get(), amount);
-					saveInventoryItem(catalog.findByName("Alkoholische Getränke").stream().findFirst().get(), amount);
-				}
-				else if(ci.getProductName().equals("Rent a cook")){
-					saveInventoryItem(catalog.findByName("Servietten").stream().findFirst().get(), amount);
-					saveInventoryItem(catalog.findByName("Geschirr").stream().findFirst().get(), amount);
-					saveInventoryItem(catalog.findByName("Blumen").stream().findFirst().get(), amount);
-					saveInventoryItem(catalog.findByName("Dekoration").stream().findFirst().get(), amount);
-					saveInventoryItem(catalog.findByName("Tischtücher").stream().findFirst().get(), amount/6);
-					
-
-				}
-				else if(ci.getProductName().equals("Mobilebreakfast")){
-					saveInventoryItem(catalog.findByName("Servietten").stream().findFirst().get(), amount);
-					saveInventoryItem(catalog.findByName("Geschirr").stream().findFirst().get(), amount);
-					saveInventoryItem(catalog.findByName("Alkoholfreie Getränke").stream().findFirst().get(), amount);
-					saveInventoryItem(catalog.findByName("Frühstück").stream().findFirst().get(), amount);
-				}
-				
-				
-					
-				
-				
-				
-				System.out.println(ci.getProductName());
-				System.out.println(ci.getQuantity());
-			}*/
-			
-			cart.addItemsTo(order);
-
-
-			
-
-			oOrderManagement.payOrder(order);
-			System.out.print(order.getOrderStatus());
-			oOrderManagement.completeOrder(order);
-
-
-			System.out.println("----------------");
-			System.out.println(orderOut.toString());
-
-			ArrayList<User> staffList = new ArrayList<>();
-
-
-			sort(staffList, staffList.size());
-			System.out.println(staffList.size());
-			
-			ArrayList<User> orderStaffList = new ArrayList<>();
-			Streamable<User> staff = userRepository.getUserByPositionIn(List.of(Position.EXPERIENCED_WAITER, Position.WAITER));
-			System.out.println(staff.toList().size());
-			for (User u : staff){
-				staffList.add(u);
+		List<OrderFormitem> foodFormitemList = new ArrayList<>();
+		List<OrderFormitem> equipFormitemList = new ArrayList<>();
+		for (Option option : optionStreamable) {
+			if (option.getType() == OptionType.FOOD) {
+				foodFormitemList.add(new OrderFormitem(option.getName(), option.getPrice().getNumber().numberValue(Float.class), option.getPersonCount(), 0));
 			}
-
-			ArrayList<User> chefList = new ArrayList<>();
-			Streamable<User> chef = userRepository.getUserByPositionIn(List.of(Position.COOK));
-			for (User u : chef){
-				chefList.add(u);
-			}
-
-
-			sort(staffList, staffList.size());
-			sort(chefList, chefList.size());
-			System.out.println("oooooooooooooooooooooooooooo");
-			System.out.println(staffList.size());
-			System.out.println(chefList.size());
-			for (User u: staffList){
-				System.out.println(u);
-			}
-			
-
-			if(chefList.size() >= orderOut.getChefcount() && staffList.size() >= orderOut.getWaitercount()){
-				
-				
-				ArrayList<User> allstaff = new ArrayList<>();
-				for (int i=0; i<orderOut.getChefcount();i++){
-					allstaff.add(chefList.get(i));
-				}
-				for (int i=0; i<orderOut.getWaitercount();i++){
-					allstaff.add(staffList.get(i));
-				}
-				for (User u : allstaff){
-					u.setWorkcount(u.getWorkcount()+1);
-					System.out.println(u);
-					System.out.println(u.getWorkcount());
-					userRepository.save(u);
-					
-				}
-
-				orderOut.setStafflist(allstaff);
-				System.out.println("llllllllllllllllllll");
-				System.out.println(userRepository.getUserByPositionIn(List.of(Position.EXPERIENCED_WAITER,
-						Position.WAITER,Position.COOK)).toList().size());
-
-				for (User u: userRepository.getUserByPositionIn(List.of(Position.EXPERIENCED_WAITER,
-						Position.WAITER,Position.COOK)).toList()){
-					System.out.println(u);
-					System.out.println(u.getWorkcount());
-				}
-			}
-
-
-			System.out.println(orderOut.getChefcount());
-			System.out.println(orderOut.getWaitercount());
-
-			if (help.hasErrors()){
-				return "cart";
-			}
-			cart.clear();
-
-			return "redirect:/";
-		}).orElse("redirect:/");
-
-	}
-
-	@PostMapping("/clearcart")
-	String clear(@ModelAttribute Cart cart){
-		for (CartItem ci : cart){
-			if (ci.getProductName().contains("Rent a cook")){
-				cart.clear();
-				return "redirect:/rentacookform";
-			}else if (ci.getProductName().contains("Eventcatering")){
-				cart.clear();
-				return "redirect:/eventcateringform";
-			}else if (ci.getProductName().contains("PartyService")){
-				cart.clear();
-				return "redirect:/partyserviceform";
-			}else if (ci.getProductName().contains("Mobilebreakfast")){
-				cart.clear();
-				return "redirect:/mobilebreakfastform";
+			if (option.getType() == OptionType.EQUIP || option.getType() == OptionType.GOODS) {
+				equipFormitemList.add(new OrderFormitem(option.getName(), option.getPrice().getNumber().numberValue(Float.class), option.getPersonCount(), 0));
 			}
 		}
-		cart.clear();
+
+		OrderForm form = new OrderForm();
+		form.setService(service);
+		form.setFoodList(foodFormitemList);
+		form.setEquipList(equipFormitemList);
+
+		model.addAttribute("form", form);
+		model.addAttribute("order", order);
+
+		return "order_form";
+	}
+
+	@PostMapping("/buy")
+	public String buy(@ModelAttribute("form") OrderForm form, Model model) {
+
+		System.out.println("Service Type: " + form.getService());
+		System.out.println("Number of Persons: " + form.getPersons());
+
+		for (OrderFormitem optionItem : form.getFoodList()) {
+			System.out.println(optionItem.getName() + " : " + optionItem.getAmount());
+		}
+
+		for (OrderFormitem optionItem : form.getEquipList()) {
+			System.out.println(optionItem.getName() + " : " + optionItem.getAmount());
+		}
 		return "redirect:/";
 	}
 
+	@PostMapping("/cartadd")
+	String addtoCart(Model model, @ModelAttribute ("order") CateringOrder order, @ModelAttribute ("form") OrderForm form,
+					 @ModelAttribute Cart cart ){
+		cart.clear();
+
+		
+		int guestcount = form.getPersons();
+		System.out.println(form.getPersons());
 
 
-	
-	public void sort(ArrayList<User> list, int n){
-		if (n==0){
-			return;
-		}
-		if (n ==1){
-			return;
+		if (form.getService().equals("eventcatering")){
+			System.out.println("True");
 		}
 		
-		for (int i=0; i<n-1; i++){
-			if (list.get(i).workCount>list.get(i+1).workCount){
-				Collections.swap(list, i, i+1);
+		if (form.getService().equals("eventcatering")){
+			guestcount = guestcount / 10;
+			if (guestcount == 0){
+				guestcount = 1;
+			}
+			int chefcount = guestcount * 4;
+			System.out.println(chefcount);
+			int waitercount = guestcount * 5;
+			System.out.println(waitercount);
+			order.setChefcount(chefcount);
+        	order.setWaitercount(waitercount);
+		}
+		else if (form.getService().equals("partyservice")){
+			guestcount = guestcount / 10;
+			if (guestcount == 0){
+				guestcount = 1;
+			}
+			int chefcount = guestcount * 3;
+			System.out.println(chefcount);
+			int waitercount = guestcount * 4;
+			System.out.println(waitercount);
+			order.setChefcount(chefcount);
+        	order.setWaitercount(waitercount);
+		}
+		else if (form.getService().equals("rentacook")){
+			guestcount = guestcount / 5;
+			if (guestcount == 0){
+				guestcount = 1;
+			}
+			int chefcount = guestcount * 2;
+			System.out.println(chefcount);
+			int waitercount = guestcount * 2;
+			System.out.println(waitercount);
+			order.setChefcount(chefcount);
+        	order.setWaitercount(waitercount);
+		}
+		else if (form.getService().equals("mobilebreakfast")){
+			guestcount = guestcount / 3;
+			if (guestcount == 0){
+				guestcount = 1;
+			}
+			int chefcount = 1;
+			System.out.println(chefcount);
+			int waitercount = guestcount;
+			System.out.println(waitercount);
+			order.setChefcount(chefcount);
+        	order.setWaitercount(waitercount);
+		}
+
+
+        
+		
+
+
+		System.out.println("-------------------------------");
+		System.out.println(order.toString());
+
+		Streamable<User> chefcountRep = userRepository.getUserByPositionIn(List.of(Position.COOK)); 
+        Streamable<User> waitercountRep = userRepository.getUserByPositionIn(List.of(Position.WAITER, Position.EXPERIENCED_WAITER));
+        if(chefcountRep.toList().size() < order.getChefcount() || waitercountRep.toList().size() < order.getWaitercount()){
+			//model.addAttribute("not", )
+            if (form.getService().equals("eventcatering")){
+				return "redirect:/order/eventcatering";
+			}
+			else if (form.getService().equals("partyservice")){
+				return "redirect:/order/partyservice";
+			}
+			else if (form.getService().equals("rentacook")){
+				return "redirect:/order/rentacook";
+			}
+			else if (form.getService().equals("mobilebreakfast")){
+				return "redirect:/order/mobilebreakast";
+			}
+			else{
+				return "redirect:/";
+			}
+        }
+
+		for (OrderFormitem optionItem : form.getFoodList()) {
+			if (optionItem.getAmount() != 0){
+				System.out.println(optionItem.getName() + " : " + optionItem.getAmount());
+				cart.addOrUpdateItem(catalog.findByName(optionItem.getName()).stream().findFirst().get(), Quantity.of(optionItem.getAmount()));
 			}
 		}
-		sort(list, n-1);
+
+		for (OrderFormitem optionItem : form.getEquipList()) {
+			if (optionItem.getAmount() != 0){
+				System.out.println(optionItem.getName() + " : " + optionItem.getAmount());
+				cart.addOrUpdateItem(catalog.findByName(optionItem.getName()).stream().findFirst().get(), Quantity.of(optionItem.getAmount()));
+			}		
+		}
+
+		model.addAttribute("order", order);
+		//model.addAttribute("orderOut", new CateringOrder());
+		model.addAttribute("form", form);
+	
+
+
+		return "orderreview";
 
 	}
 
-	private void saveInventoryItem(Option option, long amount) {
-
-		/*Option option;
-		if (cartItem.getProductName() == "Eventcatering" || cartItem.getProductName() == "PartyService" ||
-			cartItem.getProductName() == "Rent a cook" || cartItem.getProductName() == "Mobilebreakfast"){
-
-			}*/ 
-        //Option option = catalog.findByName(cartItem.getProductName()).stream().findFirst().get(); 
-        UniqueInventoryItem item = inventory.findByProduct(option).get();
 
 
-        Quantity quantityInput = Quantity.of(amount);
-        
-            item.decreaseQuantity(item.getQuantity());
-
-        inventory.save(item);
+	@PostMapping("/clearcart")
+    String clear(@ModelAttribute Cart cart, @ModelAttribute ("form") OrderForm form){
+			System.out.println(form.getService());
+			if (form.getService().equals("rentacook")){
+                cart.clear();
+                return "redirect:/order/rentacook";
+            }else if (form.getService().equals("eventcatering")){
+                cart.clear();
+                return "redirect:/order/eventcatering";
+            }else if (form.getService().equals("partyservice")){
+                cart.clear();
+                return "redirect:/order/partyservice";
+            }else if (form.getService().equals("mobilebreakfast")){
+                cart.clear();
+                return "redirect:/order/mobilebreakfast";
+            }
+        cart.clear();
+        return "redirect:/";
     }
 
+	@PostMapping("/checkout")
+    String buy(@ModelAttribute Cart cart, @LoggedIn Optional<UserAccount> userAccount, Errors help,
+               @ModelAttribute ("order") CateringOrder orderOut) {
+
+				System.out.println(orderOut.toString());
+
+
+        	return userAccount.map(account -> {
+				var order = new CateringOrder(account, Cash.CASH, orderOut.getCompletionDate(),orderOut.getTime(), orderOut.getAddress(), orderOut.getService());
+
+				for (CartItem ci : cart){
+					if(catalog.findByName(ci.getProductName()).stream().findFirst().get().getType() == OptionType.EQUIP){
+						saveInventoryItem(catalog.findByName(ci.getProductName()).stream().findFirst().get(), ci.getQuantity());
+					}
+				}
+
+				cart.addItemsTo(order);
+				
+				orderManagement.payOrder(order);
+				orderManagement.completeOrder(order);
+
+				System.out.print("checkout tostring()");
+				System.out.println(orderOut.toString());
+
+				
+				ArrayList<User> staffList = new ArrayList<>();
+
+				sort(staffList, staffList.size());
+				System.out.println(staffList.size());
+				
+				ArrayList<User> orderStaffList = new ArrayList<>();
+				Streamable<User> staff = userRepository.getUserByPositionIn(List.of(Position.EXPERIENCED_WAITER, Position.WAITER));
+				System.out.println(staff.toList().size());
+				for (User u : staff){
+					staffList.add(u);
+				}
+
+				ArrayList<User> chefList = new ArrayList<>();
+				Streamable<User> chef = userRepository.getUserByPositionIn(List.of(Position.COOK));
+				for (User u : chef){
+					chefList.add(u);
+				}
+
+
+				sort(staffList, staffList.size());
+				sort(chefList, chefList.size());
+				System.out.println("oooooooooooooooooooooooooooo");
+				System.out.println(staffList.size());
+				System.out.println(chefList.size());
+				for (User u: staffList){
+					System.out.println(u);
+				}
+				
+
+				if(chefList.size() >= orderOut.getChefcount() && staffList.size() >= orderOut.getWaitercount()){
+					
+					
+					ArrayList<User> allstaff = new ArrayList<>();
+					for (int i=0; i<orderOut.getChefcount();i++){
+						allstaff.add(chefList.get(i));
+					}
+					for (int i=0; i<orderOut.getWaitercount();i++){
+						allstaff.add(staffList.get(i));
+					}
+					for (User u : allstaff){
+						
+						u.setWorkcount(u.getWorkcount()+1);
+						System.out.println(u);
+						System.out.println(u.getWorkcount());
+						userRepository.save(u);
+						
+					}
+					
+
+					
+					System.out.println("order-stafflist");
+					for (User u : allstaff){
+						order.addToAllocStaff(u);
+						System.out.println(u);
+						System.out.println(u.getPosition());
+					}
+
+
+					System.out.println("llllllllllllllllllll");
+					/*System.out.println(userRepository.getUserByPositionIn(List.of(Position.EXPERIENCED_WAITER,
+							Position.WAITER,Position.COOK)).toList().size());
+
+					for (User u: userRepository.getUserByPositionIn(List.of(Position.EXPERIENCED_WAITER,
+							Position.WAITER,Position.COOK)).toList()){
+						System.out.println(u);
+						System.out.println(u.getWorkcount());
+					}*/
+
+					System.out.println(order.toString());
+				}
+
+				
+
+
+
+				if (help.hasErrors()){
+					return "cart";
+				}
+				cart.clear();
+	
+				return "redirect:/";
+			}).orElse("redirect:/");
+		}
+
+
+		public void sort(ArrayList<User> list, int n){
+			if (n==0){
+				return;
+			}
+			if (n ==1){
+				return;
+			}
+	
+			for (int i=0; i<n-1; i++){
+				if (list.get(i).workCount>list.get(i+1).workCount){
+					Collections.swap(list, i, i+1);
+				}
+			}
+			sort(list, n-1);
+	
+		}
+
+		private void saveInventoryItem(Option option, Quantity quantity) {
+
+			/*Option option;
+			if (cartItem.getProductName() == "Eventcatering"  cartItem.getProductName() == "PartyService" 
+				cartItem.getProductName() == "Rent a cook" || cartItem.getProductName() == "Mobilebreakfast"){
+	
+				}*/
+			//Option option = catalog.findByName(cartItem.getProductName()).stream().findFirst().get();
+			UniqueInventoryItem item = inventory.findByProduct(option).get();
+	
+	
+			Quantity quantityInput = quantity;
+	
+				item.increaseQuantity(quantity);
+	
+			inventory.save(item);
+		}
+
+
+
+
+	@PostMapping("/setstatus")
+	String list2(@RequestParam("status") String status){
+
+		System.out.println(status);
+		return "redirect:/order-list/" + status;
+	}
+
+	@GetMapping("/order-list/{status}")
+	String list(Model model, @PathVariable("status") OrderStatus status){
+
+		Iterable<CateringOrder> orders = orderManagement.findBy(status);
+		model.addAttribute("orders", orders);
+
+
+		/*Iterable<CateringOrder> ordersOpen = orderManagement.findBy(OrderStatus.OPEN);
+		model.addAttribute("ordersOpen", ordersOpen);
+		Iterable<CateringOrder> ordersPaid = orderManagement.findBy(OrderStatus.PAID);
+		model.addAttribute("ordersPaid", ordersPaid);
+		Iterable<CateringOrder> ordersCompleted = orderManagement.findBy(OrderStatus.COMPLETED);
+		model.addAttribute("ordersCompleted", ordersCompleted);
+		Iterable<CateringOrder> ordersCancelled = orderManagement.findBy(OrderStatus.CANCELLED);
+		model.addAttribute("ordersCancelled", ordersCancelled); */
+		return "order-list";
+	}
+
+	@GetMapping("/order-details/{order-id}")
+	String details(Model model, @PathVariable("order-id") OrderIdentifier parameter){
+		model.addAttribute("order", orderManagement.get(parameter).get());
+		model.addAttribute("account", orderManagement.get(parameter));
+		return "order-details";
+	}
 }

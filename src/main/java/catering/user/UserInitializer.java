@@ -34,17 +34,17 @@ public class UserInitializer implements DataInitializer {
 		accountManagement.create("Hannes", Password.UnencryptedPassword.of("123"),"admin@mampf.de", Role.of("ADMIN"));
 
 		List<RegistrationForm> registrationForms = List.of(
-				new RegistrationForm("planet", "stern1", "stern1@mampf.de", "123", Position.COOK),
-				new RegistrationForm("planet", "stern2", "stern2@mampf.de", "123", Position.COOK),
-				new RegistrationForm("planet", "stern3", "stern3@mampf.de", "123", Position.COOK),
-				new RegistrationForm("planet", "stern4", "stern4@mampf.de", "123", Position.COOK),
-				new RegistrationForm("planet", "stern5", "stern5@mampf.de", "123", Position.COOK),
-				new RegistrationForm("max", "muster1", "muster1@mampf.de", "123", Position.WAITER),
-				new RegistrationForm("max", "muster2", "muster2@mampf.de", "123", Position.WAITER),
-				new RegistrationForm("max", "muster3", "muster3@mampf.de", "123", Position.WAITER),
-				new RegistrationForm("max", "muster4", "muster4@mampf.de", "123", Position.WAITER),
-				new RegistrationForm("max", "muster5", "muster5@mampf.de", "123", Position.WAITER),
-				new RegistrationForm("ghjk", "vogel", "vogel@mampf.de", "123", Position.EXPERIENCED_WAITER)
+			new RegistrationForm("planet", "stern1", "stern1@mampf.de", "123", Position.COOK),
+			new RegistrationForm("planet", "stern2", "stern2@mampf.de", "123", Position.COOK),
+			new RegistrationForm("planet", "stern3", "stern3@mampf.de", "123", Position.COOK),
+			new RegistrationForm("planet", "stern4", "stern4@mampf.de", "123", Position.COOK),
+			new RegistrationForm("planet", "stern5", "stern5@mampf.de", "123", Position.COOK),
+			new RegistrationForm("max", "muster1", "muster1@mampf.de", "123", Position.WAITER),
+			new RegistrationForm("max", "muster2", "muster2@mampf.de", "123", Position.WAITER),
+			new RegistrationForm("max", "muster3", "muster3@mampf.de", "123", Position.WAITER),
+			new RegistrationForm("max", "muster4", "muster4@mampf.de", "123", Position.WAITER),
+			new RegistrationForm("max", "muster5", "muster5@mampf.de", "123", Position.WAITER),
+			new RegistrationForm("ghjk", "vogel", "vogel@mampf.de", "123", Position.EXPERIENCED_WAITER)
 		);
 		registrationForms.forEach(e -> userManagement.createUser(e, UserManagement.STAFF_ROLE));
 
