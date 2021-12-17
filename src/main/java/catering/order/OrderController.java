@@ -13,6 +13,7 @@ import catering.user.Position;
 import catering.user.User;
 import catering.user.UserRepository;
 
+import org.apache.tomcat.websocket.server.UriTemplate;
 import org.salespointframework.inventory.UniqueInventory;
 import org.salespointframework.inventory.UniqueInventoryItem;
 import org.salespointframework.order.Cart;
@@ -37,8 +38,11 @@ import org.springframework.util.Assert;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDate;
+import java.time.*;
 import java.time.format.DateTimeFormatter;
+import java.time.temporal.IsoFields;
+import java.time.temporal.TemporalAdjusters;
+import java.time.temporal.WeekFields;
 import java.util.*;
 
 
@@ -249,7 +253,7 @@ public class OrderController {
 		for(Option o : catalog.findByName("Eierplatte")){
 			cart.addOrUpdateItem(o, partyservice.getEggplate());
 		}
-		for(Option o : catalog.findByName("Fischlatte")){
+		for(Option o : catalog.findByName("Fischplatte")){
 			cart.addOrUpdateItem(o, partyservice.getFishplate());
 		}
 		for(Option o : catalog.findByName("Obstplatte")){
@@ -629,26 +633,13 @@ public class OrderController {
 
 	@PostMapping("/setstatus")
 	String list2(@RequestParam("status") String status){
-
-		System.out.println(status);
 		return "redirect:/order-list/" + status;
 	}
 
 	@GetMapping("/order-list/{status}")
 	String list(Model model, @PathVariable("status") OrderStatus status){
-
 		Iterable<CateringOrder> orders = orderManagement.findBy(status);
 		model.addAttribute("orders", orders);
-
-
-		/*Iterable<CateringOrder> ordersOpen = orderManagement.findBy(OrderStatus.OPEN);
-		model.addAttribute("ordersOpen", ordersOpen);
-		Iterable<CateringOrder> ordersPaid = orderManagement.findBy(OrderStatus.PAID);
-		model.addAttribute("ordersPaid", ordersPaid);
-		Iterable<CateringOrder> ordersCompleted = orderManagement.findBy(OrderStatus.COMPLETED);
-		model.addAttribute("ordersCompleted", ordersCompleted);
-		Iterable<CateringOrder> ordersCancelled = orderManagement.findBy(OrderStatus.CANCELLED);
-		model.addAttribute("ordersCancelled", ordersCancelled); */
 		return "order-list";
 	}
 
@@ -657,5 +648,96 @@ public class OrderController {
 		model.addAttribute("order", orderManagement.get(parameter).get());
 		model.addAttribute("account", orderManagement.get(parameter));
 		return "order-details";
+	}
+
+	public static Date LocalDateIntoDate(LocalDate local){
+		ZoneId defaultZoneID = ZoneId.of("Europe/Paris");
+		return Date.from(local.atStartOfDay(defaultZoneID).toInstant());
+	}
+
+	public static int getWeekNumberFromDate(Date date) {
+		Calendar cal = Calendar.getInstance();
+		cal.setTime(date);
+		return cal.get(Calendar.WEEK_OF_YEAR);
+	}
+
+	public static int getYearNumberFromDate(Date date) {
+		Calendar cal = Calendar.getInstance();
+		cal.setTime(date);
+		return cal.get(Calendar.YEAR);
+	}
+
+	@GetMapping("/calendar2")
+	String calendar2(){
+		LocalDate now = LocalDate.now();
+		Date date = LocalDateIntoDate(now);
+		int week = getWeekNumberFromDate(date);
+		int year = getYearNumberFromDate(date);
+		String YW = String.format(year + "-" + week);
+		return "redirect:/calendar/" + YW ;
+	}
+
+	@PostMapping("/setweek/{YW}")
+	String setweek(@RequestParam("button") String button, @PathVariable("YW") String YW){
+		String [] split = YW.split("-");
+		int year = Integer.parseInt(split[0]);
+		int week = Integer.parseInt(split[1]);
+
+		if (button.equals("prev")){
+			week -= 1;
+			if (week == 0) {
+				year -= 1;
+				try {
+					week = 53;
+					String date = String.format(year + "-W" + week + "-1");
+					LocalDate ld = LocalDate.parse(date, DateTimeFormatter.ISO_WEEK_DATE);
+				} catch (Exception ex) {
+					week = 52;
+				}
+			}
+		} else {
+			week += 1;
+			if (week == 53) {
+				try {
+					String date = String.format(year + "-W" + week + "-1");
+					LocalDate ld = LocalDate.parse(date, DateTimeFormatter.ISO_WEEK_DATE);
+				} catch (Exception ex) {
+					week = 1;
+					year += 1;
+				}
+			}
+			if (week == 54) {
+				week = 1;
+				year += 1;
+			}
+		}
+		YW = String.format(year + "-" + week);
+		return "redirect:/calendar/" + YW;
+	}
+
+
+	@GetMapping("/calendar/{YW}")
+	String calendar(Model model, @PathVariable("YW") String YW){
+		String [] split = YW.split("-");
+		int year = Integer.parseInt(split[0]);
+		int week = Integer.parseInt(split[1]);
+
+		LocalDate date = LocalDate.of(year, Month.JANUARY, 10);
+		LocalDate dayInWeek = date.with(IsoFields.WEEK_OF_WEEK_BASED_YEAR, week);
+
+		model.addAttribute("YW", YW);
+		model.addAttribute("week", week);
+		model.addAttribute("year", year);
+		model.addAttribute("monday", dayInWeek.with(DayOfWeek.MONDAY));
+		model.addAttribute("tuesday", dayInWeek.with(DayOfWeek.TUESDAY));
+		model.addAttribute("wednesday", dayInWeek.with(DayOfWeek.WEDNESDAY));
+		model.addAttribute("thursday", dayInWeek.with(DayOfWeek.THURSDAY));
+		model.addAttribute("friday", dayInWeek.with(DayOfWeek.FRIDAY));
+		model.addAttribute("saturday", dayInWeek.with(DayOfWeek.SATURDAY));
+		model.addAttribute("sunday", dayInWeek.with(DayOfWeek.SUNDAY));
+
+		Iterable<CateringOrder> orders = orderManagement.findBy(OrderStatus.PAID);
+		model.addAttribute("orders", orders);
+		return "calendar";
 	}
 }

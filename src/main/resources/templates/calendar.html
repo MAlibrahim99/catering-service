@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout}">
+<head>
+</head>
+<body>
+<div th:replace="navigation :: navigation"></div>
+<section layout:fragment="content">
+    <h2 class="underlined-text" th:text="${'Termine in Woche: ' + week + 'im Jahr' + year}"></h2>
+
+    <!--<form method="post" th:action="@{/setweek}">
+        <div>
+            <input type="button" id="vorherige Woche" name="button" value="vorherige Woche">
+            <input style="float: right" type="button" id="nächste Woche" name="button" value="nächste Woche">
+        </div>
+    </form>-->
+    <form method="post" th:action="@{/setweek/__${YW}__}">
+        <input type="hidden" name="button" value="prev">
+        <input type="submit" value="Vorherige Woche">
+    </form>
+    <form style="float: right" method="post" th:action="@{/setweek/__${YW}__}">
+        <input type="hidden" name="button" value="next">
+        <input type="submit" value="Nächste Woche">
+    </form>
+    <table class="ui striped center aligned table">
+        <thead>
+        <tr class="bold">
+            <th th:text="${'Montag: ' + #conversions.convert(monday, 'String')}"></th>
+            <th th:text="${'Dienstag: ' + #conversions.convert(tuesday, 'String')}"></th>
+            <th th:text="${'Mittwoch: ' + #conversions.convert(wednesday, 'String')}"></th>
+            <th th:text="${'Donnerstag: ' + #conversions.convert(thursday, 'String')}"></th>
+            <th th:text="${'Freitag: ' + #conversions.convert(friday, 'String')}"></th>
+            <th th:text="${'Samstag: ' + #conversions.convert(saturday, 'String')}"></th>
+            <th th:text="${'Sonntag: ' + #conversions.convert(sunday, 'String')}"></th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="order : *{orders}">
+            <td>
+                <form th:if="${order.orderStatus.toString().equals('PAID')}">
+                    <input type="hidden" name="orderId" th:value="${order.id}">
+                    <a class="ui black basic button" th:href="@{/order-details/{order-id}(order-id=${order.id})}">Mehr Details</a>
+                </form>
+            </td>
+        </tr>
+        <tr th:each="order : *{orders}">
+            <td>
+                <form th:if="${order.orderStatus.toString().equals('PAID')}">
+                    <input type="hidden" name="orderId" th:value="${order.id}">
+                    <a class="ui black basic button" th:href="@{/order-details/{order-id}(order-id=${order.id})}">Mehr Details</a>
+                </form>
+            </td>
+        </tr>
+        <tr th:each="order : *{orders}">
+            <td>
+                <form th:if="${order.orderStatus.toString().equals('PAID')}">
+                    <input type="hidden" name="orderId" th:value="${order.id}">
+                    <a class="ui black basic button" th:href="@{/order-details/{order-id}(order-id=${order.id})}">Mehr Details</a>
+                </form>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</section>
+</body>
