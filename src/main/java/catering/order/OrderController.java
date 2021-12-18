@@ -550,7 +550,6 @@ public class OrderController {
 		return "redirect:/calendar/" + YW;
 	}
 
-
 	@GetMapping("/calendar/{YW}")
 	String calendar(Model model, @PathVariable("YW") String YW){
 		String [] split = YW.split("-");
@@ -571,8 +570,12 @@ public class OrderController {
 		model.addAttribute("saturday", dayInWeek.with(DayOfWeek.SATURDAY));
 		model.addAttribute("sunday", dayInWeek.with(DayOfWeek.SUNDAY));
 
-		Iterable<CateringOrder> paid = orderManagement.findBy(OrderStatus.PAID);
-		model.addAttribute("paid", paid);
+		Iterable<CateringOrder> fruh = orderRepository.findByOrderStatusAndTime(OrderStatus.PAID, TimeSegment.FRÜH);
+		model.addAttribute("fruh", fruh);
+		Iterable<CateringOrder> mittag = orderRepository.findByOrderStatusAndTime(OrderStatus.PAID, TimeSegment.MITTAG);
+		model.addAttribute("mittag", mittag);
+		Iterable<CateringOrder> abend = orderRepository.findByOrderStatusAndTime(OrderStatus.PAID, TimeSegment.ABEND);
+		model.addAttribute("abend", abend);
 
 		return "calendar";
 	}

@@ -27,6 +27,7 @@
     <table style="float: left" class="ui striped center aligned table">
         <thead>
         <tr class="bold">
+            <th></th>
             <th th:text="${'Montag: ' + #conversions.convert(monday, 'String')}"></th>
             <th th:text="${'Dienstag: ' + #conversions.convert(tuesday, 'String')}"></th>
             <th th:text="${'Mittwoch: ' + #conversions.convert(wednesday, 'String')}"></th>
@@ -37,7 +38,141 @@
         </tr>
         </thead>
         <tbody>
-
+        <tr>
+            <td>Früh</td>
+            <td>
+                <form th:each="order : ${fruh}" th:if="${order.getCompletionDate().equals(monday)}">
+                    <input type="hidden" name="orderId" th:value="${order.id}">
+                    <a class="ui black basic button" th:href="@{/order-details/{order-id}(order-id=${order.id})}" th:utext="${order.getService() + '&lt;br/&gt;' + order.getUserAccount().lastname}">Mehr Details</a>
+                </form>
+            </td>
+            <td>
+                <form th:each="order : ${fruh}" th:if="${order.getCompletionDate().equals(tuesday)}">
+                    <input type="hidden" name="orderId" th:value="${order.id}">
+                    <a class="ui black basic button" th:href="@{/order-details/{order-id}(order-id=${order.id})}" th:utext="${order.getService() + '&lt;br/&gt;' + order.getUserAccount().lastname}">Mehr Details</a>
+                </form>
+            </td>
+            <td>
+                <form th:each="order : ${fruh}" th:if="${order.getCompletionDate().equals(wednesday)}">
+                    <input type="hidden" name="orderId" th:value="${order.id}">
+                    <a class="ui black basic button" th:href="@{/order-details/{order-id}(order-id=${order.id})}" th:utext="${order.getService() + '&lt;br/&gt;' + order.getUserAccount().lastname}">Mehr Details</a>
+                </form>
+            </td>
+            <td>
+                <form th:each="order : ${fruh}" th:if="${order.getCompletionDate().equals(thursday)}">
+                    <input type="hidden" name="orderId" th:value="${order.id}">
+                    <a class="ui black basic button" th:href="@{/order-details/{order-id}(order-id=${order.id})}" th:utext="${order.getService() + '&lt;br/&gt;' + order.getUserAccount().lastname}">Mehr Details</a>
+                </form>
+            </td>
+            <td>
+                <form th:each="order : ${fruh}" th:if="${order.getCompletionDate().equals(friday)}">
+                    <input type="hidden" name="orderId" th:value="${order.id}">
+                    <a class="ui black basic button" th:href="@{/order-details/{order-id}(order-id=${order.id})}" th:utext="${order.getService() + '&lt;br/&gt;' + order.getUserAccount().lastname}">Mehr Details</a>
+                </form>
+            </td>
+            <td>
+                <form th:each="order : ${fruh}" th:if="${order.getCompletionDate().equals(saturday)}">
+                    <input type="hidden" name="orderId" th:value="${order.id}">
+                    <a class="ui black basic button" th:href="@{/order-details/{order-id}(order-id=${order.id})}" th:utext="${order.getService() + '&lt;br/&gt;' + order.getUserAccount().lastname}">Mehr Details</a>
+                </form>
+            </td>
+            <td>
+                <form th:each="order : ${fruh}" th:if="${order.getCompletionDate().equals(sunday)}">
+                    <input type="hidden" name="orderId" th:value="${order.id}">
+                    <a class="ui black basic button" th:href="@{/order-details/{order-id}(order-id=${order.id})}" th:utext="${order.getService() + '&lt;br/&gt;' + order.getUserAccount().lastname}">Mehr Details</a>
+                </form>
+            </td>
+        </tr>
+        <tr>
+            <td>Mittag</td>
+            <td>
+                <form th:each="order : ${mittag}" th:if="${order.getCompletionDate().equals(monday)}">
+                    <input type="hidden" name="orderId" th:value="${order.id}">
+                    <a class="ui black basic button" th:href="@{/order-details/{order-id}(order-id=${order.id})}" th:utext="${order.getService() + '&lt;br/&gt;' + order.getUserAccount().lastname}">Mehr Details</a>
+                </form>
+            </td>
+            <td>
+                <form th:each="order : ${mittag}" th:if="${order.getCompletionDate().equals(tuesday)}">
+                    <input type="hidden" name="orderId" th:value="${order.id}">
+                    <a class="ui black basic button" th:href="@{/order-details/{order-id}(order-id=${order.id})}" th:utext="${order.getService() + '&lt;br/&gt;' + order.getUserAccount().lastname}">Mehr Details</a>
+                </form>
+            </td>
+            <td>
+                <form th:each="order : ${mittag}" th:if="${order.getCompletionDate().equals(wednesday)}">
+                    <input type="hidden" name="orderId" th:value="${order.id}">
+                    <a class="ui black basic button" th:href="@{/order-details/{order-id}(order-id=${order.id})}" th:utext="${order.getService() + '&lt;br/&gt;' + order.getUserAccount().lastname}">Mehr Details</a>
+                </form>
+            </td>
+            <td>
+                <form th:each="order : ${mittag}" th:if="${order.getCompletionDate().equals(thursday)}">
+                    <input type="hidden" name="orderId" th:value="${order.id}">
+                    <a class="ui black basic button" th:href="@{/order-details/{order-id}(order-id=${order.id})}" th:utext="${order.getService() + '&lt;br/&gt;' + order.getUserAccount().lastname}">Mehr Details</a>
+                </form>
+            </td>
+            <td>
+                <form th:each="order : ${mittag}" th:if="${order.getCompletionDate().equals(friday)}">
+                    <input type="hidden" name="orderId" th:value="${order.id}">
+                    <a class="ui black basic button" th:href="@{/order-details/{order-id}(order-id=${order.id})}" th:utext="${order.getService() + '&lt;br/&gt;' + order.getUserAccount().lastname}">Mehr Details</a>
+                </form>
+            </td>
+            <td>
+                <form th:each="order : ${mittag}" th:if="${order.getCompletionDate().equals(saturday)}">
+                    <input type="hidden" name="orderId" th:value="${order.id}">
+                    <a class="ui black basic button" th:href="@{/order-details/{order-id}(order-id=${order.id})}" th:utext="${order.getService() + '&lt;br/&gt;' + order.getUserAccount().lastname}">Mehr Details</a>
+                </form>
+            </td>
+            <td>
+                <form th:each="order : ${mittag}" th:if="${order.getCompletionDate().equals(sunday)}">
+                    <input type="hidden" name="orderId" th:value="${order.id}">
+                    <a class="ui black basic button" th:href="@{/order-details/{order-id}(order-id=${order.id})}" th:utext="${order.getService() + '&lt;br/&gt;' + order.getUserAccount().lastname}">Mehr Details</a>
+                </form>
+            </td>
+        </tr>
+        <tr>
+            <td>Abend</td>
+            <td>
+                <form th:each="order : ${abend}" th:if="${order.getCompletionDate().equals(monday)}">
+                    <input type="hidden" name="orderId" th:value="${order.id}">
+                    <a class="ui black basic button" th:href="@{/order-details/{order-id}(order-id=${order.id})}" th:utext="${order.getService() + '&lt;br/&gt;' + order.getUserAccount().lastname}">Mehr Details</a>
+                </form>
+            </td>
+            <td>
+                <form th:each="order : ${abend}" th:if="${order.getCompletionDate().equals(tuesday)}">
+                    <input type="hidden" name="orderId" th:value="${order.id}">
+                    <a class="ui black basic button" th:href="@{/order-details/{order-id}(order-id=${order.id})}" th:utext="${order.getService() + '&lt;br/&gt;' + order.getUserAccount().lastname}">Mehr Details</a>
+                </form>
+            </td>
+            <td>
+                <form th:each="order : ${abend}" th:if="${order.getCompletionDate().equals(wednesday)}">
+                    <input type="hidden" name="orderId" th:value="${order.id}">
+                    <a class="ui black basic button" th:href="@{/order-details/{order-id}(order-id=${order.id})}" th:utext="${order.getService() + '&lt;br/&gt;' + order.getUserAccount().lastname}">Mehr Details</a>
+                </form>
+            </td>
+            <td>
+                <form th:each="order : ${abend}" th:if="${order.getCompletionDate().equals(thursday)}">
+                    <input type="hidden" name="orderId" th:value="${order.id}">
+                    <a class="ui black basic button" th:href="@{/order-details/{order-id}(order-id=${order.id})}" th:utext="${order.getService() + '&lt;br/&gt;' + order.getUserAccount().lastname}">Mehr Details</a>
+                </form>
+            </td>
+            <td>
+                <form th:each="order : ${abend}" th:if="${order.getCompletionDate().equals(friday)}">
+                    <input type="hidden" name="orderId" th:value="${order.id}">
+                    <a class="ui black basic button" th:href="@{/order-details/{order-id}(order-id=${order.id})}" th:utext="${order.getService() + '&lt;br/&gt;' + order.getUserAccount().lastname}">Mehr Details</a>
+                </form>
+            </td>
+            <td>
+                <form th:each="order : ${abend}" th:if="${order.getCompletionDate().equals(saturday)}">
+                    <input type="hidden" name="orderId" th:value="${order.id}">
+                    <a class="ui black basic button" th:href="@{/order-details/{order-id}(order-id=${order.id})}" th:utext="${order.getService() + '&lt;br/&gt;' + order.getUserAccount().lastname}">Mehr Details</a>
+                </form>
+            </td>
+            <td>
+                <form th:each="order : ${abend}" th:if="${order.getCompletionDate().equals(sunday)}">
+                    <input type="hidden" name="orderId" th:value="${order.id}">
+                    <a class="ui black basic button" th:href="@{/order-details/{order-id}(order-id=${order.id})}" th:utext="${order.getService() + '&lt;br/&gt;' + order.getUserAccount().lastname}">Mehr Details</a>
+                </form>
+            </td>
+        </tr>
         </tbody>
     </table>
 </section>
