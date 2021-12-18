@@ -24,7 +24,7 @@
         <input type="hidden" name="button" value="next">
         <input type="submit" value="Nächste Woche">
     </form>
-    <table class="ui striped center aligned table">
+    <table style="float: left" class="ui striped center aligned table">
         <thead>
         <tr class="bold">
             <th th:text="${'Montag: ' + #conversions.convert(monday, 'String')}"></th>
@@ -37,30 +37,7 @@
         </tr>
         </thead>
         <tbody>
-        <tr th:each="order : *{orders}">
-            <td>
-                <form th:if="${order.orderStatus.toString().equals('PAID')}">
-                    <input type="hidden" name="orderId" th:value="${order.id}">
-                    <a class="ui black basic button" th:href="@{/order-details/{order-id}(order-id=${order.id})}">Mehr Details</a>
-                </form>
-            </td>
-        </tr>
-        <tr th:each="order : *{orders}">
-            <td>
-                <form th:if="${order.orderStatus.toString().equals('PAID')}">
-                    <input type="hidden" name="orderId" th:value="${order.id}">
-                    <a class="ui black basic button" th:href="@{/order-details/{order-id}(order-id=${order.id})}">Mehr Details</a>
-                </form>
-            </td>
-        </tr>
-        <tr th:each="order : *{orders}">
-            <td>
-                <form th:if="${order.orderStatus.toString().equals('PAID')}">
-                    <input type="hidden" name="orderId" th:value="${order.id}">
-                    <a class="ui black basic button" th:href="@{/order-details/{order-id}(order-id=${order.id})}">Mehr Details</a>
-                </form>
-            </td>
-        </tr>
+
         </tbody>
     </table>
 </section>

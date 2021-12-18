@@ -736,8 +736,9 @@ public class OrderController {
 		model.addAttribute("saturday", dayInWeek.with(DayOfWeek.SATURDAY));
 		model.addAttribute("sunday", dayInWeek.with(DayOfWeek.SUNDAY));
 
-		Iterable<CateringOrder> orders = orderManagement.findBy(OrderStatus.PAID);
-		model.addAttribute("orders", orders);
+		Iterable<CateringOrder> paid = orderManagement.findBy(OrderStatus.PAID);
+		model.addAttribute("paid", paid);
+
 		return "calendar";
 	}
 }
