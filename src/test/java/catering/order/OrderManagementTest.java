@@ -32,8 +32,6 @@ public class OrderManagementTest {
     @Autowired UserManagement userManagement;
 
 
-    private OptionCatalog catalog;
-
 
 
     @Qualifier("persistentUserAccountManagement")
