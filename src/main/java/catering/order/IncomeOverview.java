@@ -44,29 +44,43 @@ public class IncomeOverview {
 		return totalIncome;
 	}
 
-//	public Map<String, String> servicePercentages(LocalDate start, LocalDate end) {
-//		validateArguments(start, end);
-//		if (end.isAfter(LocalDate.now()) || end.isEqual(LocalDate.now())) {
-//			end = LocalDate.now().minusDays(1L);
-//		}
-//
-//		if (start.isAfter(LocalDate.now()) || start.isEqual(LocalDate.now())) {
-//			start = LocalDate.now().minusDays(30L);
-//		}
-//
-//		Streamable<CateringOrder> orders = orderRepository.findByCompletionDateBetween(start, end);
-//		BigDecimal countOfAllOrders = BigDecimal.valueOf(orders.toList().size());
-//		BigDecimal countOfSameTypeOrders = BigDecimal.valueOf(0.00);
-//		Map<String, String> percentages = new HashMap<>();
-//
-//			for (CateringOrder order : orders) {
-//
-//				percentages.put(type.toString().toLowerCase(),
-//						countOfSameTypeOrders.divide(countOfAllOrders, RoundingMode.CEILING).multiply(BigDecimal.valueOf(100)));
-//				countOfSameTypeOrders = BigDecimal.valueOf(0.00);
-//			}
-//		return percentages;
-//}
+	public Map<String, BigDecimal> servicePercentages(LocalDate start, LocalDate end) {
+		validateArguments(start, end);
+
+		if (start.isAfter(end) || start.isEqual(end)) {
+			start = end.minusDays(30L);
+		}
+
+		List<CateringOrder> orders = orderRepository.findByCompletionDateBetween(start, end).toList();
+		Map<String, BigDecimal> orderPercentages = new HashMap<>();
+		List<String> services = List.of("Eventcatering", "MobileBreakfast", "Partyservice", "RentACook");
+
+		if(orders.isEmpty()){
+			for(String service: services) {
+				orderPercentages.put(service, BigDecimal.ZERO);
+			}
+			System.out.println("in orders is empty!");
+		}else{
+			BigDecimal orderCount = BigDecimal.valueOf(orders.size());
+			int tempCounter = 0;
+			for(String service: services) {//zähle jeden Servicetyp
+				for(CateringOrder order: orders){
+					if(order.getService().equals(service)){
+						tempCounter++;
+					}
+				}
+				// berechne Prozentsatz
+				BigDecimal percentage = BigDecimal.valueOf(tempCounter).multiply(BigDecimal.valueOf(100.0))
+						.divide(orderCount, RoundingMode.HALF_UP);
+
+				System.out.println(service + " percentage " + percentage);
+
+				orderPercentages.put(service, percentage);
+				tempCounter = 0;
+			}
+		}
+		return orderPercentages;
+}
 
 	public Map<String, String> statusPercentages(LocalDate start, LocalDate end) {
 		validateArguments(start, end);

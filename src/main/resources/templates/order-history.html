@@ -25,7 +25,7 @@
        	<tbody>
 	        <tr	th:each="order, iter : ${userOrders}">
 	            <td th:text="${iter.count}">000</td>
-				<td th:value="${order.service}">Event Catering</td>
+				<td th:text="${order.service}">Event Cateri</td>
 				<td th:text="${#conversions.convert(order.completionDate, 'String') + ', ' +
 				order.time.toString().toLowerCase()}">TT.MM.JJJJ</td>
 				<td><a class="ui black basic button" th:href="@{/order-details/{order-id}(order-id=${order.id})}">Mehr Details</a>

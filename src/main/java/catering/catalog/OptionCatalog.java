@@ -5,7 +5,6 @@ import org.salespointframework.catalog.Catalog;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
-
 @Service
 public interface OptionCatalog extends Catalog<Option> {
 
@@ -16,11 +15,5 @@ public interface OptionCatalog extends Catalog<Option> {
 	default Iterable<Option> findByType(OptionType type) {
 		return findByType(type, DEFAULT_SORT);
 	}
-
-
-	default Iterable<Option> findByOptionType(OptionType type) {
-		return findByType(type, DEFAULT_SORT);
-	}
-
 
 }

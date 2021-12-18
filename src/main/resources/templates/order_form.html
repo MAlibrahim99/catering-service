@@ -1,0 +1,135 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout}">
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+    <title>Bestellformular</title>
+    <script type="text/javascript">
+        function calc(event) {
+            const persons = document.getElementById("persons")
+            const items = document.querySelectorAll('.item');
+            const sum = document.getElementById("sum")
+
+            var personsInt = parseInt(persons.value)
+            var s = 0;
+
+            items.forEach(function(item) {
+                const personCount = item.querySelector(".personCount")
+                const amount = item.querySelector(".amount")
+                const price = item.querySelector(".price")
+                const resPrice = item.querySelector(".resPrice")
+                const chooseOpt = item.querySelector(".chooseOpt")
+
+                var personCountInt = parseInt(personCount.value)
+                var priceFloat = parseFloat(price.value)
+
+                var res_amount = chooseOpt.checked ? Math.ceil(personsInt / personCountInt) : 0;
+                var res_price = res_amount * priceFloat;
+
+                s += res_price
+
+                amount.value = res_amount.toFixed(0)
+                resPrice.value = res_price.toFixed(2)
+            });
+
+            sum.innerHTML = s.toFixed(2)
+        }
+    </script>
+</head>
+<body>
+    <div th:replace="navigation :: navigation"></div>
+    <section layout:fragment="content">
+        <h1 class="underlined-text" th:text="'Bestellformular ' + ${form.service}"/>
+        <form method="post" th:action="@{/cartadd}" th:object="${form}">
+            <input type="hidden" th:field="${form.service}"/>
+            Anzahl Personen: <input type="number" min="1" id="persons" onchange="calc(event);" th:field="${form.persons}"/>
+            <div>    
+                Datum:   <input id="date" type="date" name="date" required th:field="${order.completionDate}"/><br/><br/>
+                <input type="radio" id="frühs" name="time" value="Früh" required th:field="${order.time}" th:value="${order.time}"/>
+                <label for="Frühs">Früh</label><br/>
+                <input type="radio" id="mittag" name="time" value="Mittag" required th:field="${order.time}" th:value="${order.time}"/>
+                <label for="Mittag">Mittag</label><br/>
+                <input type="radio" id="abends" name="time" value="Abend" required th:field="${order.time}" th:value="${order.time}"/>
+                <label for="Abends">Abend</label><br/><br/>
+                <!--><label for="timesegment">Gewünschter Zeitraum:</label>
+                <select name="timesegment" id="timesegment">
+                    <option th:each="time : ${T(catering.order).value()}" th:value="${time}" th:text="{time}" th:field="${order.time}">Früh</option>
+                </select>
+                <br/><br/>-->
+
+
+                <label for="location">Veranstaltungsort:</label><br/>
+                <input type="text" name="location" required th:field="${order.address}"/><br/><br/>
+            </div>
+            <div th:unless="${form.service == 'rentacook'}">
+                
+                <h2>Essen & Trinken</h2>
+                <table>
+                    <tr>
+                        <th>Angebot</th>
+                        <th>Benötigte Anzahl</th>
+                        <th>Preis in €</th>
+                        <th>Auswahl</th>
+                    </tr>
+                    <tr class="item" th:each="option, optionStat : ${form.foodList}">
+                        <td>
+                            <input readonly th:name="|foodList[${optionStat.index}].name|" th:value="${option.getName()}"/>
+                        </td>
+                        <td>
+                            <input readonly class="amount" th:name="|foodList[${optionStat.index}].amount|" th:value="${option.getAmount()}"/>
+                        </td>
+                        <td>
+                            <input readonly class="resPrice" value="0.00"/>
+                        </td>
+                        <td>
+                            <input th:if="${option.getName() == 'Buffet'}" type="radio" checked class="chooseOpt" name="eventType" onchange="calc(event);"/>
+                            <input th:if="${option.getName() == 'Galadinner'}" type="radio" class="chooseOpt" name="eventType" onchange="calc(event);"/>
+                            <div th:unless="${option.getName() == 'Buffet' or option.getName() == 'Galadinner'}">
+                                <input th:if="${form.service == 'mobilebreakfast'}" type="checkbox" class="chooseOpt" checked disabled/>
+                                <input th:unless="${form.service == 'mobilebreakfast'}" type="checkbox" class="chooseOpt" checked onchange="calc(event);"/>
+                            </div>
+                        </td>
+                        <td>
+                            <input type="hidden" class="personCount" th:name="|foodList[${optionStat.index}].personCount|" th:value="${option.getPersonCount()}"/>
+                            <input type="hidden" class="price" th:name="|foodList[${optionStat.index}].price|" th:value="${option.getPrice()}"/>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            <h2>Zubehör</h2>
+            <table>
+                <tr>
+                    <th>Angebot</th>
+                    <th>Benötigte Anzahl</th>
+                    <th>Preis in €</th>
+                    <th>Auswahl</th>
+                </tr>
+                <tr class="item" th:each="option, optionStat : ${form.equipList}">
+                    <td>
+                        <input readonly th:name="|equipList[${optionStat.index}].name|" th:value="${option.getName()}"/>
+                    </td>
+                    <td>
+                        <input readonly class="amount" th:name="|equipList[${optionStat.index}].amount|" th:value="${option.getAmount()}"/>
+                    </td>
+                    <td>
+                        <input readonly class="resPrice" value="0.00"/>
+                    </td>
+                    <td>
+                        <input type="checkbox" class="chooseOpt" checked onchange="calc(event);"/>
+                    </td>
+                    <td>
+                        <input type="hidden" class="personCount" th:name="|equipList[${optionStat.index}].personCount|" th:value="${option.getPersonCount()}"/>
+                        <input type="hidden" class="price" th:name="|equipList[${optionStat.index}].price|" th:value="${option.getPrice()}"/>
+                    </td>
+                </tr>
+            </table>
+            
+            <h2>Gesamter Preis in €:</h2>
+            <p id="sum"></p>
+            <input type="submit" value="Kaufen"/>
+        </form>
+    </section>
+</body>
+</html>
