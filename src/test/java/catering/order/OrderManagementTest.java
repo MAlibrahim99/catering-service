@@ -23,13 +23,17 @@ import catering.user.forms.RegistrationForm;
 
 @SpringBootTest
 public class OrderManagementTest {
-    @Autowired UserRepository users;
+    @Autowired 
+    private UserRepository users;
 
-    @Autowired CateringOrderRepository cateringOrder;
+    @Autowired 
+    private CateringOrderRepository cateringOrder;
 
-    @Autowired OrderManagement orderManagement;
+    @Autowired 
+    private OrderManagement orderManagement;
 
-    @Autowired UserManagement userManagement;
+    @Autowired 
+    private UserManagement userManagement;
 
 
 
