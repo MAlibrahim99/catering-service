@@ -37,7 +37,7 @@ public class OrderManagementTest {
 
 
 
-
+    @Autowired
     @Qualifier("persistentUserAccountManagement")
     private UserAccountManagement accountManagement;
     private Role customerRole = Role.of("CUSTOMER");
