@@ -36,7 +36,7 @@
 				<td th:text="${staff.position}">Personal position</td>
 				<td><form th:action="@{/profile}" method="post" style="display: inline">
 					<input type="hidden" name="userId" th:value="${staff.getId()}">
-					<button type="submit" class="ui button">bearbeiten/löschen</button>
+					<button type="submit" class="ui button">löschen</button>
 				</form>
 				</td>
 	        </tr>
