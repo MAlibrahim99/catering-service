@@ -338,7 +338,7 @@ public class OrderController {
 				
 
 				ArrayList<User> orderStaffList = new ArrayList<>();
-				Streamable<User> staff = userRepository.getUserByPositionIn(List.of(Position.EXPERIENCED_WAITER, Position.WAITER));
+				Streamable<User> staff = userRepository.getUserByPositionIn(List.of(Position.EXPERIENCED_WAITER, Position.WAITER, Position.MINIJOB));
 				
 				for (User u : staff){
 					staffList.add(u);
