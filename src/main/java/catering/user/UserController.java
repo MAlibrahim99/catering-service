@@ -75,7 +75,8 @@ public class UserController {
 	@GetMapping("/register")
 	public String register(Model model, RegistrationForm form){
 		model.addAttribute("registrationForm", form);
-		model.addAttribute("positions", List.of(Position.COOK, Position.EXPERIENCED_WAITER, Position.WAITER, Position.MINIJOB));
+		model.addAttribute("positions", List.of(Position.COOK, Position.EXPERIENCED_WAITER,
+												Position.WAITER, Position.MINIJOB));
 		return "register";
 	}
 

@@ -98,7 +98,7 @@ public class CatalogController {
 		String info =
 				"Mieten sie Küchen- und Servicepersonal, welches bei Ihnen Zuhause, vor den Augen ihrer " +
 				"Gäste, verschiedene Köstlichkeiten zubereitet. Sie müssen sich dabei weder um das " +
-				"decken des Tisches kümmern, noch um den Abwasch und das Aufräumen. " +
+				"Decken des Tisches kümmern, noch um den Abwasch und das Aufräumen. " +
 				"Das Saubermachen übernimmt das Personal für sie. Um die Lebensmittel müssen " +
 						"sich die Kunden dabei jedoch selbst kümmern.";
 		model.addAttribute("info", info);

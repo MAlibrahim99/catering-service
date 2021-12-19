@@ -28,7 +28,7 @@
         </div>
 
         <div class="ten wide field">
-            <label>Email Adresse</label>
+            <label>Email-Adresse</label>
             <input type="text" name="Email address" placeholder="Email-Adresse" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$" th:field="*{email}" required>
             <div class="ui red message" th:if="${emailAddressAlreadyExists}"
                  th:text="#{register.email.exists.error}">Email-Adresse ist bereits besetzt
