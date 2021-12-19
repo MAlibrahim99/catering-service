@@ -5,17 +5,26 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 import org.junit.jupiter.api.Test;
+import org.salespointframework.order.Cart;
+import org.salespointframework.quantity.Quantity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 
+import catering.catalog.OptionCatalog;
+
 @SpringBootTest
 @AutoConfigureMockMvc
 class WebSecurityIntegrationTests {
 
     @Autowired MockMvc mvc;
+
+    private Cart cart;
+
+    @Autowired
+    private OptionCatalog catalog;
 
     @Test
     void redirectsToLoginPageOrderlist() throws Exception{
@@ -53,6 +62,20 @@ class WebSecurityIntegrationTests {
                 .andExpect(status().isOk()) //
                 .andExpect(view().name("inventory")); //
                 
+    }
+
+    @Test
+    @WithMockUser(username = "Hannes", roles = "ADMIN")
+    void returnsCorrectOrderreview() throws Exception{
+
+        Cart cart = new Cart();
+        cart.addOrUpdateItem(catalog.findByName("Buffet").stream().findFirst().get(), Quantity.of(2));
+
+        mvc.perform(get("/cartadd")) //
+                    .andExpect(status().isOk()) //
+                    .andExpect(view().name("cartItem"));
+        
+
     }
     
 }
