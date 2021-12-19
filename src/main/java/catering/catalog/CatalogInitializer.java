@@ -8,7 +8,6 @@ import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 import org.springframework.util.Assert;
 
-import catering.catalog.Ware.ServiceType;
 
 import static org.salespointframework.core.Currencies.*;
 

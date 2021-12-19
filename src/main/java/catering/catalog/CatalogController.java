@@ -30,16 +30,14 @@ public class CatalogController {
 
 	private static final Quantity NONE = Quantity.of(0);
 
-	private final CateringCatalog cCatalog;
 	private final UniqueInventory<UniqueInventoryItem> inventory;
 	private final BusinessTime businessTime;
 	private final OptionCatalog catalog;
 
 
-	CatalogController(CateringCatalog cateringCatalog, UniqueInventory<UniqueInventoryItem> inventory,
+	CatalogController( UniqueInventory<UniqueInventoryItem> inventory,
 					  BusinessTime businessTime, OptionCatalog catalog) {
 
-		this.cCatalog = cateringCatalog;
 		this.inventory = inventory;
 		this.businessTime = businessTime;
 		this.catalog = catalog;
