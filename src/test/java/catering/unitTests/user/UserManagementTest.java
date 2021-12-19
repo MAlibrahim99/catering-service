@@ -5,6 +5,7 @@ import catering.user.Position;
 import catering.user.User;
 import catering.user.UserManagement;
 import catering.user.UserRepository;
+import catering.user.forms.ProfileForm;
 import catering.user.forms.RegistrationForm;
 import org.assertj.core.util.Lists;
 import org.junit.jupiter.api.Test;
@@ -47,6 +48,20 @@ public class UserManagementTest {
 		assertThat(currentUser.getUserAccount().getFirstname()).isEqualTo(form.getFirstName());
 		assertThat(currentUser.getUserAccount().getEmail()).isEqualTo(form.getEmail());
 		assertThat(currentUser.getUserAccount().getRoles()).isNotEmpty();
+	}
+	
+	@Test
+	public void userIsUpdatedSuccessfully() {
+		User currentUser = userManagement.findByUsername("user 1");
+		ProfileForm data = new ProfileForm("1", "a", "email@user.de");
+		userManagement.updateUser(data, currentUser);
+		assertThat(currentUser.getId()).isGreaterThan(0);
+		assertThat(data).isNotNull();
+		assertThat(currentUser).isNotNull();
+		assertThat(currentUser.getUserAccount().getFirstname()).isEqualTo("1");
+		assertThat(currentUser.getUserAccount().getLastname()).isEqualTo("a");
+		assertThat(currentUser.getUserAccount().getEmail()).isEqualTo("email@user.de");
+		assertThat(currentUser.getAddress()).isEqualTo(data.getAddress());
 	}
 }
 
