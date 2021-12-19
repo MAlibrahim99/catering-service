@@ -135,7 +135,6 @@ public class OrderController {
 	 * @return order_form
 	 */
 	@GetMapping("/order/{service}")
-	@PreAuthorize(value = "hasRole('CUSTOMER')")
 	public String getOrderForm(@PathVariable String service, Model model, CateringOrder order) {
 
 		Assert.isTrue((service.equals("eventcatering") || service.equals("partyservice") || service.equals("rentacook") ||
@@ -147,10 +146,12 @@ public class OrderController {
 		List<OrderFormitem> equipFormitemList = new ArrayList<>();
 		for (Option option : optionStreamable) {
 			if (option.getType() == OptionType.FOOD) {
-				foodFormitemList.add(new OrderFormitem(option.getName(), option.getPrice().getNumber().numberValue(Float.class), option.getPersonCount(), 1));
+				foodFormitemList.add(new OrderFormitem(option.getName(), //
+					option.getPrice().getNumber().numberValue(Float.class), option.getPersonCount(), 1));
 			}
 			if (option.getType() == OptionType.EQUIP || option.getType() == OptionType.GOODS) {
-				equipFormitemList.add(new OrderFormitem(option.getName(), option.getPrice().getNumber().numberValue(Float.class), option.getPersonCount(), 1));
+				equipFormitemList.add(new OrderFormitem(option.getName(), //
+					option.getPrice().getNumber().numberValue(Float.class), option.getPersonCount(), 1));
 			}
 		}
 
@@ -512,14 +513,7 @@ public class OrderController {
 
 	public static Date LocalDateIntoDate(LocalDate local){
 		ZoneId defaultZoneID = ZoneId.of("Europe/Paris");
-		Date date = Date.from(local.atStartOfDay(defaultZoneID).toInstant());
-		Calendar cal = Calendar.getInstance();
-		cal.setTime(date);
-		cal.set(Calendar.HOUR_OF_DAY,0);
-		cal.set(Calendar.MINUTE,0);
-		cal.set(Calendar.SECOND,0);
-		cal.set(Calendar.MILLISECOND,0);
-		return cal.getTime();
+		return Date.from(local.atStartOfDay(defaultZoneID).toInstant());
 	}
 
 	public static int getWeekNumberFromDate(Date date) {

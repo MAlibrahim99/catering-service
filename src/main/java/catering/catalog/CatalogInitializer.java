@@ -11,12 +11,11 @@ import org.springframework.util.Assert;
 
 import static org.salespointframework.core.Currencies.*;
 
-/**
- * initializes the {@link OptionCatalog}
- */
 @Component
 @Order(20)
 public class CatalogInitializer implements DataInitializer{
+
+    private static final Logger LOG = LoggerFactory.getLogger(CatalogInitializer.class);
 
     private final OptionCatalog catalog;
 
@@ -31,7 +30,7 @@ public class CatalogInitializer implements DataInitializer{
 
     @Override
     public void initialize() {
-        // TODO Auto-generated method stub
+    
         
 
         if (catalog.findAll().iterator().hasNext()) {
