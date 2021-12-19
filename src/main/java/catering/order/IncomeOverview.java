@@ -1,7 +1,6 @@
 package catering.order;
 
 import org.javamoney.moneta.Money;
-import org.salespointframework.order.OrderLine;
 import org.salespointframework.order.OrderStatus;
 import org.springframework.data.util.Streamable;
 import org.springframework.stereotype.Component;
@@ -9,11 +8,17 @@ import org.springframework.stereotype.Component;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.util.*;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import static org.salespointframework.core.Currencies.EURO;
 
+/**
+ * Helper class to calculate income parameters like total income and service percentages according to service type
+ * or service status.
+ */
 @Component
 public class IncomeOverview {
 
@@ -23,6 +28,15 @@ public class IncomeOverview {
 		this.orderRepository = orderRepository;
 	}
 
+	/**
+	 * Calculates the total of orders booked in a period specified with {@link LocalDate} start and {@link LocalDate}end.
+	 * If the start date after the end date, the default start will be set to 30 Days before end date.
+	 * The calculated value only includes orders placed up to the day before the current day.
+	 * @param start {@link LocalDate}
+	 * @param end {@link LocalDate}
+	 * @return {@link Money} as sum of all paid orders in the specified interval
+	 * @throws IllegalArgumentException if start or end date has null value or start date is after end date.
+	 */
 	public Money totalIncome(LocalDate start, LocalDate end) {
 		validateArguments(start, end);
 		// prüfe, ob das Startsdatum bzw. Endsdatum  in der Zukunft liegt oder der aktuelle tag ist ->
@@ -44,6 +58,16 @@ public class IncomeOverview {
 		return totalIncome;
 	}
 
+
+	/**
+	 * Calculates service percentages of orders booked in a period specified with {@link LocalDate} start
+	 * and {@link LocalDate}end.
+	 * @param start {@link LocalDate}
+	 * @param end {@link LocalDate}
+	 * @return {@link Map} contains service type as key and service percentage as value. If there are no orders
+	 * the percentages will be set to zero.
+	 * @throws IllegalArgumentException if start or end date has null value or start date is after end date.
+	 */
 	public Map<String, BigDecimal> servicePercentages(LocalDate start, LocalDate end) {
 		validateArguments(start, end);
 
@@ -82,6 +106,15 @@ public class IncomeOverview {
 		return orderPercentages;
 }
 
+	/**
+	 * Calculates status percentages of orders booked in a period specified with {@link LocalDate} start
+	 * and {@link LocalDate}end.
+	 * @param start {@link LocalDate}
+	 * @param end {@link LocalDate}
+	 * @return {@link Map} contains order status as key and percentage as value. If there are no orders
+	 * the percentages will be set to "0.0".
+	 * @throws IllegalArgumentException if start or end date has null value or start date is after end date.
+	 */
 	public Map<String, String> statusPercentages(LocalDate start, LocalDate end) {
 		validateArguments(start, end);
 		if (start.isAfter(end) || start.isEqual(end)) {

@@ -4,6 +4,9 @@ import catering.user.Position;
 
 import javax.validation.constraints.NotEmpty;
 
+/**
+ * Data object for transporting data between templates and application logic
+ * */
 public class RegistrationForm {
 	@NotEmpty(message = "First name may not be empty")
 	private final String firstName;
@@ -15,6 +18,15 @@ public class RegistrationForm {
 	private final String password;
 //	@NotEmpty(message = "Position can not be empty")
 	private Position position ;
+
+
+	/**
+	 * @param firstName
+	 * @param lastName
+	 * @param email
+	 * @param password
+	 * @param position
+	 */
 	public RegistrationForm(String firstName,String lastName, String email, String password, Position position) {
 		this.firstName = firstName;
 		this.email = email;

@@ -137,8 +137,7 @@ class Order {
                 System.out.println("Bestellung wird aufgegeben");
                 purchaseDone = true;
                 calcCost(guestcount, mealcount, dishcount, decocount, 4);
-                }
-            else{
+                }else{
                 System.out.println("Bestellung kann nicht aufgegeben werden");
                 purchaseDone = false;
             }

@@ -21,7 +21,8 @@ class InventoryInitializer implements DataInitializer {
 	private final OptionCatalog catalog;
 	private final CateringCatalog cateringCatalog;
 
-	public InventoryInitializer(UniqueInventory<UniqueInventoryItem> inventory, OptionCatalog catalog, CateringCatalog cateringCatalog) {
+	public InventoryInitializer(UniqueInventory<UniqueInventoryItem> inventory,
+								OptionCatalog catalog, CateringCatalog cateringCatalog) {
 
 		Assert.notNull(inventory, "Inventory must not be null!");
 		Assert.notNull(catalog, "OptionCatalog must not be null!");
@@ -41,9 +42,12 @@ class InventoryInitializer implements DataInitializer {
 		inventory.save(new UniqueInventoryItem(catalog.findByName("Servietten").stream().findFirst().get(),
 				Quantity.of(500)));
 
-		inventory.save(new UniqueInventoryItem((Option)catalog.findByName("Dekoration").stream().findFirst().get(), Quantity.of(50)));
-		inventory.save(new UniqueInventoryItem((Option)catalog.findByName("Geschirr").stream().findFirst().get(), Quantity.of(100)));
-		inventory.save(new UniqueInventoryItem((Option)catalog.findByName("Tischtücher").stream().findFirst().get(), Quantity.of(20)));
+		inventory.save(new UniqueInventoryItem(catalog.findByName("Dekoration").stream().findFirst().get(),
+				Quantity.of(50)));
+		inventory.save(new UniqueInventoryItem(catalog.findByName("Geschirr").stream().findFirst().get(),
+				Quantity.of(100)));
+		inventory.save(new UniqueInventoryItem(catalog.findByName("Tischtücher").stream().findFirst().get(),
+				Quantity.of(20)));
 		
 		inventory.save(new UniqueInventoryItem(catalog.findByName("Buffet").stream().findFirst().get(),
         Quantity.of(20)));

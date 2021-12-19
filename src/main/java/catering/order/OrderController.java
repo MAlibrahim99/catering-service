@@ -16,19 +16,22 @@ import catering.user.Position;
 import catering.user.User;
 import catering.user.UserRepository;
 
+import org.apache.tomcat.websocket.server.UriTemplate;
 import org.salespointframework.inventory.UniqueInventory;
 import org.salespointframework.inventory.UniqueInventoryItem;
 import org.salespointframework.order.Cart;
 import org.salespointframework.order.CartItem;
 import org.salespointframework.order.OrderIdentifier;
 import org.salespointframework.order.OrderManagement;
+import org.salespointframework.order.OrderStatus;
 import org.salespointframework.payment.Cash;
 import org.salespointframework.quantity.Quantity;
-import org.salespointframework.order.OrderStatus;
+import org.salespointframework.support.ConsoleWritingMailSender;
 import org.salespointframework.useraccount.UserAccount;
 import org.salespointframework.useraccount.web.LoggedIn;
 
 import org.springframework.data.util.Streamable;
+import org.springframework.mail.SimpleMailMessage;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -38,12 +41,13 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.util.Assert;
-import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDate;
+import java.time.*;
 import java.time.format.DateTimeFormatter;
+import java.time.temporal.IsoFields;
+import java.time.temporal.TemporalAdjusters;
+import java.time.temporal.WeekFields;
 import java.util.*;
 
 
@@ -59,8 +63,9 @@ public class OrderController {
 	private UniqueInventory<UniqueInventoryItem> inventory;
 	private IncomeOverview incomeOverview;
 
-	public OrderController(OrderManagement<CateringOrder> orderManagement, CateringOrderRepository orderRepository, 
-							OptionCatalog catalog, UserRepository userRepository, IncomeOverview incomeOverview, UniqueInventory<UniqueInventoryItem> inventory) {
+	public OrderController(OrderManagement<CateringOrder> orderManagement, CateringOrderRepository orderRepository,
+							OptionCatalog catalog, UserRepository userRepository, IncomeOverview incomeOverview,
+						   UniqueInventory<UniqueInventoryItem> inventory) {
 		this.orderManagement = orderManagement;
 		this.orderRepository = orderRepository;
 		this.catalog = catalog;
@@ -82,23 +87,25 @@ public class OrderController {
 
 	@GetMapping("/cancel-order")
 	@PreAuthorize(value = "hasAnyRole('ADMIN', 'CUSTOMER')")
-	public String cancelOrder(@LoggedIn UserAccount account, @RequestParam("orderId") String orderId) {
-		if (account != null && orderId != null) {
-			Iterable<CateringOrder> orders = orderManagement.findBy(account);
-			CateringOrder cateringOrder;
-			for (CateringOrder order : orders) {
-				if (Objects.requireNonNull(order.getId()).toString().equals(orderId)) {
-					orderManagement.cancelOrder(order, "None");
-					orderManagement.save(order);
-					System.out.println("order with id " + orderId + " is canceled: " + order.isCanceled());
-					break;
-				}
-			}
-			return "redirect:/order-history";
-		}
-		else{
+	public String cancelOrder(@LoggedIn UserAccount account, @RequestParam("orderId") OrderIdentifier orderId) {
+		if (account == null || orderId == null) {
 			return "redirect:/login";
 		}
+
+		// Bestellung ist da, und aktueller Nutzer hat diese Bestellung in seinem Verlauf
+		if(orderManagement.contains(orderId) && orderManagement.get(orderId).get().getUserAccount().equals(account)){
+			CateringOrder cateringOrder =  orderManagement.get(orderId).get();
+			ConsoleWritingMailSender mailSender = new ConsoleWritingMailSender();
+			boolean isCancelDoneBefore3Days = cateringOrder.getCompletionDate().minusDays(3L).isAfter(LocalDate.now());
+			orderManagement.cancelOrder(cateringOrder, "None");
+
+			if(isCancelDoneBefore3Days) {
+				mailSender.send(cancelConfirmationMessage(cateringOrder, true));
+			}else{
+				mailSender.send(cancelConfirmationMessage(cateringOrder, false));
+			}
+		}
+		return "redirect:/order-history";
 	}
 
 	@ModelAttribute("cart")
@@ -142,10 +149,12 @@ public class OrderController {
 		List<OrderFormitem> equipFormitemList = new ArrayList<>();
 		for (Option option : optionStreamable) {
 			if (option.getType() == OptionType.FOOD) {
-				foodFormitemList.add(new OrderFormitem(option.getName(), option.getPrice().getNumber().numberValue(Float.class), option.getPersonCount(), 0));
+				foodFormitemList.add(new OrderFormitem(option.getName(), option.getPrice().getNumber().numberValue(Float.class),
+						option.getPersonCount(), 0));
 			}
 			if (option.getType() == OptionType.EQUIP || option.getType() == OptionType.GOODS) {
-				equipFormitemList.add(new OrderFormitem(option.getName(), option.getPrice().getNumber().numberValue(Float.class), option.getPersonCount(), 0));
+				equipFormitemList.add(new OrderFormitem(option.getName(), option.getPrice().getNumber().numberValue(Float.class),
+						option.getPersonCount(), 0));
 			}
 		}
 
@@ -181,17 +190,15 @@ public class OrderController {
 					 @ModelAttribute Cart cart ){
 		cart.clear();
 
-		
+
 		int guestcount = form.getPersons();
 		System.out.println(form.getPersons());
 
 		if(order.getTimeString().equals("Früh")){
 			order.setTime(TimeSegment.FRÜH);
-		}
-		else if(order.getTimeString().equals("Mittag")){
+		}else if(order.getTimeString().equals("Mittag")){
 			order.setTime(TimeSegment.MITTAG);
-		}
-		else if(order.getTimeString().equals("Abend")){
+		}else if(order.getTimeString().equals("Abend")){
 			order.setTime(TimeSegment.ABEND);
 		}
 
@@ -199,7 +206,7 @@ public class OrderController {
 		if (form.getService().equals("eventcatering")){
 			System.out.println("True");
 		}
-		
+
 		if (form.getService().equals("eventcatering")){
 			guestcount = guestcount / 10;
 			if (guestcount == 0){
@@ -211,8 +218,7 @@ public class OrderController {
 			System.out.println(waitercount);
 			order.setChefcount(chefcount);
         	order.setWaitercount(waitercount);
-		}
-		else if (form.getService().equals("partyservice")){
+		}else if (form.getService().equals("partyservice")){
 			guestcount = guestcount / 10;
 			if (guestcount == 0){
 				guestcount = 1;
@@ -223,8 +229,7 @@ public class OrderController {
 			System.out.println(waitercount);
 			order.setChefcount(chefcount);
         	order.setWaitercount(waitercount);
-		}
-		else if (form.getService().equals("rentacook")){
+		}else if (form.getService().equals("rentacook")){
 			guestcount = guestcount / 5;
 			if (guestcount == 0){
 				guestcount = 1;
@@ -235,8 +240,7 @@ public class OrderController {
 			System.out.println(waitercount);
 			order.setChefcount(chefcount);
         	order.setWaitercount(waitercount);
-		}
-		else if (form.getService().equals("mobilebreakfast")){
+		}else if (form.getService().equals("mobilebreakfast")){
 			guestcount = guestcount / 3;
 			if (guestcount == 0){
 				guestcount = 1;
@@ -250,31 +254,29 @@ public class OrderController {
 		}
 
 
-        
-		
+
+
 
 
 		System.out.println("-------------------------------");
 		System.out.println(order.toString());
 		System.out.println(order.getTimeString());
 
-		Streamable<User> chefcountRep = userRepository.getUserByPositionIn(List.of(Position.COOK)); 
-        Streamable<User> waitercountRep = userRepository.getUserByPositionIn(List.of(Position.WAITER, Position.EXPERIENCED_WAITER));
-        if(chefcountRep.toList().size() < order.getChefcount() || waitercountRep.toList().size() < order.getWaitercount()){
+		Streamable<User> chefcountRep = userRepository.getUserByPositionIn(List.of(Position.COOK));
+        Streamable<User> waitercountRep = userRepository.getUserByPositionIn(List.of(Position.WAITER,
+				Position.EXPERIENCED_WAITER));
+        if(chefcountRep.toList().size() < order.getChefcount() ||
+				waitercountRep.toList().size() < order.getWaitercount()){
 			//model.addAttribute("not", )
             if (form.getService().equals("eventcatering")){
 				return "redirect:/order/eventcatering";
-			}
-			else if (form.getService().equals("partyservice")){
+			}else if (form.getService().equals("partyservice")){
 				return "redirect:/order/partyservice";
-			}
-			else if (form.getService().equals("rentacook")){
+			}else if (form.getService().equals("rentacook")){
 				return "redirect:/order/rentacook";
-			}
-			else if (form.getService().equals("mobilebreakfast")){
+			}else if (form.getService().equals("mobilebreakfast")){
 				return "redirect:/order/mobilebreakast";
-			}
-			else{
+			}else{
 				return "redirect:/";
 			}
         }
@@ -282,21 +284,23 @@ public class OrderController {
 		for (OrderFormitem optionItem : form.getFoodList()) {
 			if (optionItem.getAmount() != 0){
 				System.out.println(optionItem.getName() + " : " + optionItem.getAmount());
-				cart.addOrUpdateItem(catalog.findByName(optionItem.getName()).stream().findFirst().get(), Quantity.of(optionItem.getAmount()));
+				cart.addOrUpdateItem(catalog.findByName(optionItem.getName()).stream().findFirst().get(),
+						Quantity.of(optionItem.getAmount()));
 			}
 		}
 
 		for (OrderFormitem optionItem : form.getEquipList()) {
 			if (optionItem.getAmount() != 0){
 				System.out.println(optionItem.getName() + " : " + optionItem.getAmount());
-				cart.addOrUpdateItem(catalog.findByName(optionItem.getName()).stream().findFirst().get(), Quantity.of(optionItem.getAmount()));
-			}		
+				cart.addOrUpdateItem(catalog.findByName(optionItem.getName()).stream().findFirst().get(),
+						Quantity.of(optionItem.getAmount()));
+			}
 		}
 
 		model.addAttribute("order", order);
 		//model.addAttribute("orderOut", new CateringOrder());
 		model.addAttribute("form", form);
-	
+
 
 
 		return "orderreview";
@@ -333,7 +337,8 @@ public class OrderController {
 
 
         	return userAccount.map(account -> {
-				var order = new CateringOrder(account, Cash.CASH, orderOut.getCompletionDate(),orderOut.getTime(), orderOut.getAddress(), orderOut.getService());
+				var order = new CateringOrder(account, Cash.CASH, orderOut.getCompletionDate(),
+						orderOut.getTime(), orderOut.getAddress(), orderOut.getService());
 
 				for (CartItem ci : cart){
 					if(catalog.findByName(ci.getProductName()).stream().findFirst().get().getType() == OptionType.EQUIP){
@@ -342,7 +347,7 @@ public class OrderController {
 				}
 
 				cart.addItemsTo(order);
-				
+
 				orderManagement.payOrder(order);
 				orderManagement.completeOrder(order);
 
@@ -350,12 +355,12 @@ public class OrderController {
 				System.out.println(orderOut.toString());
 				System.out.println(cart.getPrice());
 
-				
+
 				ArrayList<User> staffList = new ArrayList<>();
 
 				sort(staffList, staffList.size());
 				System.out.println(staffList.size());
-				
+
 				ArrayList<User> orderStaffList = new ArrayList<>();
 				Streamable<User> staff = userRepository.getUserByPositionIn(List.of(Position.EXPERIENCED_WAITER, Position.WAITER));
 				System.out.println(staff.toList().size());
@@ -378,11 +383,11 @@ public class OrderController {
 				for (User u: staffList){
 					System.out.println(u);
 				}
-				
+
 
 				if(chefList.size() >= orderOut.getChefcount() && staffList.size() >= orderOut.getWaitercount()){
-					
-					
+
+
 					ArrayList<User> allstaff = new ArrayList<>();
 					for (int i=0; i<orderOut.getChefcount();i++){
 						allstaff.add(chefList.get(i));
@@ -391,16 +396,16 @@ public class OrderController {
 						allstaff.add(staffList.get(i));
 					}
 					for (User u : allstaff){
-						
+
 						u.setWorkcount(u.getWorkcount()+1);
 						System.out.println(u);
 						System.out.println(u.getWorkcount());
 						userRepository.save(u);
-						
-					}
-					
 
-					
+					}
+
+
+
 					System.out.println("order-stafflist");
 					for (User u : allstaff){
 						order.addToAllocStaff(u);
@@ -422,7 +427,7 @@ public class OrderController {
 					System.out.println(order.toString());
 				}
 
-				
+
 
 
 
@@ -430,7 +435,7 @@ public class OrderController {
 					return "cart";
 				}
 				cart.clear();
-	
+
 				return "redirect:/";
 			}).orElse("redirect:/");
 		}
@@ -443,59 +448,46 @@ public class OrderController {
 			if (n ==1){
 				return;
 			}
-	
+
 			for (int i=0; i<n-1; i++){
 				if (list.get(i).workCount>list.get(i+1).workCount){
 					Collections.swap(list, i, i+1);
 				}
 			}
 			sort(list, n-1);
-	
+
 		}
 
 		private void saveInventoryItem(Option option, Quantity quantity) {
 
 			/*Option option;
-			if (cartItem.getProductName() == "Eventcatering"  cartItem.getProductName() == "PartyService" 
+			if (cartItem.getProductName() == "Eventcatering"  cartItem.getProductName() == "PartyService"
 				cartItem.getProductName() == "Rent a cook" || cartItem.getProductName() == "Mobilebreakfast"){
-	
+
 				}*/
 			//Option option = catalog.findByName(cartItem.getProductName()).stream().findFirst().get();
 			UniqueInventoryItem item = inventory.findByProduct(option).get();
-	
-	
+
+
 			Quantity quantityInput = quantity;
-	
+
 				item.increaseQuantity(quantity);
-	
+
 			inventory.save(item);
 		}
 
 
 
-
+	//get status from buttons and redirect to correct order-list
 	@PostMapping("/setstatus")
 	String list2(@RequestParam("status") String status){
-
-		System.out.println(status);
 		return "redirect:/order-list/" + status;
 	}
 
 	@GetMapping("/order-list/{status}")
 	String list(Model model, @PathVariable("status") OrderStatus status){
-
 		Iterable<CateringOrder> orders = orderManagement.findBy(status);
 		model.addAttribute("orders", orders);
-
-
-		/*Iterable<CateringOrder> ordersOpen = orderManagement.findBy(OrderStatus.OPEN);
-		model.addAttribute("ordersOpen", ordersOpen);
-		Iterable<CateringOrder> ordersPaid = orderManagement.findBy(OrderStatus.PAID);
-		model.addAttribute("ordersPaid", ordersPaid);
-		Iterable<CateringOrder> ordersCompleted = orderManagement.findBy(OrderStatus.COMPLETED);
-		model.addAttribute("ordersCompleted", ordersCompleted);
-		Iterable<CateringOrder> ordersCancelled = orderManagement.findBy(OrderStatus.CANCELLED);
-		model.addAttribute("ordersCancelled", ordersCancelled); */
 		return "order-list";
 	}
 
@@ -504,5 +496,124 @@ public class OrderController {
 		model.addAttribute("order", orderManagement.get(parameter).get());
 		model.addAttribute("account", orderManagement.get(parameter));
 		return "order-details";
+	}
+
+	public static Date LocalDateIntoDate(LocalDate local){
+		ZoneId defaultZoneID = ZoneId.of("Europe/Paris");
+		return Date.from(local.atStartOfDay(defaultZoneID).toInstant());
+	}
+
+	public static int getWeekNumberFromDate(Date date) {
+		Calendar cal = Calendar.getInstance();
+		cal.setTime(date);
+		return cal.get(Calendar.WEEK_OF_YEAR);
+	}
+
+	public static int getYearNumberFromDate(Date date) {
+		Calendar cal = Calendar.getInstance();
+		cal.setTime(date);
+		return cal.get(Calendar.YEAR);
+	}
+
+	//calendar setup, so the starting week is the current week
+	@GetMapping("/calendar2")
+	String calendar2(){
+		LocalDate now = LocalDate.now();
+		Date date = LocalDateIntoDate(now);
+		int week = getWeekNumberFromDate(date);
+		int year = getYearNumberFromDate(date);
+		String YW = String.format(year + "-" + week);
+		return "redirect:/calendar/" + YW ;
+	}
+
+	//Button for changing the week with redirection to calendar
+	@PostMapping("/setweek/{YW}")
+	String setweek(@RequestParam("button") String button, @PathVariable("YW") String YW){
+		String [] split = YW.split("-");
+		int year = Integer.parseInt(split[0]);
+		int week = Integer.parseInt(split[1]);
+
+		if (button.equals("prev")){
+			week -= 1;
+			if (week == 0) {
+				year -= 1;
+				try {
+					week = 53;
+					String date = String.format(year + "-W" + week + "-1");
+					LocalDate ld = LocalDate.parse(date, DateTimeFormatter.ISO_WEEK_DATE);
+				} catch (Exception ex) {
+					week = 52;
+				}
+			}
+		} else {
+			week += 1;
+			if (week == 53) {
+				try {
+					String date = String.format(year + "-W" + week + "-1");
+					LocalDate ld = LocalDate.parse(date, DateTimeFormatter.ISO_WEEK_DATE);
+				} catch (Exception ex) {
+					week = 1;
+					year += 1;
+				}
+			}
+			if (week == 54) {
+				week = 1;
+				year += 1;
+			}
+		}
+		YW = String.format(year + "-" + week);
+		return "redirect:/calendar/" + YW;
+	}
+
+	//calendar with orders
+	@GetMapping("/calendar/{YW}")
+	String calendar(Model model, @PathVariable("YW") String YW){
+		String [] split = YW.split("-");
+		int year = Integer.parseInt(split[0]);
+		int week = Integer.parseInt(split[1]);
+
+		LocalDate date = LocalDate.of(year, Month.JANUARY, 10);
+		LocalDate dayInWeek = date.with(IsoFields.WEEK_OF_WEEK_BASED_YEAR, week);
+
+		model.addAttribute("YW", YW);
+		model.addAttribute("week", week);
+		model.addAttribute("year", year);
+		model.addAttribute("monday", dayInWeek.with(DayOfWeek.MONDAY));
+		model.addAttribute("tuesday", dayInWeek.with(DayOfWeek.TUESDAY));
+		model.addAttribute("wednesday", dayInWeek.with(DayOfWeek.WEDNESDAY));
+		model.addAttribute("thursday", dayInWeek.with(DayOfWeek.THURSDAY));
+		model.addAttribute("friday", dayInWeek.with(DayOfWeek.FRIDAY));
+		model.addAttribute("saturday", dayInWeek.with(DayOfWeek.SATURDAY));
+		model.addAttribute("sunday", dayInWeek.with(DayOfWeek.SUNDAY));
+
+		Iterable<CateringOrder> fruh = orderRepository.findByOrderStatusAndTime(OrderStatus.PAID, TimeSegment.FRÜH);
+		model.addAttribute("fruh", fruh);
+		Iterable<CateringOrder> mittag = orderRepository.findByOrderStatusAndTime(OrderStatus.PAID, TimeSegment.MITTAG);
+		model.addAttribute("mittag", mittag);
+		Iterable<CateringOrder> abend = orderRepository.findByOrderStatusAndTime(OrderStatus.PAID, TimeSegment.ABEND);
+		model.addAttribute("abend", abend);
+
+		return "calendar";
+	}
+
+	SimpleMailMessage cancelConfirmationMessage(CateringOrder cateringOrder, boolean cancellationBefore3Days){
+
+		SimpleMailMessage simpleMessage = new SimpleMailMessage();
+		simpleMessage.setSubject("\n\nStornierungsbestätigung Ihrer Bestellung am " +
+				cateringOrder.getCompletionDate().toString());
+		String message = "\nSehr geehrte(r) Frau/Herr " + cateringOrder.getUserAccount().getLastname()
+				+ ",\n\nSie haben erfolgreich ihre Bestellung storniert."
+				+ "\nFälligkeitsdatum: " + cateringOrder.getCompletionDate() + "."
+				+ "\nGebuchter Betrag: " + cateringOrder.getTotal().getNumber();
+		if(!cancellationBefore3Days) {
+			message = message + "\nZu entrichtende Stornierungsgebühren in Höhe von 40% betragen: "
+					+ cateringOrder.getTotal().multiply(40L).divide(100L);
+		}
+		message += "\nSie werden  den gebuchten Betrag innerhalb 7 Werktage bekommen."
+				+ "\n\nMit freundlichen Grüßen."
+				+ "\n\nMampf-Team";
+
+		simpleMessage.setText(message);
+		return simpleMessage;
 	}
 }
