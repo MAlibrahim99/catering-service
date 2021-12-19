@@ -7,5 +7,6 @@ public enum Position {
 	COOK,
 	EXPERIENCED_WAITER,
 	WAITER,
+	MINIJOB,
 	NONE
 }

@@ -44,7 +44,9 @@ public class UserInitializer implements DataInitializer {
 			new RegistrationForm("max", "muster3", "muster3@mampf.de", "123", Position.WAITER),
 			new RegistrationForm("max", "muster4", "muster4@mampf.de", "123", Position.WAITER),
 			new RegistrationForm("max", "muster5", "muster5@mampf.de", "123", Position.WAITER),
-			new RegistrationForm("ghjk", "vogel", "vogel@mampf.de", "123", Position.EXPERIENCED_WAITER)
+			new RegistrationForm("ghjk", "vogel", "vogel@mampf.de", "123", Position.EXPERIENCED_WAITER),
+			new RegistrationForm("max", "muster6", "muster6@mampf.de", "123", Position.MINIJOB),
+			new RegistrationForm("max", "muster7", "muster7@mampf.de", "123", Position.MINIJOB)
 		);
 		registrationForms.forEach(e -> userManagement.createUser(e, UserManagement.STAFF_ROLE));
 
