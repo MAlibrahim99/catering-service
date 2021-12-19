@@ -1,10 +1,8 @@
 package catering.order;
 
-import catering.user.User;
 import catering.user.UserManagement;
 import org.salespointframework.core.DataInitializer;
 import org.salespointframework.order.OrderManagement;
-import org.salespointframework.order.OrderStatus;
 import org.salespointframework.payment.Cash;
 import org.salespointframework.useraccount.UserAccount;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -15,6 +13,10 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Random;
 
+
+/**
+ * Implements {@link DataInitializer} to generate starting values of {@link CateringOrder}
+ */
 @Component
 @Order(30)
 public class OrderInitializer implements DataInitializer {
@@ -28,6 +30,11 @@ public class OrderInitializer implements DataInitializer {
 		this.userManagement = userManagement;
 	}
 
+
+	/**
+	 * Initializes some objects of class {@link CateringOrder}. The fields of generated objects get randomly
+	 * values.
+	 */
 	@Override
 	public void initialize() {
 		// wenn Konto da ist, und dieses Konto Bestellungen hat dann überspringe Initailieserien
@@ -68,15 +75,14 @@ public class OrderInitializer implements DataInitializer {
 			orderManagement.payOrder(order);
 
 			switch (randStatus){
-				case 0: orderManagement.completeOrder(order);
-					break;
-				case 1: orderManagement.completeOrder(order);
-					break;
-				case 2: orderManagement.completeOrder(order);
+				case 0:
+				case 2:
+				case 1:
+					orderManagement.completeOrder(order);
 					break;
 				case 3: orderManagement.cancelOrder(order, "None");
 					break;
-				case 4:
+				default:
 					break;
 			}
 			orderManagement.save(order);

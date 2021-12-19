@@ -14,17 +14,32 @@ import javax.validation.Valid;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * Contains the functionality that enables users register, modify and delete their accounts on the system
+ */
 @Controller
 public class UserController {
 
 	private final UserManagement userManagement;
 	private final UserRepository userRepository;
 
+
+	/**
+	 * @param userManagement
+	 * @param userRepository
+	 */
 	public UserController(UserManagement userManagement, UserRepository userRepository) {
 		this.userManagement = userManagement;
 		this.userRepository = userRepository;
 	}
 
+	/**
+	 * Receives the registration requests and delegates creating new {@link User} entity to the class {@link UserManagement}
+	 * if the firstname and the lastname or the email are already token the registration will fail, because the first two
+	 * fields are used as id for {@link UserAccount} and the email will be used for login.
+	 *
+	 * This method handles the registration of new Customers and employees as well based on the{@param action} argument.
+	 */
 	@PostMapping("/register")
 	public String registerUser(@Valid @ModelAttribute("registrationForm") RegistrationForm form,
 							   @RequestParam(value = "action") String action, Model model){
@@ -50,6 +65,13 @@ public class UserController {
 		return "redirect:/register";
 	}
 
+	/**
+	 * Returns a view of the Registration page with Data object {@link RegistrationForm} and a sublist of {@link Position}
+	 * enums
+	 * @param model Model
+	 * @param form RegistrationForm
+	 * @return A name of the register view
+	 * */
 	@GetMapping("/register")
 	public String register(Model model, RegistrationForm form){
 		model.addAttribute("registrationForm", form);
@@ -79,6 +101,13 @@ public class UserController {
 		}
 	}
 
+
+	/**
+	 * Returns view of employee accounts registered in the system.
+	 * @param account UserAccount
+	 * @param model Model
+	 * @return A name of the view template
+	 */
 	@GetMapping("/staff-list")
 	@PreAuthorize(value="isAuthenticated()")
 	public String showStaffList(@LoggedIn UserAccount account, Model model){
@@ -98,7 +127,16 @@ public class UserController {
 		model.addAttribute("profileForm", data);
 		return "edit-profile";
 	}
-	
+
+
+	/**
+	 * handles updating and persisting {@link User}'s new submitted data. It also guarantees that there will be no
+	 * duplicates in emails or usernames.
+	 * @param data ProfileForm
+	 * @param account UserAccount
+	 * @param model Model
+	 * @return view name
+	 */
 	@PostMapping("/update-profile")
 	public String updateUserAccount(@Valid @ModelAttribute("profileForm") ProfileForm data,  @LoggedIn UserAccount account, Model model){
 		User user = userManagement.findByEmail(account.getEmail());
@@ -120,8 +158,14 @@ public class UserController {
 		return "index";
 		
 	}
-	
-	
+
+
+	/**
+	 * Delegates deleting user Entity to {@link UserManagement}
+	 * @param userId long
+	 * @param user UserAccount
+	 * @return view name
+	 */
 	@GetMapping("/delete-account/{id}")
 	@PreAuthorize(value="isAuthenticated()")
 	public String deleteUseraccount(@PathVariable ("id") long userId, @LoggedIn UserAccount user) {
@@ -136,11 +180,4 @@ public class UserController {
 		return "access-denied";
 		}
 	}
-
-	@GetMapping("/test")
-	@PreAuthorize("isAuthenticated()")
-	public String sendTest() {
-		return "test";
-	}
-
 }
