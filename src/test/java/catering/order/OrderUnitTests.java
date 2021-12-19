@@ -75,13 +75,15 @@ public class OrderUnitTests {
 	@Test
 	public void LocalDateIntoDateTest(){
 		LocalDate localDate = LocalDate.of(2021, 12, 19);
-		assert(OrderController.LocalDateIntoDate(localDate).equals(new Date(121, Calendar.DECEMBER, 19, TimeZone.SHORT, 0)));
+		//assert(OrderController.LocalDateIntoDate(localDate).equals(new Date(121, Calendar.DECEMBER, 19, TimeZone.SHORT, 0)));
+		assertThat(OrderController.LocalDateIntoDate(localDate)).isEqualTo(new Date(121, Calendar.DECEMBER, 19, TimeZone.SHORT, 0));
 	}
 
 	@Test
 	public void getWeekNumberFromDateTest(){
 		Date date = new Date(121, Calendar.DECEMBER, 19, TimeZone.SHORT, 0);
-		assert(OrderController.getWeekNumberFromDate(date) == 50);
+		//assert(OrderController.getWeekNumberFromDate(date) == 50);
+		assertThat(OrderController.getWeekNumberFromDate(date)).isEqualTo(50);
 	}
 
 	@Test
