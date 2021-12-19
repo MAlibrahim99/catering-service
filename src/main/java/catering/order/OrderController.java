@@ -465,7 +465,7 @@ public class OrderController {
 
 
 
-
+	//get status from buttons and redirect to correct order-list
 	@PostMapping("/setstatus")
 	String list2(@RequestParam("status") String status){
 		return "redirect:/order-list/" + status;
@@ -502,6 +502,7 @@ public class OrderController {
 		return cal.get(Calendar.YEAR);
 	}
 
+	//calendar setup, so the starting week is the current week
 	@GetMapping("/calendar2")
 	String calendar2(){
 		LocalDate now = LocalDate.now();
@@ -512,6 +513,7 @@ public class OrderController {
 		return "redirect:/calendar/" + YW ;
 	}
 
+	//Button for changing the week with redirection to calendar
 	@PostMapping("/setweek/{YW}")
 	String setweek(@RequestParam("button") String button, @PathVariable("YW") String YW){
 		String [] split = YW.split("-");
@@ -550,6 +552,7 @@ public class OrderController {
 		return "redirect:/calendar/" + YW;
 	}
 
+	//calendar with orders
 	@GetMapping("/calendar/{YW}")
 	String calendar(Model model, @PathVariable("YW") String YW){
 		String [] split = YW.split("-");
