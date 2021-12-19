@@ -298,6 +298,11 @@ public class OrderController {
 
 	}
 
+	@GetMapping("/confirmOrder")
+	String confirmOrderPage(){
+		return "confirmOrder";
+	}
+
 
 
 	@PostMapping("/clearcart")
@@ -426,7 +431,7 @@ public class OrderController {
 				}
 				cart.clear();
 
-				return "redirect:/";
+				return "redirect:/confirmOrder";
 			}).orElse("redirect:/");
 		}
 
@@ -606,4 +611,6 @@ public class OrderController {
 		simpleMessage.setText(message);
 		return simpleMessage;
 	}
+
+	
 }
