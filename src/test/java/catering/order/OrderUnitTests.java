@@ -71,4 +71,12 @@ public class OrderUnitTests {
 		cateringOrder.setCompletionDate(LocalDate.of(2021, Month.DECEMBER, 29));
 		assertThat(cateringOrder.getCompletionDate()).isEqualTo(LocalDate.of(2021, Month.DECEMBER, 29));
 	}
+
+	@Test
+	public void getYearNumberFromDateTest(){
+		TimeZone.setDefault(Calendar.getInstance().getTimeZone());
+		Date date = new Date(121, Calendar.DECEMBER, 21, TimeZone.SHORT, 0);
+		//assert(OrderController.getYearNumberFromDate(date) == 2021);
+		assertThat(OrderController.getYearNumberFromDate(date)).isEqualTo(2021);
+	}
 }
