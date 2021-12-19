@@ -3,7 +3,6 @@ package catering.order;
 import catering.catalog.Option;
 import catering.catalog.OptionCatalog;
 import catering.catalog.OptionType;
-import catering.catalog.CateringCatalog;
 import catering.catalog.Option;
 import catering.catalog.OptionCatalog;
 import catering.user.Position;

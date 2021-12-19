@@ -1,6 +1,6 @@
 package catering.inventory;
 
-import catering.catalog.CateringCatalog;
+
 import catering.catalog.Option;
 import catering.catalog.OptionCatalog;
 
@@ -19,10 +19,10 @@ class InventoryInitializer implements DataInitializer {
 
 	private final UniqueInventory<UniqueInventoryItem> inventory;
 	private final OptionCatalog catalog;
-	private final CateringCatalog cateringCatalog;
+
 
 	public InventoryInitializer(UniqueInventory<UniqueInventoryItem> inventory,
-								OptionCatalog catalog, CateringCatalog cateringCatalog) {
+								OptionCatalog catalog) {
 
 		Assert.notNull(inventory, "Inventory must not be null!");
 		Assert.notNull(catalog, "OptionCatalog must not be null!");
@@ -30,7 +30,7 @@ class InventoryInitializer implements DataInitializer {
 
 		this.inventory = inventory;
 		this.catalog = catalog;
-		this.cateringCatalog = cateringCatalog;
+
 	}
 
 	@Override
