@@ -23,11 +23,6 @@
             <td th:text="${#conversions.convert(order.completionDate, 'String') + ', ' +
 				order.time.toString().toLowerCase()}" class="p-1-rem"></td>
         </tr>
-        <!--TODO Zeitraum
-        <tr>
-            <td class="p-1-rem">Zeit:</td>
-            <td th:text="*{}" class="p-1-rem"></td>
-        </tr>-->
         <tr>
             <td class="p-1-rem">E-Mail:</td>
             <td th:text="*{userAccount.email}" class="p-1-rem"></td>
@@ -36,11 +31,13 @@
             <td class="p-1-rem">Address:</td>
             <td th:text="*{address}" class="p-1-rem">musterStr. 23 <br>12345 City</td>
         </tr>
-        <!--TODO Zeitraum
         <tr>
             <td class="p-1-rem">ausgewählte Details:</td>
-            <td th:text="*{}" class="p-1-rem"></td>
-        </tr>-->
+            <td  class="p-1-rem">
+                <div th:each="orderLine : ${details}" th:utext="${orderLine.getProductName() + ': ' + orderLine.getQuantity()}"></div>
+            </td>
+        </tr>
+
         <tr>
         <td class="p-1-rem">Kosten:</td>
         <td th:text="*{total}" class="p-1-rem"></td>

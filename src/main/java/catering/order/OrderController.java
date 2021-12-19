@@ -12,11 +12,7 @@ import catering.user.UserRepository;
 import org.apache.tomcat.websocket.server.UriTemplate;
 import org.salespointframework.inventory.UniqueInventory;
 import org.salespointframework.inventory.UniqueInventoryItem;
-import org.salespointframework.order.Cart;
-import org.salespointframework.order.CartItem;
-import org.salespointframework.order.OrderIdentifier;
-import org.salespointframework.order.OrderManagement;
-import org.salespointframework.order.OrderStatus;
+import org.salespointframework.order.*;
 import org.salespointframework.payment.Cash;
 import org.salespointframework.quantity.Quantity;
 import org.salespointframework.support.ConsoleWritingMailSender;
@@ -470,11 +466,13 @@ public class OrderController {
 
 	//get status from buttons and redirect to correct order-list
 	@PostMapping("/setstatus")
+	@PreAuthorize(value = "hasAnyRole('ADMIN', 'STAFF')")
 	String list2(@RequestParam("status") String status){
 		return "redirect:/order-list/" + status;
 	}
 
 	@GetMapping("/order-list/{status}")
+	@PreAuthorize(value = "hasAnyRole('ADMIN', 'STAFF')")
 	String list(Model model, @PathVariable("status") OrderStatus status){
 		Iterable<CateringOrder> orders = orderManagement.findBy(status);
 		model.addAttribute("orders", orders);
@@ -485,6 +483,9 @@ public class OrderController {
 	String details(Model model, @PathVariable("order-id") OrderIdentifier parameter){
 		model.addAttribute("order", orderManagement.get(parameter).get());
 		model.addAttribute("account", orderManagement.get(parameter));
+		Totalable<OrderLine> orderLines = orderManagement.get(parameter).get().getOrderLines();
+		model.addAttribute("details", orderLines);
+		System.out.println(orderLines);
 		return "order-details";
 	}
 
@@ -505,19 +506,24 @@ public class OrderController {
 		return cal.get(Calendar.YEAR);
 	}
 
-	//calendar setup, so the starting week is the current week
-	@GetMapping("/calendar2")
-	String calendar2(){
-		LocalDate now = LocalDate.now();
-		Date date = LocalDateIntoDate(now);
+	//Starting week and year for calendar setup
+	public static String YW(Date date){
 		int week = getWeekNumberFromDate(date);
 		int year = getYearNumberFromDate(date);
-		String YW = String.format(year + "-" + week);
-		return "redirect:/calendar/" + YW ;
+		return year + "-" + week;
+	}
+
+	//calendar setup
+	@GetMapping("/calendar2")
+	@PreAuthorize(value = "hasAnyRole('ADMIN', 'STAFF')")
+	String calendar2(){
+		Date date = LocalDateIntoDate(LocalDate.now());
+		return "redirect:/calendar/" + YW(date) ;
 	}
 
 	//Button for changing the week with redirection to calendar
 	@PostMapping("/setweek/{YW}")
+	@PreAuthorize(value = "hasAnyRole('ADMIN', 'STAFF')")
 	String setweek(@RequestParam("button") String button, @PathVariable("YW") String YW){
 		String [] split = YW.split("-");
 		int year = Integer.parseInt(split[0]);
@@ -529,8 +535,8 @@ public class OrderController {
 				year -= 1;
 				try {
 					week = 53;
-					String date = String.format(year + "-W" + week + "-1");
-					LocalDate ld = LocalDate.parse(date, DateTimeFormatter.ISO_WEEK_DATE);
+					String date = year + "-W" + week + "-1";
+					LocalDate.parse(date, DateTimeFormatter.ISO_WEEK_DATE);
 				} catch (Exception ex) {
 					week = 52;
 				}
@@ -539,8 +545,8 @@ public class OrderController {
 			week += 1;
 			if (week == 53) {
 				try {
-					String date = String.format(year + "-W" + week + "-1");
-					LocalDate ld = LocalDate.parse(date, DateTimeFormatter.ISO_WEEK_DATE);
+					String date = year + "-W" + week + "-1";
+					LocalDate.parse(date, DateTimeFormatter.ISO_WEEK_DATE);
 				} catch (Exception ex) {
 					week = 1;
 					year += 1;
@@ -551,12 +557,13 @@ public class OrderController {
 				year += 1;
 			}
 		}
-		YW = String.format(year + "-" + week);
+		YW = year + "-" + week;
 		return "redirect:/calendar/" + YW;
 	}
 
 	//calendar with orders
 	@GetMapping("/calendar/{YW}")
+	@PreAuthorize(value = "hasAnyRole('ADMIN', 'STAFF')")
 	String calendar(Model model, @PathVariable("YW") String YW){
 		String [] split = YW.split("-");
 		int year = Integer.parseInt(split[0]);
