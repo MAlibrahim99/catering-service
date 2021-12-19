@@ -64,8 +64,7 @@ class WebSecurityIntegrationTests {
                 
     }
 
-    /*
-    @Test
+    /*@Test
     @WithMockUser(username = "Hannes", roles = "ADMIN")
     void returnsCorrectOrderreview() throws Exception{
 
@@ -77,6 +76,6 @@ class WebSecurityIntegrationTests {
                     .andExpect(view().name("cartItem"));
         
 
-    } */
+    }*/
     
 }
