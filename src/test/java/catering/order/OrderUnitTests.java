@@ -87,12 +87,14 @@ public class OrderUnitTests {
 	@Test
 	public void getYearNumberFromDateTest(){
 		Date date = new Date(121, Calendar.DECEMBER, 19, TimeZone.SHORT, 0);
-		assert(OrderController.getYearNumberFromDate(date) == 2021);
+		//assert(OrderController.getYearNumberFromDate(date) == 2021);
+		assertThat(OrderController.getYearNumberFromDate(date)).isEqualTo(2021);
 	}
 
 	@Test
 	public void currentYWTest(){
 		Date date = new Date(121, Calendar.DECEMBER, 19, TimeZone.SHORT, 0);
-		assert(OrderController.YW(date).equals("2021-50"));
+		//assert(OrderController.YW(date).equals("2021-50"));
+		assertThat(OrderController.YW(date)).isEqualTo("2021-50");
 	}
 }
