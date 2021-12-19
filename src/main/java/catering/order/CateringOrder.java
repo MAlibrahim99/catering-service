@@ -57,7 +57,9 @@ public class CateringOrder extends Order {
 
 	// Author Mohamad: ich bekomme: "No default constructor for entity:  : catering.order.CateringOrder", wenn dieser
 	// depricated Argumenetenloser Konstruktor abwesen ist.
-	public CateringOrder() {}
+	public CateringOrder() {
+		this.allocStaff = new ArrayList<>();
+	}
 
 	public List<User> getAllocStaff() {
 		return allocStaff;
