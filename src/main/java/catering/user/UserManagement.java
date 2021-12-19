@@ -2,18 +2,21 @@ package catering.user;
 
 import catering.user.forms.ProfileForm;
 import catering.user.forms.RegistrationForm;
-import org.salespointframework.useraccount.*;
 import org.salespointframework.useraccount.Password.UnencryptedPassword;
+import org.salespointframework.useraccount.Role;
+import org.salespointframework.useraccount.UserAccount;
+import org.salespointframework.useraccount.UserAccountManagement;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.data.util.Streamable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.function.Predicate;
 
+/**
+ * Helps by Creating, Updating and Deleting User entities through collaborating with {@link UserAccountManagement} and
+ * Using the {@link UserRepository}.
+ * */
 @Service
 @Transactional
 public class UserManagement {
@@ -24,6 +27,11 @@ public class UserManagement {
 	public static final Role STAFF_ROLE = Role.of("STAFF");
 	public static final Role ADMIN_ROLE = Role.of("ADMIN");
 
+
+	/**
+	 * @param users UserRepository
+	 * @param accountManagement UserAccountManagement
+	 */
 	public UserManagement(UserRepository users,
 						  @Qualifier("persistentUserAccountManagement") UserAccountManagement accountManagement) {
 		if(users == null || accountManagement == null){
@@ -33,6 +41,14 @@ public class UserManagement {
 		this.accountManagement = accountManagement;
 	}
 
+
+	/**
+	 * Creates and persists a new user Entity according to the data in the data object {@link RegistrationForm} form.
+	 * @param form {@link RegistrationForm}
+	 * @param roles {@link Role}
+	 * @return {@link User}
+	 * @throws IllegalArgumentException if form provided is refers to null value
+	 */
 	public User createUser(RegistrationForm form, Role ... roles){
 		if(form == null){
 			throw new IllegalArgumentException("User can not be created with value null of RegistrationForm");
@@ -46,6 +62,12 @@ public class UserManagement {
 	}
 
 
+	/**
+	 * updates new user data persisted in Database
+	 * @param data  {@link ProfileForm}
+	 * @param user {@link User}
+	 * @return {@link User}
+	 */
 public User updateUser(ProfileForm data, User user) {
 		if(data == null) {
 			throw new IllegalArgumentException("User can not be created with value null of ProfileForm");
@@ -58,9 +80,7 @@ public User updateUser(ProfileForm data, User user) {
 		
 		return users.save(user);
 	}
-	
 
-	
 	public boolean deleteUser(long id){
 		if(id < 0 || !users.existsById(id)){
 			return false;
@@ -99,24 +119,6 @@ public User updateUser(ProfileForm data, User user) {
 			}
 		}
 		return null;
-	}
-
-	public Streamable<User> findAllByRole(String role){
-		if(role == null){
-			throw new NullPointerException("Role can not be null");
-		}
-		if(role.isEmpty()){
-			throw new NullPointerException("Role can not be null");
-		}
-		Role userRole = Role.of(role);
-		List<User> allUsers = users.findAll().toList();
-		List<User> filteredUsers = new ArrayList<>();
-		for(User user: allUsers){ // wenn es Konten mit der gegebenen Rolle gibt, dann füge sie in die Liste
-			if(user.getUserAccount().getRoles().stream().findFirst().isPresent()){
-				filteredUsers.add(user);
-			}
-		}
-		return Streamable.of(filteredUsers);
 	}
 
 	public boolean usernameAlreadyExists(String username){
