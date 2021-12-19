@@ -13,7 +13,9 @@ import org.salespointframework.quantity.Quantity;
 import org.springframework.stereotype.Component;
 import org.springframework.util.Assert;
 
-
+/**
+ * initializes the inventory with options from the {@link OptionCatalog}
+ */
 @Component
 class InventoryInitializer implements DataInitializer {
 

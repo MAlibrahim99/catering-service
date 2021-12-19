@@ -9,12 +9,18 @@ import org.springframework.ui.Model;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+/**
+ * integration tests for the {@link OrderController}
+ */
 @SpringBootTest
 public class OrderControllerIntegrationTests {
 
 	@Autowired
 	OrderController controller;
 
+	/**
+	 * tests direct interaction with the order form page
+	 */
 	@Test
 	@WithMockUser(roles = "CUSTOMER")
 	public void getCorrectOrderForm() {

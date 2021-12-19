@@ -9,6 +9,9 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+/**
+ * unit tests for {@link OptionFormitem}, {@link PriceEditForm} and {@link Option}
+ */
 public class CatalogUnitTests {
 
 	@Test

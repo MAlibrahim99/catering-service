@@ -6,6 +6,9 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+/**
+ * integrations tests for direct interaction with the {@link OptionCatalog}
+ */
 @SpringBootTest
 public class OptionCatalogIntegrationTests {
 

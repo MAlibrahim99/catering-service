@@ -3,7 +3,9 @@ package catering.inventory;
 import java.util.ArrayList;
 import java.util.List;
 
-
+/**
+ * an object to transfer inventory items to the view
+ */
 public class InventoryEditForm {
 
 	private List<InventoryFormitem> goods;
@@ -14,11 +16,19 @@ public class InventoryEditForm {
 		this.equip = new ArrayList<>();
 	}
 
+	/**
+	 * a parametrised constructor
+	 * @param goods List of all inventory items with the option type goods
+	 * @param equip List of all inventory items with the option type equip
+	 */
 	public InventoryEditForm(List<InventoryFormitem> goods, List<InventoryFormitem> equip) {
 		this.goods = goods;
 		this.equip = equip;
 	}
 
+	/**
+	 * getter and setter
+	 */
 	public List<InventoryFormitem> getGoods() {
 		return goods;
 	}

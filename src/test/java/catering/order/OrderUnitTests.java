@@ -9,6 +9,9 @@ import java.util.*;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+/**
+ * unit tests for {@link OrderFormitem}, {@link OrderForm} and {@link CateringOrder}
+ */
 public class OrderUnitTests {
 
 	@Test

@@ -1,6 +1,9 @@
 package catering.inventory;
 
-
+/**
+ * Used to transfer name and quantity of an inventory item to view.
+ * Has standardized and parametrized constructor and getter and setter.
+ */
 public class InventoryFormitem {
 
 	private String name;

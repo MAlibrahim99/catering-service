@@ -135,6 +135,7 @@ public class OrderController {
 	 * @return order_form
 	 */
 	@GetMapping("/order/{service}")
+	@PreAuthorize(value = "hasRole('CUSTOMER')")
 	public String getOrderForm(@PathVariable String service, Model model, CateringOrder order) {
 
 		Assert.isTrue((service.equals("eventcatering") || service.equals("partyservice") || service.equals("rentacook") ||

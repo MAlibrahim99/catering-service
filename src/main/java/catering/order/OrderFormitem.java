@@ -1,5 +1,9 @@
 package catering.order;
 
+/**
+ * An object to transfer name, price, person count and amount of an option to the view.
+ * Has standardized and parametrized constructor and getter and setter.
+ */
 public class OrderFormitem {
 
 	private String name;

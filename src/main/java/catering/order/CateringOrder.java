@@ -18,6 +18,9 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * extends {@link Order} from Salespoint and adds new attributes
+ */
 @Entity
 public class CateringOrder extends Order {
 
@@ -43,6 +46,15 @@ public class CateringOrder extends Order {
 		this.service = service;
 	}
 
+	/**
+	 * a parametrised constructor
+	 * @param userAccount the account of the logged-in user, that submits the order
+	 * @param paymentMethod the payment method
+	 * @param completionDate the date when the order is executed
+	 * @param time the time when the order is executed
+	 * @param address the address where the order is executed
+	 * @param service the service type of the order
+	 */
 	public CateringOrder(UserAccount userAccount, PaymentMethod paymentMethod, LocalDate completionDate,
 						 TimeSegment time, String address, String service) {
 		super(userAccount, paymentMethod);
@@ -61,6 +73,9 @@ public class CateringOrder extends Order {
 		this.allocStaff = new ArrayList<>();
 	}
 
+	/**
+	 * getter and setter for the attributes
+	 */
 	public List<User> getAllocStaff() {
 		return allocStaff;
 	}

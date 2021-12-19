@@ -23,8 +23,9 @@ import java.util.List;
 import org.javamoney.moneta.Money;
 
 
-
-
+/**
+ * controller class for all catalog related interactions
+ */
 @Controller
 public class CatalogController {
 
@@ -127,7 +128,12 @@ public class CatalogController {
 		return "catalog";
 	}
 
-
+	/**
+	 * manages access to the price edit page
+	 * @param service the service type for which options the prices should be changed
+	 * @param model the model to transfer data to the view
+	 * @return the name of the returned html document
+	 */
 	@PreAuthorize("hasRole('ADMIN')")
 	@GetMapping("/edit/{service}")
 	public String getPrices(@PathVariable String service, Model model) {
@@ -150,6 +156,12 @@ public class CatalogController {
 		return "edit_prices";
 	}
 
+	/**
+	 * manages the submission of new prices
+	 * @param form the object which holds the options with the new prices
+	 * @param model the model which transfers data from the view
+	 * @return a redirect to the offer page of the according service
+	 */
 	@PreAuthorize("hasRole('ADMIN')")
 	@PostMapping("/editPrices")
 	public String editPrices(@ModelAttribute("form") PriceEditForm form, Model model) {

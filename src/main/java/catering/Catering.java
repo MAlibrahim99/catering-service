@@ -23,6 +23,9 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
+/**
+ * the central class of the application that configures spring and runs the application
+ */
 @EnableSalespoint
 public class Catering {
 	private static final String LOGIN_ROUTE = "/login";

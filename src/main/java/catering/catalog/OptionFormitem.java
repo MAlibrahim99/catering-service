@@ -1,5 +1,9 @@
 package catering.catalog;
 
+/**
+ * Used to transfer name and price of an option to view.
+ * Has standardized and parametrized constructor and getter and setter.
+ */
 public class OptionFormitem {
 	private String name;
 	private Float price;

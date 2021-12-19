@@ -32,7 +32,9 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-
+/**
+ * integration tests for the {@link InventoryController}
+ */
 @SpringBootTest
 @AutoConfigureMockMvc
 public class InventoryControllerIntegrationTests {
@@ -46,6 +48,9 @@ public class InventoryControllerIntegrationTests {
 	@Autowired
 	MockMvc mvc;
 
+	/**
+	 * tests direct interaction with inventory page
+	 */
 	@Test
 	@WithMockUser(roles = "ADMIN")
 	public void getCorrectInventoryItems() {
@@ -62,6 +67,9 @@ public class InventoryControllerIntegrationTests {
 		assertThat(form.getEquip()).hasSize(3);
 	}
 
+	/**
+	 * tests direct interaction with inventory page
+	 */
 	@Test
 	@WithMockUser(roles = "ADMIN")
 	public void editCorrectInventoryQuantities() {
@@ -95,6 +103,9 @@ public class InventoryControllerIntegrationTests {
 		catalog.delete(catalog.findByName("testEquip").stream().findFirst().get());
 	}
 
+	/**
+	 * tests web layer interaction with unauthorized access to the inventory page
+	 */
 	@Test
 	void preventUnauthorizedAccess() throws Exception {
 
@@ -103,6 +114,9 @@ public class InventoryControllerIntegrationTests {
 				.andExpect(header().string(HttpHeaders.LOCATION, endsWith("/login")));
 	}
 
+	/**
+	 * tests web layer interaction with unauthorized access to the inventory page
+	 */
 	@Test
 	@WithMockUser(roles = "STAFF")
 	void onlyAdminAccess() throws Exception {
@@ -111,6 +125,9 @@ public class InventoryControllerIntegrationTests {
 				.andExpect(status().is(403));
 	}
 
+	/**
+	 * tests web layer interaction with authorized access to the inventory page
+	 */
 	@Test
 	@WithMockUser(roles = "ADMIN")
 	void adminHasAccess() throws Exception {

@@ -22,6 +22,9 @@ import org.springframework.ui.Model;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * integration tests for the {@link CatalogController}
+ */
 @SpringBootTest
 @AutoConfigureMockMvc
 class CatalogControllerIntegrationTests {
@@ -61,6 +64,9 @@ class CatalogControllerIntegrationTests {
 				andExpect(model().attribute("catalog", is(not(emptyIterable()))));
 	}
 
+	/**
+	 * tests direct interaction with price edit page
+	 */
 	@Test
 	@WithMockUser(roles = "ADMIN")
 	public void getCorrectOptions() {
@@ -76,6 +82,9 @@ class CatalogControllerIntegrationTests {
 
 	}
 
+	/**
+	 * tests direct interaction with price edit page
+	 */
 	@Test
 	@WithMockUser(roles = "ADMIN")
 	public void editCorrectPrices() {
@@ -94,6 +103,9 @@ class CatalogControllerIntegrationTests {
 		catalog.delete(catalog.findByName("testOption").stream().findFirst().get());
 	}
 
+	/**
+	 * tests web layer interaction with unauthorized access to the price edit page
+	 */
 	@Test
 	void preventUnauthorizedPriceEditAccess() throws Exception {
 
@@ -102,6 +114,9 @@ class CatalogControllerIntegrationTests {
 				.andExpect(header().string(HttpHeaders.LOCATION, endsWith("/login")));
 	}
 
+	/**
+	 * tests web layer interaction with price edit page
+	 */
 	@Test
 	@WithMockUser(roles = "ADMIN")
 	void adminHasPriceEditAccess() throws Exception {

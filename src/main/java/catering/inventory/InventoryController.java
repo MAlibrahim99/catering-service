@@ -19,7 +19,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import java.util.ArrayList;
 import java.util.List;
 
-
+/**
+ * controller to manage all interactions regarding the inventory
+ */
 @Controller
 @PreAuthorize("hasRole('ADMIN')")
 public class InventoryController {
@@ -33,6 +35,11 @@ public class InventoryController {
 		this.catalog = catalog;
 	}
 
+	/**
+	 * manages access to the inventory page
+	 * @param model the models which transfers the inventory items to the view
+	 * @return the name of the returned html page
+	 */
 	@GetMapping("/inventory")
 	public String getInventory(Model model) {
 
@@ -63,6 +70,12 @@ public class InventoryController {
 		return "inventory";
 	}
 
+	/**
+	 * manages the submission of new quantities for the inventory items
+	 * @param form the object which holds the names of the inventory items with their new quantities
+	 * @param model the model which transfers data from the view
+	 * @return a redirect to the inventory page
+	 */
 	@PostMapping("/inventory")
 	public String editInventory(@ModelAttribute("form") InventoryEditForm form, Model model) {
 
@@ -77,6 +90,10 @@ public class InventoryController {
 		return "redirect:/inventory";
 	}
 
+	/**
+	 * saves a quantity to the item with the given name
+	 * @param inventoryFormitem an item with a name and a quantity
+	 */
 	protected void saveInventoryItem(InventoryFormitem inventoryFormitem) {
 
 		Option option = catalog.findByName(inventoryFormitem.getName()).stream().findFirst().get();
