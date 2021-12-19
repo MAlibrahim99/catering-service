@@ -86,6 +86,7 @@ public User updateUser(ProfileForm data, User user) {
 			return false;
 		}
 		accountManagement.disable(users.findById(id).get().getUserAccount().getId());
+		users.deleteById(id);
 		return true;
 	}
 
