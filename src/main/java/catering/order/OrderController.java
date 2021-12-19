@@ -22,13 +22,15 @@ import org.salespointframework.order.Cart;
 import org.salespointframework.order.CartItem;
 import org.salespointframework.order.OrderIdentifier;
 import org.salespointframework.order.OrderManagement;
+import org.salespointframework.order.OrderStatus;
 import org.salespointframework.payment.Cash;
 import org.salespointframework.quantity.Quantity;
-import org.salespointframework.order.OrderStatus;
+import org.salespointframework.support.ConsoleWritingMailSender;
 import org.salespointframework.useraccount.UserAccount;
 import org.salespointframework.useraccount.web.LoggedIn;
 
 import org.springframework.data.util.Streamable;
+import org.springframework.mail.SimpleMailMessage;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -38,8 +40,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.util.Assert;
-import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
@@ -82,23 +82,25 @@ public class OrderController {
 
 	@GetMapping("/cancel-order")
 	@PreAuthorize(value = "hasAnyRole('ADMIN', 'CUSTOMER')")
-	public String cancelOrder(@LoggedIn UserAccount account, @RequestParam("orderId") String orderId) {
-		if (account != null && orderId != null) {
-			Iterable<CateringOrder> orders = orderManagement.findBy(account);
-			CateringOrder cateringOrder;
-			for (CateringOrder order : orders) {
-				if (Objects.requireNonNull(order.getId()).toString().equals(orderId)) {
-					orderManagement.cancelOrder(order, "None");
-					orderManagement.save(order);
-					System.out.println("order with id " + orderId + " is canceled: " + order.isCanceled());
-					break;
-				}
-			}
-			return "redirect:/order-history";
-		}
-		else{
+	public String cancelOrder(@LoggedIn UserAccount account, @RequestParam("orderId") OrderIdentifier orderId) {
+		if (account == null || orderId == null) {
 			return "redirect:/login";
 		}
+
+		// Bestellung ist da, und aktueller Nutzer hat diese Bestellung in seinem Verlauf
+		if(orderManagement.contains(orderId) && orderManagement.get(orderId).get().getUserAccount().equals(account)){
+			CateringOrder cateringOrder =  orderManagement.get(orderId).get();
+			ConsoleWritingMailSender mailSender = new ConsoleWritingMailSender();
+			boolean isCancelDoneBefore3Days = cateringOrder.getCompletionDate().minusDays(3L).isAfter(LocalDate.now());
+			orderManagement.cancelOrder(cateringOrder, "None");
+
+			if(isCancelDoneBefore3Days) {
+				mailSender.send(cancelConfirmationMessage(cateringOrder, true));
+			}else{
+				mailSender.send(cancelConfirmationMessage(cateringOrder, false));
+			}
+		}
+		return "redirect:/order-history";
 	}
 
 	@ModelAttribute("cart")
@@ -492,5 +494,26 @@ public class OrderController {
 		model.addAttribute("order", orderManagement.get(parameter).get());
 		model.addAttribute("account", orderManagement.get(parameter));
 		return "order-details";
+	}
+
+	SimpleMailMessage cancelConfirmationMessage(CateringOrder cateringOrder, boolean cancellationBefore3Days){
+
+		SimpleMailMessage simpleMessage = new SimpleMailMessage();
+		simpleMessage.setSubject("\n\nStornierungsbestätigung Ihrer Bestellung am " +
+				cateringOrder.getCompletionDate().toString());
+		String message = "\nSehr geehrte(r) Frau/Herr " + cateringOrder.getUserAccount().getLastname()
+				+ ",\n\nSie haben erfolgreich ihre Bestellung storniert."
+				+ "\nFälligkeitsdatum: " + cateringOrder.getCompletionDate() + "."
+				+ "\nGebuchter Betrag: " + cateringOrder.getTotal().getNumber();
+		if(!cancellationBefore3Days) {
+			message = message + "\nZu entrichtende Stornierungsgebühren in Höhe von 40% betragen: "
+					+ cateringOrder.getTotal().multiply(40L).divide(100L);
+		}
+		message += "\nSie werden  den gebuchten Betrag innerhalb 7 Werktage bekommen."
+				+ "\n\nMit freundlichen Grüßen."
+				+ "\n\nMampf-Team";
+
+		simpleMessage.setText(message);
+		return simpleMessage;
 	}
 }
