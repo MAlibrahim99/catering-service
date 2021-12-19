@@ -33,6 +33,13 @@ class CatalogControllerIntegrationTests {
 	}
 
 	@Test
+	void showsInformationtext() throws Exception {
+		mvc.perform(get("/rentacook")) //
+				.andExpect(status().isOk())
+				.andExpect(content().string(containsString("Mieten sie Küchen- und Servicepersonal,")));
+	}
+
+	@Test
 	void sampleMvcIntegrationTest() throws Exception {
 
 		mvc.perform(get("/mobilebreakfast")). //
