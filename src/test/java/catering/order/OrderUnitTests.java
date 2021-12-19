@@ -2,7 +2,6 @@ package catering.order;
 
 import catering.user.User;
 import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.context.SpringBootTest;
 
 import java.time.LocalDate;
 import java.time.Month;
@@ -11,7 +10,6 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@SpringBootTest
 public class OrderUnitTests {
 
 	@Test
