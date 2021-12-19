@@ -20,7 +20,8 @@
         </tr>
         <tr>
             <td class="p-1-rem">Datum:</td>
-            <td th:text="*{completionDate}" class="p-1-rem"></td>
+            <td th:text="${#conversions.convert(order.completionDate, 'String') + ', ' +
+				order.time.toString().toLowerCase()}" class="p-1-rem"></td>
         </tr>
         <!--TODO Zeitraum
         <tr>

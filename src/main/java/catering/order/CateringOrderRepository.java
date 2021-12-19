@@ -20,6 +20,8 @@ public interface CateringOrderRepository extends Repository<CateringOrder, Order
 	Streamable<CateringOrder> findByOrderStatusAndCompletionDateBetween(OrderStatus status, LocalDateTime start,
 																		LocalDateTime end);
 
+	Streamable<CateringOrder> findByOrderStatusAndTime(OrderStatus status, TimeSegment time);
+
 	int countByOrderStatusAndCompletionDateBetween(OrderStatus status, LocalDate start, LocalDate end);
 
 	int countByCompletionDateBetween(LocalDate start, LocalDate end);

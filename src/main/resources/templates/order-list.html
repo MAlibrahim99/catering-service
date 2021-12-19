@@ -44,7 +44,7 @@ layout:decorate="~{layout}">
     <tbody>
       <tr th:each="order : *{orders}">
         <td th:text="${order.userAccount.getLastname()}"></td>
-        <td></td>
+        <td th:text="${order.getService()}"></td>
         <td th:text="${#conversions.convert(order.completionDate, 'String')}"></td>
         <td th:text="${order.total}"></td>
         <td th:text="${order.orderStatus}"></td>
