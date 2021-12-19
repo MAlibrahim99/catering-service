@@ -512,7 +512,14 @@ public class OrderController {
 
 	public static Date LocalDateIntoDate(LocalDate local){
 		ZoneId defaultZoneID = ZoneId.of("Europe/Paris");
-		return Date.from(local.atStartOfDay(defaultZoneID).toInstant());
+		Date date = Date.from(local.atStartOfDay(defaultZoneID).toInstant());
+		Calendar cal = Calendar.getInstance();
+		cal.setTime(date);
+		cal.set(Calendar.HOUR_OF_DAY,0);
+		cal.set(Calendar.MINUTE,0);
+		cal.set(Calendar.SECOND,0);
+		cal.set(Calendar.MILLISECOND,0);
+		return cal.getTime();
 	}
 
 	public static int getWeekNumberFromDate(Date date) {

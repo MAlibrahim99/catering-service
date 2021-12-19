@@ -108,7 +108,7 @@ public User updateUser(ProfileForm data, User user) {
 	
 	public User findByEmail(String email) {
 		if(email == null) {
-			throw new NullPointerException("Id can not be enull");
+			throw new NullPointerException("Id can not be null");
 		}
 		if(email.isEmpty()) {
 			throw new IllegalArgumentException("Id can not be empty");

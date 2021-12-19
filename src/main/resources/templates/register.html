@@ -16,10 +16,10 @@
             <label>Name</label>
             <div class="two fields">
                 <div class="five wide field">
-                    <input type="text" name="first-name" placeholder="First Name" th:field="*{firstName}" required>
+                    <input type="text" name="first-name" placeholder="Vorname" th:field="*{firstName}" required>
                 </div>
                 <div class="five wide field">
-                    <input type="text" name="last-name" placeholder="Last Name" th:field="*{lastName}" required>
+                    <input type="text" name="last-name" placeholder="Nachname" th:field="*{lastName}" required>
                 </div>
             </div>
             <div class="ui red message ten wide field" th:if="${usernameAlreadyExists}"
@@ -28,16 +28,15 @@
         </div>
 
         <div class="ten wide field">
-            <label>Email Adresse</label>
-            <input type="text" name="Email address" placeholder="Email Address" th:field="*{email}" required>
+            <label>Email-Adresse</label>
+            <input type="text" name="Email address" placeholder="Email-Adresse" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$" th:field="*{email}" required>
             <div class="ui red message" th:if="${emailAddressAlreadyExists}"
                  th:text="#{register.email.exists.error}">Email-Adresse ist bereits besetzt
             </div>
         </div>
         <div class="ten wide field" sec:authorize="!hasRole('ADMIN')">
-            <label>Password</label>
-            <input type="text" name="password" placeholder="password" th:field="*{password}" required>
-            <!--th:pattern="#{register.password.regexp}"-->
+            <label>Passwort</label>
+            <input type="password" name="password" placeholder="Passwort" th:field="*{password}" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" required>
             <div class="ui red message" th:if="${#fields.hasErrors('password')}"
                  th:text="#{register.password.unsecure}">Passwort ist nicht sicher genug.
             </div>
@@ -45,9 +44,8 @@
         <!--        Admin kann zusätzlich position-Feld sehen-->
         <div class="two fields" sec:authorize="hasRole('ADMIN')">
             <div class="five wide field">
-                <label>Password</label>
-                <input type="text" name="password" placeholder="Password" th:field="*{password}" required>
-                <!--th:pattern="#{register.password.regexp}"-->
+                <label>Passwort</label>
+                <input type="password" name="password" placeholder="Passwort" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" th:field="*{password}" required>
                 <div class="ui red message" th:if="${#fields.hasErrors('password')}"
                      th:text="#{register.password.unsecure}">Passwort ist nicht sicher genug.
                 </div>
@@ -64,10 +62,10 @@
         </div>
 
         <button sec:authorize="!hasRole('ADMIN')" type="submit" name="action" value="register-user"
-                class="ui basic black button">Register
+                class="ui basic black button">Registrieren
         </button>
         <button sec:authorize="hasRole('ADMIN')" type="submit" name="action" value="register-staff"
-                class="ui basic black button">Register Staff
+                class="ui basic black button">Personalkonto registrieren
         </button>
     </form>
 </section>

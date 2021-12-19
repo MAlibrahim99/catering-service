@@ -63,5 +63,12 @@ public class UserManagementTest {
 		assertThat(currentUser.getUserAccount().getEmail()).isEqualTo("email@user.de");
 		assertThat(currentUser.getAddress()).isEqualTo(data.getAddress());
 	}
+	
+	@Test
+	public void deleteUserAccount() {
+		User currentUser = userManagement.findByUsername("user 1");
+		userManagement.deleteUser(currentUser.getId());
+		assertThat(users.findById(currentUser.getId())).isEmpty();
+	}
 }
 
