@@ -74,6 +74,7 @@ public class OrderUnitTests {
 
 	@Test
 	public void LocalDateIntoDateTest(){
+		TimeZone.setDefault(Calendar.getInstance().getTimeZone());
 		LocalDate localDate = LocalDate.of(2021, 12, 19);
 		//assert(OrderController.LocalDateIntoDate(localDate).equals(new Date(121, Calendar.DECEMBER, 19, TimeZone.SHORT, 0)));
 		assertThat(OrderController.LocalDateIntoDate(localDate)).isEqualTo(new Date(121, Calendar.DECEMBER, 19, TimeZone.SHORT, 0));
@@ -81,6 +82,7 @@ public class OrderUnitTests {
 
 	@Test
 	public void getWeekNumberFromDateTest(){
+		TimeZone.setDefault(Calendar.getInstance().getTimeZone());
 		Date date = new Date(121, Calendar.DECEMBER, 19, TimeZone.SHORT, 0);
 		//assert(OrderController.getWeekNumberFromDate(date) == 50);
 		assertThat(OrderController.getWeekNumberFromDate(date)).isEqualTo(50);
@@ -88,6 +90,7 @@ public class OrderUnitTests {
 
 	@Test
 	public void getYearNumberFromDateTest(){
+		TimeZone.setDefault(Calendar.getInstance().getTimeZone());
 		Date date = new Date(121, Calendar.DECEMBER, 19, TimeZone.SHORT, 0);
 		//assert(OrderController.getYearNumberFromDate(date) == 2021);
 		assertThat(OrderController.getYearNumberFromDate(date)).isEqualTo(2021);
@@ -95,6 +98,7 @@ public class OrderUnitTests {
 
 	@Test
 	public void currentYWTest(){
+		TimeZone.setDefault(Calendar.getInstance().getTimeZone());
 		Date date = new Date(121, Calendar.DECEMBER, 19, TimeZone.SHORT, 0);
 		//assert(OrderController.YW(date).equals("2021-50"));
 		assertThat(OrderController.YW(date)).isEqualTo("2021-50");
