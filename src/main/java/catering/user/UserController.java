@@ -75,7 +75,7 @@ public class UserController {
 	@GetMapping("/register")
 	public String register(Model model, RegistrationForm form){
 		model.addAttribute("registrationForm", form);
-		model.addAttribute("positions", List.of(Position.COOK, Position.EXPERIENCED_WAITER, Position.WAITER));
+		model.addAttribute("positions", List.of(Position.COOK, Position.EXPERIENCED_WAITER, Position.WAITER, Position.MINIJOB));
 		return "register";
 	}
 
@@ -122,7 +122,7 @@ public class UserController {
 		if(account.hasRole(Role.of("ADMIN"))){
 			// finde alle personal mit Positionen(Cook, EXPERIENCED_WAITER; WAITER)
 			Iterable<User> staff = userRepository.getUserByPositionIn(List.of(Position.COOK, Position.EXPERIENCED_WAITER,
-			Position.WAITER));
+			Position.WAITER, Position.MINIJOB));
 			model.addAttribute("allStaff", staff);
 			return "staff-list";
 		}else{
