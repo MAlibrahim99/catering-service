@@ -79,14 +79,22 @@ public class UserController {
 		return "register";
 	}
 
-	@GetMapping("/profile")
-	@PreAuthorize(value="hasAnyRole('CUSTOMER', 'ADMIN')")
-	public String sendProfilePage(@LoggedIn Optional<UserAccount> account, Model model){
-		if(account.isPresent()){
-			model.addAttribute("user", userManagement.findByUsername(account.get().getUsername()));
-			return "profile";
+	@RequestMapping(value="/profile", method= {RequestMethod.GET, RequestMethod.POST})
+	@PreAuthorize(value="hasAnyRole('CUSTOMER', 'ADMIN', 'STAFF')")
+	public String sendProfilePage(@LoggedIn Optional<UserAccount> account,
+								  @RequestParam("userId") Optional<String> userId,
+								  Model model){
+		if(account.isEmpty() && userId.isEmpty()){
+			return "login";
 		}
-		return "login";
+
+		if(userId.isPresent()){
+			model.addAttribute("user",
+					userRepository.findById(Long.parseLong(userId.get())).get());
+		}else{
+			model.addAttribute("user", userManagement.findByUsername(account.get().getUsername()));
+		}
+		return "profile";
 	}
 	
 	@GetMapping("/customer-list")
@@ -174,7 +182,7 @@ public class UserController {
 			return "redirect:/logout";
 		}
 		if(user.hasRole(Role.of("ADMIN"))) {
-			userManagement.deleteUser(userId);
+			userRepository.deleteById(userId);
 			return "redirect:/staff-list";
 		}else {
 		return "access-denied";

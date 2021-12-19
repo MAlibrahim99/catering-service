@@ -34,8 +34,11 @@
 				<td th:text="${staff.userAccount.firstname}">Marie</td>
 				<td th:text="${staff.userAccount.email}">kuchen@leute.de</td>
 				<td th:text="${staff.position}">Personal position</td>
-	            <th><a th:href="@{/profile/{username}(username=${staff.userAccount.username})}"
-					   class="ui button">bearbeiten/löschen</a></th>
+				<td><form th:action="@{/profile}" method="post" style="display: inline">
+					<input type="hidden" name="userId" th:value="${staff.getId()}">
+					<button type="submit" class="ui button">bearbeiten/löschen</button>
+				</form>
+				</td>
 	        </tr>
 		</tbody>
     </table>
