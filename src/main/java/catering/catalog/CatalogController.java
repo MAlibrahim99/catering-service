@@ -60,6 +60,11 @@ public class CatalogController {
 		String pic = "/resources/img/event-detail.jpg";
 		model.addAttribute("picture", pic);
 		String headline = "Eventcatering";
+		String event ="Unser Cateringservice übernimmt die Verpflegung bei großen Veranstaltungen, " +
+				"egal ob in Form eines Buffetts oder als Galadinner " +
+				"Auf Wunsch gestaltet Mampf auch das komplette Event. Neben Speisen und " +
+				"Getränken stellen wir optional Dekoration, Ausrüstung und kompetentes Personal.";
+		model.addAttribute("info", event);
 		model.addAttribute("headline", headline);
 		model.addAttribute("catalog", catalog.findByCategory("eventcatering"));
 		String order = "/order/eventcatering";
@@ -75,6 +80,9 @@ public class CatalogController {
 		model.addAttribute("picture", partypicture);
 		String headline = "Partyservice";
 		model.addAttribute("headline", headline);
+		String party ="Der Partyservice von Mampf beliefert ihre privaten Feierlichkeiten mit " +
+				"warmen Gerichten, kalten Platten und Desserts.";
+		model.addAttribute("info", party);
 		model.addAttribute("catalog", catalog.findByCategory("partyservice"));
 		String order = "/order/partyservice";
 		model.addAttribute("orderformular", order);
@@ -93,8 +101,8 @@ public class CatalogController {
 				"Mieten sie Küchen- und Servicepersonal, welches bei Ihnen Zuhause, vor den Augen ihrer " +
 				"Gäste, verschiedene Köstlichkeiten zubereitet. Sie müssen sich dabei weder um das " +
 				"decken des Tisches kümmern, noch um den Abwasch und das Aufräumen. " +
-				"Das Saubermachen übernimmt das Personal für sie. Um die Lebensmittel müssen sich die Kunden dabei " +
-				"jedoch selbst kümmern.";
+				"Das Saubermachen übernimmt das Personal für sie. Um die Lebensmittel müssen " +
+						"sich die Kunden dabei jedoch selbst kümmern.";
 		model.addAttribute("info", info);
 		model.addAttribute("catalog", catalog.findByCategory("rentacook"));
 		String order = "/order/rentacook";
@@ -110,6 +118,9 @@ public class CatalogController {
 		model.addAttribute("picture", picture);
 		String headline = "Mobile Breakfast";
 		model.addAttribute("headline", headline);
+		String mobile = "Mieten sie pro Monat eine Auswahl an Speisen und Getränken, die für die " +
+				"Mitarbeiter Ihrer Firma zu festgelegten Zeiten zur Verfügung stehen.";
+		model.addAttribute("info", mobile);
 		model.addAttribute("catalog", catalog.findByCategory("mobilebreakfast"));
 		String order = "/order/mobilebreakfast";
 		model.addAttribute("orderformular", order);
