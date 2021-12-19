@@ -89,7 +89,6 @@ public class CatalogController {
 		model.addAttribute("picture", picture);
 		String headline = "Rent-A-Cook";
 		model.addAttribute("headline", headline);
-
 		String info =
 				"Mieten sie Küchen- und Servicepersonal, welches bei Ihnen Zuhause, vor den Augen ihrer " +
 				"Gäste, verschiedene Köstlichkeiten zubereitet. Sie müssen sich dabei weder um das " +
@@ -97,7 +96,6 @@ public class CatalogController {
 				"Das Saubermachen übernimmt das Personal für sie. Um die Lebensmittel müssen sich die Kunden dabei " +
 				"jedoch selbst kümmern.";
 		model.addAttribute("info", info);
-
 		model.addAttribute("catalog", catalog.findByCategory("rentacook"));
 		String order = "/rentacookform";
 		model.addAttribute("orderformular", order);
