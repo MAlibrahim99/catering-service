@@ -179,7 +179,7 @@ public class UserController {
 			return "redirect:/logout";
 		}
 		if(user.hasRole(Role.of("ADMIN"))) {
-			userRepository.deleteById(userId);
+			userManagement.deleteUser(userId);
 			return "redirect:/staff-list";
 		}else {
 		return "access-denied";

@@ -24,13 +24,17 @@
             <td th:text="*{userAccount.email}" class="p-1-rem"></td>
         </tr>
         <tr>
-            <td class="p-1-rem">Addresse:</td>
-            <td th:text="*{address}" class="p-1-rem">musterStr. 23 <br>12345 City</td>
+           <td sec:authorize="hasRole('CUSTOMER')" class="p-1-rem">Addresse:</td>
+            <td sec:authorize="hasRole('CUSTOMER')" th:text="*{address}" class="p-1-rem">musterStr. 23 <br>12345 City</td>
+        </tr>
+         <tr>
+            <td sec:authorize="hasRole('ADMIN')" class="p-1-rem">Position:</td>
+            <td sec:authorize="hasRole('ADMIN')" th:text="*{position}" class="p-1-rem">Koch</td>
         </tr>
     </table>
     <br/><br/>
     <div>
-        <form th:action="@{/edit-profile}" th:object="${user}" method="get" style="display: inline">
+        <form th:action="@{/edit-profile}" th:object="${user}" method="get" style="display: inline" sec:authorize="hasRole('CUSTOMER')">
             <input type="hidden" name="id" th:value="*{id}">
             <input type="hidden" name="firstName" th:value="*{userAccount.firstname}">
             <input type="hidden" name="lastName" th:value="*{userAccount.lastname}">
