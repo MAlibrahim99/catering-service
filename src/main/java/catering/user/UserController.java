@@ -138,17 +138,14 @@ public class UserController {
 	 * @return view name
 	 */
 	@PostMapping("/update-profile")
-	public String updateUserAccount(@Valid @ModelAttribute("profileForm") ProfileForm data,  @LoggedIn UserAccount account, Model model){
+	public String updateUserAccount(@Valid @ModelAttribute("profileForm") ProfileForm data, 
+									@LoggedIn UserAccount account, Model model) {
 		User user = userManagement.findByEmail(account.getEmail());
-		if (!account.getUsername().equals(data.getUsername())) {
-			if(userManagement.usernameAlreadyExists(data.getUsername())){
+		if (!account.getUsername().equals(data.getUsername()) && userManagement.usernameAlreadyExists(data.getUsername())){
 				model.addAttribute("usernameAlreadyExists", true);
-			}
 		}
-		if (!account.getEmail().equals(data.getEmail())) {
-			if(userManagement.emailAlreadyExists(data.getEmail())){
-				model.addAttribute("emailAddressAlreadyExists", true);
-			}
+		if (!account.getEmail().equals(data.getEmail()) && userManagement.emailAlreadyExists(data.getEmail())) {
+			model.addAttribute("emailAddressAlreadyExists", true);
 		}
 		if(model.containsAttribute("usernameAlreadyExists") ||
 				model.containsAttribute("emailAddressAlreadyExists")){
