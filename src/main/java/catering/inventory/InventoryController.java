@@ -9,6 +9,7 @@ import org.salespointframework.inventory.UniqueInventoryItem;
 import org.salespointframework.quantity.Quantity;
 
 import org.springframework.data.util.Streamable;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,6 +21,7 @@ import java.util.List;
 
 
 @Controller
+@PreAuthorize("hasRole('ADMIN')")
 public class InventoryController {
 
 	private final UniqueInventory<UniqueInventoryItem> inventory;
@@ -75,7 +77,7 @@ public class InventoryController {
 		return "redirect:/inventory";
 	}
 
-	private void saveInventoryItem(InventoryFormitem inventoryFormitem) {
+	protected void saveInventoryItem(InventoryFormitem inventoryFormitem) {
 
 		Option option = catalog.findByName(inventoryFormitem.getName()).stream().findFirst().get();
 		UniqueInventoryItem item = inventory.findByProduct(option).get();

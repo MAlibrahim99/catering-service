@@ -149,12 +149,10 @@ public class OrderController {
 		List<OrderFormitem> equipFormitemList = new ArrayList<>();
 		for (Option option : optionStreamable) {
 			if (option.getType() == OptionType.FOOD) {
-				foodFormitemList.add(new OrderFormitem(option.getName(), option.getPrice().getNumber().numberValue(Float.class),
-						option.getPersonCount(), 0));
+				foodFormitemList.add(new OrderFormitem(option.getName(), option.getPrice().getNumber().numberValue(Float.class), option.getPersonCount(), 1));
 			}
 			if (option.getType() == OptionType.EQUIP || option.getType() == OptionType.GOODS) {
-				equipFormitemList.add(new OrderFormitem(option.getName(), option.getPrice().getNumber().numberValue(Float.class),
-						option.getPersonCount(), 0));
+				equipFormitemList.add(new OrderFormitem(option.getName(), option.getPrice().getNumber().numberValue(Float.class), option.getPersonCount(), 1));
 			}
 		}
 
