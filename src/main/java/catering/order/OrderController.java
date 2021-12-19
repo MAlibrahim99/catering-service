@@ -130,6 +130,14 @@ public class OrderController {
 
 	}
 
+
+	/**
+	 * 
+	 * in dependence of @param service the correct orderform will be shown
+	 * @param model, for orderreview und checkout
+	 * @param order to save the details of the order
+	 * @return order_form
+	 */
 	@GetMapping("/order/{service}")
 	public String getOrderForm(@PathVariable String service, Model model, CateringOrder order) {
 
@@ -160,6 +168,14 @@ public class OrderController {
 		return "order_form";
 	}
 
+	/**
+	 * 
+	 * @param model for Orderreview
+	 * @param order save details
+	 * @param form	save details and items for cart
+	 * @param cart save CartItems for checkout
+	 * @return orderreview
+	 */
 
 
 	@PostMapping("/cartadd")
@@ -180,6 +196,7 @@ public class OrderController {
 		}
 
 
+		// calculates the amount of waiter and chefs in dependence of the servicetype and saves it for the order
 
 
 		if (form.getService().equals("eventcatering")){
@@ -233,11 +250,11 @@ public class OrderController {
 
 
 
-
+		//if there aren't enough waiters or chefs it redirects to the orderform
 
 		Streamable<User> chefcountRep = userRepository.getUserByPositionIn(List.of(Position.COOK));
         Streamable<User> waitercountRep = userRepository.getUserByPositionIn(List.of(Position.WAITER,
-				Position.EXPERIENCED_WAITER));
+				Position.EXPERIENCED_WAITER, Position.MINIJOB));
         if(chefcountRep.toList().size() < order.getChefcount() ||
 				waitercountRep.toList().size() < order.getWaitercount()){
 			//model.addAttribute("not", )
@@ -253,6 +270,8 @@ public class OrderController {
 				return "redirect:/";
 			}
         }
+
+
 
 		for (OrderFormitem optionItem : form.getFoodList()) {
 			if (optionItem.getAmount() != 0){
@@ -280,13 +299,19 @@ public class OrderController {
 
 	}
 
+	
 	@GetMapping("/confirmOrder")
 	String confirmOrderPage(){
 		return "confirmOrder";
 	}
 
 
-
+	/**
+	 * 
+	 * @param cart
+	 * @param form
+	 * @return order_form for specific service
+	 */
 	@PostMapping("/clearcart")
     String clear(@ModelAttribute Cart cart, @ModelAttribute ("form") OrderForm form){
 			
@@ -307,6 +332,14 @@ public class OrderController {
         return "redirect:/";
     }
 
+	/**
+	 * 
+	 * @param cart
+	 * @param userAccount to save the order on the Useraccount
+	 * @param help
+	 * @param orderOut gives details to actual order to save
+	 * @return confirmOrder.html
+	 */
 	@PostMapping("/checkout")
     String buy(@ModelAttribute Cart cart, @LoggedIn Optional<UserAccount> userAccount, Errors help,
                @ModelAttribute ("order") CateringOrder orderOut) {
@@ -315,6 +348,9 @@ public class OrderController {
 
 
         	return userAccount.map(account -> {
+
+				//creates new Order with details and adding equipItems, since it is reusable
+
 				var order = new CateringOrder(account, Cash.CASH, orderOut.getCompletionDate(),
 						orderOut.getTime(), orderOut.getAddress(), orderOut.getService());
 
@@ -330,13 +366,14 @@ public class OrderController {
 				orderManagement.completeOrder(order);
 
 				
-
+				
 
 				ArrayList<User> staffList = new ArrayList<>();
 
 				sort(staffList, staffList.size());
 				
 
+				//creating Lists of Waiters and Chefs 
 				ArrayList<User> orderStaffList = new ArrayList<>();
 				Streamable<User> staff = userRepository.getUserByPositionIn(List.of(Position.EXPERIENCED_WAITER, Position.WAITER, Position.MINIJOB));
 				
@@ -350,7 +387,7 @@ public class OrderController {
 					chefList.add(u);
 				}
 
-
+				//sorting lists
 				sort(staffList, staffList.size());
 				sort(chefList, chefList.size());
 
@@ -359,7 +396,7 @@ public class OrderController {
 
 				if(chefList.size() >= orderOut.getChefcount() && staffList.size() >= orderOut.getWaitercount()){
 
-
+					//checking workcount of Users and add the worker with lowest workcount, for a decent distribution
 					ArrayList<User> allstaff = new ArrayList<>();
 					for (int i=0; i<orderOut.getChefcount();i++){
 						allstaff.add(chefList.get(i));
@@ -400,6 +437,13 @@ public class OrderController {
 		}
 
 
+
+		/**
+		 * 
+		 * @param list
+		 * @param n
+		 * Sorting List of workers by workcount
+		 */
 		public void sort(ArrayList<User> list, int n){
 			if (n==0){
 				return;
@@ -417,6 +461,13 @@ public class OrderController {
 
 		}
 
+		/**
+		 * 
+		 * @param option
+		 * @param quantity
+		 * 
+		 * to add Equip Items
+		 */
 		private void saveInventoryItem(Option option, Quantity quantity) {
 
 			/*Option option;
