@@ -348,6 +348,7 @@ public class OrderController {
 
 				System.out.print("checkout tostring()");
 				System.out.println(orderOut.toString());
+				System.out.println(cart.getPrice());
 
 				
 				ArrayList<User> staffList = new ArrayList<>();
