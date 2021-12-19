@@ -64,7 +64,8 @@ public class OrderController {
 	private IncomeOverview incomeOverview;
 
 	public OrderController(OrderManagement<CateringOrder> orderManagement, CateringOrderRepository orderRepository,
-							OptionCatalog catalog, UserRepository userRepository, IncomeOverview incomeOverview, UniqueInventory<UniqueInventoryItem> inventory) {
+							OptionCatalog catalog, UserRepository userRepository, IncomeOverview incomeOverview,
+						   UniqueInventory<UniqueInventoryItem> inventory) {
 		this.orderManagement = orderManagement;
 		this.orderRepository = orderRepository;
 		this.catalog = catalog;
@@ -148,10 +149,12 @@ public class OrderController {
 		List<OrderFormitem> equipFormitemList = new ArrayList<>();
 		for (Option option : optionStreamable) {
 			if (option.getType() == OptionType.FOOD) {
-				foodFormitemList.add(new OrderFormitem(option.getName(), option.getPrice().getNumber().numberValue(Float.class), option.getPersonCount(), 0));
+				foodFormitemList.add(new OrderFormitem(option.getName(), option.getPrice().getNumber().numberValue(Float.class),
+						option.getPersonCount(), 0));
 			}
 			if (option.getType() == OptionType.EQUIP || option.getType() == OptionType.GOODS) {
-				equipFormitemList.add(new OrderFormitem(option.getName(), option.getPrice().getNumber().numberValue(Float.class), option.getPersonCount(), 0));
+				equipFormitemList.add(new OrderFormitem(option.getName(), option.getPrice().getNumber().numberValue(Float.class),
+						option.getPersonCount(), 0));
 			}
 		}
 
@@ -193,11 +196,9 @@ public class OrderController {
 
 		if(order.getTimeString().equals("Früh")){
 			order.setTime(TimeSegment.FRÜH);
-		}
-		else if(order.getTimeString().equals("Mittag")){
+		}else if(order.getTimeString().equals("Mittag")){
 			order.setTime(TimeSegment.MITTAG);
-		}
-		else if(order.getTimeString().equals("Abend")){
+		}else if(order.getTimeString().equals("Abend")){
 			order.setTime(TimeSegment.ABEND);
 		}
 
@@ -217,8 +218,7 @@ public class OrderController {
 			System.out.println(waitercount);
 			order.setChefcount(chefcount);
         	order.setWaitercount(waitercount);
-		}
-		else if (form.getService().equals("partyservice")){
+		}else if (form.getService().equals("partyservice")){
 			guestcount = guestcount / 10;
 			if (guestcount == 0){
 				guestcount = 1;
@@ -229,8 +229,7 @@ public class OrderController {
 			System.out.println(waitercount);
 			order.setChefcount(chefcount);
         	order.setWaitercount(waitercount);
-		}
-		else if (form.getService().equals("rentacook")){
+		}else if (form.getService().equals("rentacook")){
 			guestcount = guestcount / 5;
 			if (guestcount == 0){
 				guestcount = 1;
@@ -241,8 +240,7 @@ public class OrderController {
 			System.out.println(waitercount);
 			order.setChefcount(chefcount);
         	order.setWaitercount(waitercount);
-		}
-		else if (form.getService().equals("mobilebreakfast")){
+		}else if (form.getService().equals("mobilebreakfast")){
 			guestcount = guestcount / 3;
 			if (guestcount == 0){
 				guestcount = 1;
@@ -265,22 +263,20 @@ public class OrderController {
 		System.out.println(order.getTimeString());
 
 		Streamable<User> chefcountRep = userRepository.getUserByPositionIn(List.of(Position.COOK));
-        Streamable<User> waitercountRep = userRepository.getUserByPositionIn(List.of(Position.WAITER, Position.EXPERIENCED_WAITER));
-        if(chefcountRep.toList().size() < order.getChefcount() || waitercountRep.toList().size() < order.getWaitercount()){
+        Streamable<User> waitercountRep = userRepository.getUserByPositionIn(List.of(Position.WAITER,
+				Position.EXPERIENCED_WAITER));
+        if(chefcountRep.toList().size() < order.getChefcount() ||
+				waitercountRep.toList().size() < order.getWaitercount()){
 			//model.addAttribute("not", )
             if (form.getService().equals("eventcatering")){
 				return "redirect:/order/eventcatering";
-			}
-			else if (form.getService().equals("partyservice")){
+			}else if (form.getService().equals("partyservice")){
 				return "redirect:/order/partyservice";
-			}
-			else if (form.getService().equals("rentacook")){
+			}else if (form.getService().equals("rentacook")){
 				return "redirect:/order/rentacook";
-			}
-			else if (form.getService().equals("mobilebreakfast")){
+			}else if (form.getService().equals("mobilebreakfast")){
 				return "redirect:/order/mobilebreakast";
-			}
-			else{
+			}else{
 				return "redirect:/";
 			}
         }
@@ -288,14 +284,16 @@ public class OrderController {
 		for (OrderFormitem optionItem : form.getFoodList()) {
 			if (optionItem.getAmount() != 0){
 				System.out.println(optionItem.getName() + " : " + optionItem.getAmount());
-				cart.addOrUpdateItem(catalog.findByName(optionItem.getName()).stream().findFirst().get(), Quantity.of(optionItem.getAmount()));
+				cart.addOrUpdateItem(catalog.findByName(optionItem.getName()).stream().findFirst().get(),
+						Quantity.of(optionItem.getAmount()));
 			}
 		}
 
 		for (OrderFormitem optionItem : form.getEquipList()) {
 			if (optionItem.getAmount() != 0){
 				System.out.println(optionItem.getName() + " : " + optionItem.getAmount());
-				cart.addOrUpdateItem(catalog.findByName(optionItem.getName()).stream().findFirst().get(), Quantity.of(optionItem.getAmount()));
+				cart.addOrUpdateItem(catalog.findByName(optionItem.getName()).stream().findFirst().get(),
+						Quantity.of(optionItem.getAmount()));
 			}
 		}
 
@@ -339,7 +337,8 @@ public class OrderController {
 
 
         	return userAccount.map(account -> {
-				var order = new CateringOrder(account, Cash.CASH, orderOut.getCompletionDate(),orderOut.getTime(), orderOut.getAddress(), orderOut.getService());
+				var order = new CateringOrder(account, Cash.CASH, orderOut.getCompletionDate(),
+						orderOut.getTime(), orderOut.getAddress(), orderOut.getService());
 
 				for (CartItem ci : cart){
 					if(catalog.findByName(ci.getProductName()).stream().findFirst().get().getType() == OptionType.EQUIP){
