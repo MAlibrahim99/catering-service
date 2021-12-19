@@ -160,21 +160,7 @@ public class OrderController {
 		return "order_form";
 	}
 
-	@PostMapping("/buy")
-	public String buy(@ModelAttribute("form") OrderForm form, Model model) {
 
-		System.out.println("Service Type: " + form.getService());
-		System.out.println("Number of Persons: " + form.getPersons());
-
-		for (OrderFormitem optionItem : form.getFoodList()) {
-			System.out.println(optionItem.getName() + " : " + optionItem.getAmount());
-		}
-
-		for (OrderFormitem optionItem : form.getEquipList()) {
-			System.out.println(optionItem.getName() + " : " + optionItem.getAmount());
-		}
-		return "redirect:/";
-	}
 
 	@PostMapping("/cartadd")
 	String addtoCart(Model model, @ModelAttribute ("order") CateringOrder order, @ModelAttribute ("form") OrderForm form,
@@ -183,7 +169,7 @@ public class OrderController {
 
 
 		int guestcount = form.getPersons();
-		System.out.println(form.getPersons());
+
 
 		if(order.getTimeString().equals("Früh")){
 			order.setTime(TimeSegment.FRÜH);
@@ -194,9 +180,7 @@ public class OrderController {
 		}
 
 
-		if (form.getService().equals("eventcatering")){
-			System.out.println("True");
-		}
+
 
 		if (form.getService().equals("eventcatering")){
 			guestcount = guestcount / 10;
@@ -204,9 +188,9 @@ public class OrderController {
 				guestcount = 1;
 			}
 			int chefcount = guestcount * 4;
-			System.out.println(chefcount);
+
 			int waitercount = guestcount * 5;
-			System.out.println(waitercount);
+
 			order.setChefcount(chefcount);
         	order.setWaitercount(waitercount);
 		}else if (form.getService().equals("partyservice")){
@@ -215,9 +199,9 @@ public class OrderController {
 				guestcount = 1;
 			}
 			int chefcount = guestcount * 3;
-			System.out.println(chefcount);
+
 			int waitercount = guestcount * 4;
-			System.out.println(waitercount);
+
 			order.setChefcount(chefcount);
         	order.setWaitercount(waitercount);
 		}else if (form.getService().equals("rentacook")){
@@ -226,9 +210,9 @@ public class OrderController {
 				guestcount = 1;
 			}
 			int chefcount = guestcount * 2;
-			System.out.println(chefcount);
+
 			int waitercount = guestcount * 2;
-			System.out.println(waitercount);
+
 			order.setChefcount(chefcount);
         	order.setWaitercount(waitercount);
 		}else if (form.getService().equals("mobilebreakfast")){
@@ -237,9 +221,9 @@ public class OrderController {
 				guestcount = 1;
 			}
 			int chefcount = 1;
-			System.out.println(chefcount);
+
 			int waitercount = guestcount;
-			System.out.println(waitercount);
+
 			order.setChefcount(chefcount);
         	order.setWaitercount(waitercount);
 		}
@@ -249,9 +233,7 @@ public class OrderController {
 
 
 
-		System.out.println("-------------------------------");
-		System.out.println(order.toString());
-		System.out.println(order.getTimeString());
+
 
 		Streamable<User> chefcountRep = userRepository.getUserByPositionIn(List.of(Position.COOK));
         Streamable<User> waitercountRep = userRepository.getUserByPositionIn(List.of(Position.WAITER,
@@ -274,7 +256,7 @@ public class OrderController {
 
 		for (OrderFormitem optionItem : form.getFoodList()) {
 			if (optionItem.getAmount() != 0){
-				System.out.println(optionItem.getName() + " : " + optionItem.getAmount());
+
 				cart.addOrUpdateItem(catalog.findByName(optionItem.getName()).stream().findFirst().get(),
 						Quantity.of(optionItem.getAmount()));
 			}
@@ -282,7 +264,7 @@ public class OrderController {
 
 		for (OrderFormitem optionItem : form.getEquipList()) {
 			if (optionItem.getAmount() != 0){
-				System.out.println(optionItem.getName() + " : " + optionItem.getAmount());
+
 				cart.addOrUpdateItem(catalog.findByName(optionItem.getName()).stream().findFirst().get(),
 						Quantity.of(optionItem.getAmount()));
 			}
@@ -307,7 +289,7 @@ public class OrderController {
 
 	@PostMapping("/clearcart")
     String clear(@ModelAttribute Cart cart, @ModelAttribute ("form") OrderForm form){
-			System.out.println(form.getService());
+			
 			if (form.getService().equals("rentacook")){
                 cart.clear();
                 return "redirect:/order/rentacook";
@@ -329,7 +311,7 @@ public class OrderController {
     String buy(@ModelAttribute Cart cart, @LoggedIn Optional<UserAccount> userAccount, Errors help,
                @ModelAttribute ("order") CateringOrder orderOut) {
 
-				System.out.println(orderOut.toString());
+				
 
 
         	return userAccount.map(account -> {
@@ -347,18 +329,17 @@ public class OrderController {
 				orderManagement.payOrder(order);
 				orderManagement.completeOrder(order);
 
-				System.out.print("checkout tostring()");
-				System.out.println(orderOut.toString());
+				
 
 
 				ArrayList<User> staffList = new ArrayList<>();
 
 				sort(staffList, staffList.size());
-				System.out.println(staffList.size());
+				
 
 				ArrayList<User> orderStaffList = new ArrayList<>();
 				Streamable<User> staff = userRepository.getUserByPositionIn(List.of(Position.EXPERIENCED_WAITER, Position.WAITER));
-				System.out.println(staff.toList().size());
+				
 				for (User u : staff){
 					staffList.add(u);
 				}
@@ -372,12 +353,8 @@ public class OrderController {
 
 				sort(staffList, staffList.size());
 				sort(chefList, chefList.size());
-				System.out.println("oooooooooooooooooooooooooooo");
-				System.out.println(staffList.size());
-				System.out.println(chefList.size());
-				for (User u: staffList){
-					System.out.println(u);
-				}
+
+
 
 
 				if(chefList.size() >= orderOut.getChefcount() && staffList.size() >= orderOut.getWaitercount()){
@@ -393,33 +370,20 @@ public class OrderController {
 					for (User u : allstaff){
 
 						u.setWorkcount(u.getWorkcount()+1);
-						System.out.println(u);
-						System.out.println(u.getWorkcount());
 						userRepository.save(u);
 
 					}
 
 
 
-					System.out.println("order-stafflist");
+
 					for (User u : allstaff){
 						order.addToAllocStaff(u);
-						System.out.println(u);
-						System.out.println(u.getPosition());
 					}
 
 
-					System.out.println("llllllllllllllllllll");
-					/*System.out.println(userRepository.getUserByPositionIn(List.of(Position.EXPERIENCED_WAITER,
-							Position.WAITER,Position.COOK)).toList().size());
 
-					for (User u: userRepository.getUserByPositionIn(List.of(Position.EXPERIENCED_WAITER,
-							Position.WAITER,Position.COOK)).toList()){
-						System.out.println(u);
-						System.out.println(u.getWorkcount());
-					}*/
 
-					System.out.println(order.toString());
 				}
 
 
