@@ -6,8 +6,6 @@ import catering.catalog.OptionType;
 import catering.catalog.CateringCatalog;
 import catering.catalog.Option;
 import catering.catalog.OptionCatalog;
-import catering.catalog.Ware;
-import catering.catalog.Ware.ServiceType;
 import catering.user.Position;
 import catering.user.User;
 import catering.user.UserRepository;

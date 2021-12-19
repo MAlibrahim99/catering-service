@@ -3,7 +3,7 @@ package catering.inventory;
 import catering.catalog.CateringCatalog;
 import catering.catalog.Option;
 import catering.catalog.OptionCatalog;
-import catering.catalog.Ware.ServiceType;
+
 
 import org.salespointframework.core.DataInitializer;
 import org.salespointframework.inventory.UniqueInventory;
