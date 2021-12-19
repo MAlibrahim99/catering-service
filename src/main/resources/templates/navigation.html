@@ -24,22 +24,28 @@
             </div>
 
             <a class="link" th:href="@{/order-history}"
-               th:text="#{nav.bestellverlauf}">Bestellverlauf</a>
+               th:text="#{nav.bestellverlauf}" sec:authorize="hasRole('CUSTOMER')">Bestellverlauf</a>
+               
+            <a class="link" th:href="@{/order-list/PAID}"
+               th:text="#{nav.orderlist}" sec:authorize="hasRole('ADMIN')">Bestellliste</a>
 
             <a class="link" th:href="@{/order-list/PAID}"
-               th:text="#{nav.orderlist}">Bestellliste</a>
+               th:text="#{nav.orderlist}" sec:authorize="hasRole('STAFF')">Bestellliste</a>
 
             <a class="link" th:href="@{/calendar2}"
-               th:text="#{nav.calendar}">Kalender</a>
+               th:text="#{nav.calendar}" sec:authorize="hasRole('ADMIN')" >Kalender</a>
 
+			<a class="link" th:href="@{/calendar2}"
+               th:text="#{nav.calendar}" sec:authorize="hasRole('STAFF')" >Kalender</a>
+               
             <a class="link" th:href="@{/inventory}"
-               th:text="#{nav.inventory}">Inventar</a>
+               th:text="#{nav.inventory}" sec:authorize="hasRole('ADMIN')">Inventar</a>
 
             <a class="link" th:href="@{/customer-list}"
-               th:text="#{nav.customerlist}">Kundenliste</a>
+               th:text="#{nav.customerlist}" sec:authorize="hasRole('ADMIN')">Kundenliste</a>
 
             <a class="link" th:href="@{/staff-list}"
-               th:text="#{nav.stafflist}">Personalliste</a>
+               th:text="#{nav.stafflist}" sec:authorize="hasRole('ADMIN')">Personalliste</a>
 
             <a class="link" th:href="@{/income-overview}"
                th:text="#{nav.incomeoverview}" sec:authorize="hasRole('ADMIN')">Einkommensübersicht</a>
