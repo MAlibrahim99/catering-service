@@ -44,7 +44,7 @@ Alles in allem wollen wir ein sicheres System, welches die Verwaltung aller Best
 * Die folgende Tabelle  zeigt die zu erreichenden Qualitätsziele im System und ihre Priorität: 1 = Nicht wichtig … 5 = Am wichtigsten
 
 [options="header"]
-[cols="1,1,1,1,1,1,3]
+[cols="1,1,1,1,1,1"]
 |===
 |Qualitätsziel|1|2|3|4|5
 |Wartbarkeit|||x||

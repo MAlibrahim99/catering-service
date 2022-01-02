@@ -1,23 +1,73 @@
 = Cross-Testing Feedback
 
-__Durchführende Gruppe:__
-__Anwendung von Gruppe:__
+__Durchführende Gruppe:__  Gruppe 27 +
+__Anwendung von Gruppe:__ Gruppe 26 +
 
 == Getestetes System
-Welche Aufgabe/Problemstellung löst die Anwendung.
+Siehe Aufgabenstellung
+
+{empty} +
+{empty} +
+
+    Alle Teammitglieder haben beigetragen, dieses Dokument zu erstellen
 
 == Fehler-Report
 // See http://asciidoctor.org/docs/user-manual/#tables
-[options="header"]
 |===
 |Pfad |Parameter |Beschreibung |Rückgabe
-| … | … | … | … |
+
+| Fehler verursacht: http://localhost:8080/editoffer/3c570986-6c1d-4e4c-a39e-7a79f1b59431?[]
+| …
+| Wenn man sich als Admin auf einer der vier Hauptoptionen befindet und eines der Angebote editieren möchte (zb “Bier” unter Partyservice) und dort auf den Button “Löschen” klickt, kommt eine Fehlermeldung
+| This page isn’t working HTTP Error 405
+
+| Fehler verursacht: http://localhost:8080/partyservice[]
+|zu hohe Personenanzahl  (zb 12000000000)
+| Trägt man im Formular eine zu große Zahl für Personenanzahl ein und klickt dann auf “Zum Warenkorb hinzufügen”, kommt eine Fehlermeldung
+| This page isn’t working HTTP Error 405
+
+| Fehler verursacht: http://localhost:8080/partyservice[]
+| ungültiges Datum (bereits vergangen)
+| Wählt man im Formular ein bereits vergangenes Datum und klickt dann auf “Zum Warenkorb hinzufügen”, und geht dann auf “Jetzt kostenpflichtig buchen”, kommt eine Fehlermeldung
+| This page isn’t working
+HTTP Error 405
+
+| Fehler verursacht: http://localhost:8080/partyservice[]
+| zu hohe Menge an einem Angebot (zb 10.000.000 Bier)
+| Trägt man eine zu große Menge von einem Angebot ein (zb Bier) und klickt dann auf “Zum Warenkorb hinzufügen”, und geht dann auf “Jetzt kostenpflichtig buchen”, kommt eine Fehlermeldung
+| This page isn’t working HTTP Error 405
+|Fehler verursacht: +
+Kundensicht http://localhost:8080/profile[] +
+
+Adminsicht http://localhost:8080/orderlist[]
+|
+| Ein Kunde ruft seine Profilseite auf oder der Admin ruft die Buchungen auf, so wird Breakfast mehrfach angezeigt
+|  Profil + Bestellungen +
+bzw. Alle eingehenden Bestellungen
+
 |===
 
 == Sonstiges
 * Optik der Anwendung
+
 * Fehlende Features
+    - **[F0211] Edit Products in Cart** wenn man sich im Warenkorb befindet, besteht keine Möglichkeit seine vorher ausgewählten Optionen zu ändern. +
+- **[F0230] Validate Sufficient Stock** es scheint kein Vergleich zwischen ausgewählter Anzahl und tatsächlicher Anzahl, die zur Verfügung steht, stattzufinden. Auch wenn im Inventar eine Anzahl von einem Bier steht, kann man in seiner Bestellung 100 eintragen. +
+- **[F0301] View Orders** zeigt nicht die ganze Detailliste wie im Pflichtenheft (z.B. Inhalt einer Bestellung fehlt). +
+- **[UC0220] bill** ändert nichts am Inventar.Die Anzahl der Güter bleibt konstant nach einer Bestellung. +
+- **[UC0510] Edit Calender** hierbei fehlt 4. Schritt Edit calender (Siehe Pflichtenheft).
+- **[UC0300] View Customer List** Staff können die Kundenliste anzeigen lassen. Das steht jedoch nur für admin zur Verfügung. +
+- **[AT0120] **ist nicht erfüllt bzw. Funktion ist nicht unter den Musskriterien.
+
 * Interaktion mit der Anwendung (Usability)
+    - Personal wird nicht automatisch einer Bestellung hinzugefügt, sondern muss händisch von einem Admin eingeteilt werden. Sorgt für hohen Aufwand, vor allem wenn mehrere Bestellungen neu eingehen. +
 
 == Verbesserungsvorschläge
-* Was kann noch weiter verbessert werden?
+* Die Funktion etwas zu stronieren hinzufügen oder den Button, den es dafür bereits gibt, (aber nicht funktioniert) zu löschen. +
+* Man kann im Inventar zwar neue Dinge hinzufügen, aber wo können diese dann auch verwendet werden? Wenn ich als Equipment “Stühle” hinzufüge, kann ein User die nirgendwo tatsächlich seiner Bestellung hinzufügen. +
+* Begrenzung für Personal, welches einer Bestellung vom Admin hinzugefügt werden kann. Im Moment scheint man eine beliebig große Zahl eintragen zu können. +
+* In der Buchungsübersicht werden Bestellungen des Kunden nicht angezeigt, nur im Profil
+im Kalender direkt Tage markieren, bei denen es eine Bestellung gibt, damit man nicht jeden Tag einzeln anklicken muss, um zu schauen, ob an dem Tag ein Auftrag ist oder nicht. +
+* Liegt Beginn der Veranstaltung nach dem Ende der Veranstaltung gibt es keine Fehlermeldung, genauso wenn das Datum bereits vergangen ist. +
+* Unter der Buchungsübersicht kann “Angaben zu Ihrer Veranstaltung” besser gestaltet werden
+* Auf der Seite Buchungsübersicht steht der Kommentar der letzten Bestellung ;) . Man kann ihn entfernen.
