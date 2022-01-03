@@ -1,0 +1,33 @@
+= Protokoll Gruppe 27
+
+Treffen am 03.01.2022
+
+Ort:      Online (BBB) +
+Beginn:   15:00 Uhr +
+Ende:     15:15 Uhr
+
+__Schriftführer:__ Mohamad Alibrahim
+
+*Nächstes Treffen:* +
+10.01.2022, 15:00 Uhr, Online (BBB)
+
+__Teilnehmer:__
+//Tabellarisch oder Aufzählung, Kennzeichnung von Teilnehmern mit besonderer Rolle (z.B. Kunde)
+
+- Phillipp Zschiedrich (Tutor)
+- Lennart Obermüller (Scrum Master)
+- Lisa-Marie Müller
+- Mohamad Alibrahim
+- Rosa Splittgerber
+
+== Bemerkungen
+n.V.
+
+== Ereignisse
+- Kundenwunsch für den nächsten Meilenstein bekommen.
+- Cross-testing-feedback erhalten
+
+== Aktueller Stand
+- Bearbeitung des Cross-testing-feedbacks
+- Implementierung des Kundenwuschs
+- Überabeitung der Entwickler-Dokumentation.
