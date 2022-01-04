@@ -38,16 +38,16 @@ public class OrderInitializer implements DataInitializer {
 	@Override
 	public void initialize() {
 		// wenn Konto da ist, und dieses Konto Bestellungen hat dann überspringe Initailieserien
-		if (userManagement.findByUsername("user 1") != null
-				&& !orderManagement.findBy(userManagement.findByUsername("user 1").getUserAccount()).isEmpty()) {
+		if (userManagement.findByUsername("customer1") != null
+				&& !orderManagement.findBy(userManagement.findByUsername("customer1").getUserAccount()).isEmpty()) {
 				return;
 		}
 
 		System.out.println("+++++++++initilizing orders");
 
-		List<UserAccount> accounts = List.of(userManagement.findByUsername("user 1").getUserAccount(),
-			userManagement.findByUsername("user 2").getUserAccount(),
-			userManagement.findByUsername("user 3").getUserAccount());
+		List<UserAccount> accounts = List.of(userManagement.findByUsername("customer1").getUserAccount(),
+			userManagement.findByUsername("customer2").getUserAccount(),
+			userManagement.findByUsername("customer3").getUserAccount());
 
 		int randUser, randDay, randMonth, randYear, randDayTime, randServiceType, randStatus;
 		TimeSegment [] timeSegments = TimeSegment.values();

@@ -22,18 +22,27 @@
                     <input type="text" name="last-name" placeholder="Nachname" th:field="*{lastName}" required>
                 </div>
             </div>
-            <div class="ui red message ten wide field" th:if="${usernameAlreadyExists}"
-                 th:text="#{register.name.exists.error}">Nutzername ist bereits besetzt
+        </div>
+
+<!--        <div class="field">-->
+            <div class="two fields">
+                <div class="five wide field">
+                    <label>Benutzername</label>
+                    <input type="text" name="first-name" placeholder="Uniquer Benutzername" th:field="*{username}" required>
+                    <div class="ui red message" th:if="${usernameAlreadyExists}"
+                         th:text="#{register.name.exists.error}">Nutzername ist bereits vergeben
+                    </div>
+                </div>
+                <div class="five wide field">
+                    <label>Email-Adresse</label>
+                    <input type="text" name="Email address" placeholder="Unique Email"
+                           pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$" th:field="*{email}" required>
+                    <div class="ui red message" th:if="${emailAddressAlreadyExists}"
+                         th:text="#{register.email.exists.error}">Benutzername ist bereits vergeben
+                </div>
             </div>
         </div>
 
-        <div class="ten wide field">
-            <label>Email-Adresse</label>
-            <input type="text" name="Email address" placeholder="Email-Adresse" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$" th:field="*{email}" required>
-            <div class="ui red message" th:if="${emailAddressAlreadyExists}"
-                 th:text="#{register.email.exists.error}">Email-Adresse ist bereits besetzt
-            </div>
-        </div>
         <div class="ten wide field" sec:authorize="!hasRole('ADMIN')">
             <label>Passwort</label>
             <input type="password" name="password" placeholder="Passwort" th:field="*{password}" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" required>
@@ -58,14 +67,15 @@
                     <option th:value="${#arrays.toArray(positions)[2]}">Kellner</option>
                     <option th:value="${#arrays.toArray(positions)[3]}">Minijob</option>
                 </select>
+                <p th:text="${positions}"></p>
             </div>
         </div>
 
         <button sec:authorize="!hasRole('ADMIN')" type="submit" name="action" value="register-user"
-                class="ui basic black button">Registrieren
+                class="ui blue button">Registrieren
         </button>
         <button sec:authorize="hasRole('ADMIN')" type="submit" name="action" value="register-staff"
-                class="ui basic black button">Personalkonto registrieren
+                class="ui blue button">Personalkonto registrieren
         </button>
     </form>
 </section>
