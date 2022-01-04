@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.function.Predicate;
 
@@ -25,7 +26,7 @@ public class UserManagement {
 	private final UserAccountManagement accountManagement;
 	public static final Role CUSTOMER_ROLE = Role.of("CUSTOMER");
 	public static final Role STAFF_ROLE = Role.of("STAFF");
-	public static final Role ADMIN_ROLE = Role.of("ADMIN");
+	private long index = 0;
 
 
 	/**
@@ -52,6 +53,9 @@ public class UserManagement {
 	public User createUser(RegistrationForm form, Role ... roles){
 		if(form == null){
 			throw new IllegalArgumentException("User can not be created with value null of RegistrationForm");
+		}
+		if(usernameAlreadyExists(form.getUsername()) || emailAlreadyExists(form.getEmail())){
+			return null;
 		}
 		UnencryptedPassword password= UnencryptedPassword.of(form.getPassword());
 		UserAccount userAccount = accountManagement.create(form.getUsername(), password, form.getEmail(), roles);
@@ -85,7 +89,10 @@ public User updateUser(ProfileForm data, User user) {
 		if(id < 0 || !users.existsById(id)){
 			return false;
 		}
-		accountManagement.disable(users.findById(id).get().getUserAccount().getId());
+		UserAccount userAccount = users.findById(id).get().getUserAccount();
+		userAccount.setEmail("disabledAccount" + index);
+		index++;
+		accountManagement.disable(userAccount.getId());
 		users.deleteById(id);
 		return true;
 	}

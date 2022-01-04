@@ -4,13 +4,16 @@ import catering.user.forms.ProfileForm;
 import catering.user.forms.RegistrationForm;
 import org.salespointframework.useraccount.Role;
 import org.salespointframework.useraccount.UserAccount;
+import org.salespointframework.useraccount.UserAccountManagement;
 import org.salespointframework.useraccount.web.LoggedIn;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.lang.reflect.Array;
 import java.util.List;
 import java.util.Optional;
 
@@ -22,15 +25,18 @@ public class UserController {
 
 	private final UserManagement userManagement;
 	private final UserRepository userRepository;
+	private final UserAccountManagement accountManagement;
 
 
 	/**
 	 * @param userManagement
 	 * @param userRepository
 	 */
-	public UserController(UserManagement userManagement, UserRepository userRepository) {
+	public UserController(UserManagement userManagement, UserRepository userRepository,
+						  @Qualifier("persistentUserAccountManagement") UserAccountManagement accountManagement) {
 		this.userManagement = userManagement;
 		this.userRepository = userRepository;
+		this.accountManagement = accountManagement;
 	}
 
 	/**
@@ -43,26 +49,21 @@ public class UserController {
 	@PostMapping("/register")
 	public String registerUser(@Valid @ModelAttribute("registrationForm") RegistrationForm form,
 							   @RequestParam(value = "action") String action, Model model){
-		// wenn name oder email bereits besetzt ist, gebe nutzer meldung zurück
-		if(userManagement.usernameAlreadyExists(form.getUsername())){
-			model.addAttribute("usernameAlreadyExists", true);
-		}
-		if(userManagement.emailAlreadyExists(form.getEmail())){
-			model.addAttribute("emailAddressAlreadyExists", true);
-		}
-		if(model.containsAttribute("usernameAlreadyExists") ||
-				model.containsAttribute("emailAddressAlreadyExists")){
+		if(userManagement.usernameAlreadyExists(form.getUsername())
+			|| userManagement.emailAlreadyExists(form.getEmail())){
+			model.addAttribute("usernameAlreadyExists", userManagement.usernameAlreadyExists(form.getUsername()));
+			model.addAttribute("emailAddressAlreadyExists", userManagement.emailAlreadyExists(form.getEmail()));
 			return "register";
 		}
 
 		if(action.equals("register-staff")){
 			userManagement.createUser(form, UserManagement.STAFF_ROLE);
+			return "redirect/register";
 		}else{
 			userManagement.createUser(form, UserManagement.CUSTOMER_ROLE);
 			model.addAttribute("userName", form.getLastName());
-			return "index";
 		}
-		return "redirect:/register";
+		return "index";
 	}
 
 	/**
@@ -75,8 +76,8 @@ public class UserController {
 	@GetMapping("/register")
 	public String register(Model model, RegistrationForm form){
 		model.addAttribute("registrationForm", form);
-		model.addAttribute("positions", List.of(Position.COOK, Position.EXPERIENCED_WAITER,
-												Position.WAITER, Position.MINIJOB));
+		model.addAttribute("positions", new Position[]{Position.COOK, Position.EXPERIENCED_WAITER,
+				Position.WAITER, Position.MINIJOB});
 		return "register";
 	}
 
@@ -150,14 +151,11 @@ public class UserController {
 	public String updateUserAccount(@Valid @ModelAttribute("profileForm") ProfileForm data, 
 									@LoggedIn UserAccount account, Model model) {
 		User user = userManagement.findByEmail(account.getEmail());
-		if (!account.getUsername().equals(data.getUsername()) && userManagement.usernameAlreadyExists(data.getUsername())){
-				model.addAttribute("usernameAlreadyExists", true);
-		}
+
 		if (!account.getEmail().equals(data.getEmail()) && userManagement.emailAlreadyExists(data.getEmail())) {
 			model.addAttribute("emailAddressAlreadyExists", true);
 		}
-		if(model.containsAttribute("usernameAlreadyExists") ||
-				model.containsAttribute("emailAddressAlreadyExists")){
+		if(model.containsAttribute("emailAddressAlreadyExists")){
 			return "edit-profile";
 		}
 		userManagement.updateUser(data, user);

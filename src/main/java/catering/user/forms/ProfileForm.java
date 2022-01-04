@@ -1,13 +1,15 @@
 package catering.user.forms;
 
-import catering.user.Position;
-
-public class ProfileForm extends RegistrationForm {
-
+public class ProfileForm  {
+	private String firstName;
+	private String lastName;
+	private String email;
 	private String address;
-	private String passwordConfirmation;
+
 	public ProfileForm(String firstName, String lastName, String email) {
-		super(firstName, lastName, email, "********", Position.NONE);
+		this.firstName = firstName;
+		this.lastName = lastName;
+		this.email = email;
 	}
 
 	public String getAddress() {
@@ -18,11 +20,27 @@ public class ProfileForm extends RegistrationForm {
 		this.address = address;
 	}
 
-	public String getPasswordConfirmation() {
-		return passwordConfirmation;
+	public String getFirstName() {
+		return firstName;
 	}
 
-	public void setPasswordConfirmation(String passwordConfirmation) {
-		this.passwordConfirmation = passwordConfirmation;
+	public void setFirstName(String firstName) {
+		this.firstName = firstName;
+	}
+
+	public String getLastName() {
+		return lastName;
+	}
+
+	public void setLastName(String lastName) {
+		this.lastName = lastName;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
 	}
 }

@@ -12,6 +12,8 @@ public class RegistrationForm {
 	private final String firstName;
 	@NotEmpty(message = "Last name may not be empty")
 	private final String lastName;
+	@NotEmpty(message = "Username can not be empty")
+	private String username;
 	@NotEmpty(message = "Email may not be empty")
 	private final String email;
 	@NotEmpty(message = "Password may not be empty")
@@ -26,9 +28,11 @@ public class RegistrationForm {
 	 * @param email
 	 * @param password
 	 * @param position
+	 * @param username
 	 */
-	public RegistrationForm(String firstName,String lastName, String email, String password, Position position) {
+	public RegistrationForm(String firstName, String lastName, String username, String email, String password, Position position) {
 		this.firstName = firstName;
+		this.username = username;
 		this.email = email;
 		this.password = password;
 		if(position == null) {
@@ -63,9 +67,12 @@ public class RegistrationForm {
 		this.position = position;
 	}
 
-	// gibt die Vor- und Nachname konkatiniert. dies wird als ID fürs Konto benutzt
-	public String getUsername(){
-		return firstName + " " + lastName;
+	public String getUsername() {
+		return username;
+	}
+
+	public void setUsername(String username) {
+		this.username = username;
 	}
 
 	@Override
