@@ -7,14 +7,14 @@ import catering.user.UserManagement;
 import catering.user.UserRepository;
 import catering.user.forms.ProfileForm;
 import catering.user.forms.RegistrationForm;
-import org.assertj.core.util.Lists;
+import org.aspectj.lang.annotation.After;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import org.salespointframework.useraccount.Password;
 import org.salespointframework.useraccount.Role;
-import org.salespointframework.useraccount.UserAccount;
 import org.salespointframework.useraccount.UserAccountManagement;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -38,10 +38,10 @@ public class UserManagementTest {
 	@Test
 	public void userManagementCreatesUserSuccessfully(){
 
-		RegistrationForm form = new RegistrationForm("user1" ,"user1", "user1@host.com",
+		RegistrationForm form = new RegistrationForm("user1" ,"user1", "user", "user@host.com",
 				"123", Position.NONE);
 		userManagement.createUser(form, customerRole);
-		User currentUser = userManagement.findByUsername("user1 user1");
+		User currentUser = userManagement.findByUsername("user");
 		System.out.println(currentUser);
 		assertThat(currentUser).isNotNull();
 		assertThat(currentUser.getUserAccount().getUsername()).isEqualTo(form.getUsername());
@@ -52,7 +52,10 @@ public class UserManagementTest {
 	
 	@Test
 	public void userIsUpdatedSuccessfully() {
-		User currentUser = userManagement.findByUsername("user 1");
+		RegistrationForm form = new RegistrationForm("user1" ,"user1", "user1", "user1@host.com",
+				"123", Position.NONE);
+		userManagement.createUser(form, customerRole);
+		User currentUser = userManagement.findByUsername("user1");
 		ProfileForm data = new ProfileForm("1", "a", "email@user.de");
 		userManagement.updateUser(data, currentUser);
 		assertThat(currentUser.getId()).isGreaterThan(0);
@@ -66,7 +69,10 @@ public class UserManagementTest {
 	
 	@Test
 	public void deleteUserAccount() {
-		User currentUser = userManagement.findByUsername("user 1");
+		RegistrationForm form = new RegistrationForm("user1" ,"user1", "user2", "user2@host.com",
+				"123", Position.NONE);
+		userManagement.createUser(form, customerRole);
+		User currentUser = userManagement.findByUsername("user2");
 		userManagement.deleteUser(currentUser.getId());
 		assertThat(users.findById(currentUser.getId())).isEmpty();
 	}
