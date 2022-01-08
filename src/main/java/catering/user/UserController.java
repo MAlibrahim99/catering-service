@@ -58,7 +58,7 @@ public class UserController {
 
 		if(action.equals("register-staff")){
 			userManagement.createUser(form, UserManagement.STAFF_ROLE);
-			return "redirect/register";
+			return "redirect:/register";
 		}else{
 			userManagement.createUser(form, UserManagement.CUSTOMER_ROLE);
 			model.addAttribute("userName", form.getLastName());
