@@ -181,6 +181,10 @@ public class OrderController {
 					 @ModelAttribute Cart cart ){
 		cart.clear();
 
+		model.addAttribute("order", order);
+		//model.addAttribute("orderOut", new CateringOrder());
+		model.addAttribute("form", form);
+
 
 		int guestcount = form.getPersons();
 
@@ -255,8 +259,7 @@ public class OrderController {
 				Position.EXPERIENCED_WAITER, Position.MINIJOB));
         if(chefcountRep.toList().size() < order.getChefcount() ||
 				waitercountRep.toList().size() < order.getWaitercount()){
-			//model.addAttribute("not", )
-            if (form.getService().equals("eventcatering")){
+            /*if (form.getService().equals("eventcatering")){
 				return "redirect:/order/eventcatering";
 			}else if (form.getService().equals("partyservice")){
 				return "redirect:/order/partyservice";
@@ -266,7 +269,8 @@ public class OrderController {
 				return "redirect:/order/mobilebreakast";
 			}else{
 				return "redirect:/";
-			}
+			} */
+			return "redirect";
         }
 
 
@@ -287,11 +291,13 @@ public class OrderController {
 			}
 		}
 
+		/*
+
 		model.addAttribute("order", order);
 		//model.addAttribute("orderOut", new CateringOrder());
 		model.addAttribute("form", form);
 
-
+		*/
 
 		return "orderreview";
 
@@ -329,6 +335,26 @@ public class OrderController {
         cart.clear();
         return "redirect:/";
     }
+
+	@PostMapping("/redirect")
+		public String redirect(@ModelAttribute Cart cart, @ModelAttribute ("form") OrderForm form) {
+			if (form.getService().equals("rentacook")){
+                cart.clear();
+                return "redirect:/order/rentacook";
+            }else if (form.getService().equals("eventcatering")){
+                cart.clear();
+                return "redirect:/order/eventcatering";
+            }else if (form.getService().equals("partyservice")){
+                cart.clear();
+                return "redirect:/order/partyservice";
+            }else if (form.getService().equals("mobilebreakfast")){
+                cart.clear();
+                return "redirect:/order/mobilebreakfast";
+            }
+        cart.clear();
+		return "redirect:/";
+		}
+
 
 	/**
 	 * 
@@ -484,6 +510,7 @@ public class OrderController {
 			inventory.save(item);
 		}
 
+		
 
 
 	//get status from buttons and redirect to correct order-list

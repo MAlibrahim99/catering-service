@@ -1,0 +1,24 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout}">
+    <head>
+        <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+        <title>confirmOrder</title>
+    </head>
+    <body>
+    <section layout:fragment="content">
+    <form class="ui form container" method="post" th:action="@{/redirect}" th:object="${form}">
+        <input type="hidden" name="service"  th:value="${form.service}"/>
+            <div class="container">
+            <div class="vertical-center">
+                <h2><center>Derzeit haben wir leider nicht genug Angestellte für den gewählten Zeitraum</center></h2>
+                <p><center>Bitte versuchen sie eine kleinere Anzahl oder versuchen Sie ein anderes Mal erneut</center></p>
+                <button>zurück zum Formular</button>
+            </div>
+            </div>
+        </form>
+    </section>
+    </body>
+</html>
