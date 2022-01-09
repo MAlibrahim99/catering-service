@@ -34,7 +34,7 @@
 				<td th:text="${staff.userAccount.firstname}">Marie</td>
 				<td th:text="${staff.userAccount.email}">kuchen@leute.de</td>
 				<td th:text="${staff.position}">Personal position</td>
-				<td><form th:action="@{/profile}" method="post" style="display: inline">
+				<td><form th:action="@{/profile}" method="get" style="display: inline">
 					<input type="hidden" name="userId" th:value="${staff.getId()}">
 					<button type="submit" class="ui button">löschen</button>
 				</form>

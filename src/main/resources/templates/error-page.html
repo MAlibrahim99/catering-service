@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity3"
+      layout:decorate="~{layout}">
+<head>
+    <meta charset="UTF-8">
+    <title>Anmelden</title>
+</head>
+<body>
+<nav th:replace="navigation :: navigation"></nav>
+<section layout:fragment="content">
+    <p>
+        <h3>Oops... Etwas ging schief</h3>
+    Fehlernachricht: <div th:text="${errorMessage}"></div>
+    </p>
+</section>
+</body>
+</html>
