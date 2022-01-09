@@ -203,7 +203,7 @@ public class UserController {
 
 	@Controller
 	static class ErrorHandler implements ErrorController{
-	@RequestMapping(value="/error")
+	@GetMapping(value="/error")
 	public ModelAndView unExpectedError(HttpServletRequest httpRequest, Model model){
 		model.addAttribute("errorMessage", "Ungültige Eingaben");
 		int errorCode = (int) httpRequest.getAttribute("javax.servlet.error.status_code");
