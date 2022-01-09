@@ -43,8 +43,6 @@ public class OrderInitializer implements DataInitializer {
 				return;
 		}
 
-		System.out.println("+++++++++initilizing orders");
-
 		List<UserAccount> accounts = List.of(userManagement.findByUsername("customer1").getUserAccount(),
 			userManagement.findByUsername("customer2").getUserAccount(),
 			userManagement.findByUsername("customer3").getUserAccount());
@@ -54,12 +52,12 @@ public class OrderInitializer implements DataInitializer {
 		String [] serviceType = {"Eventcatering", "MobileBreakfast", "Partyservice", "RentACook"};
 		CateringOrder order;
 		Random random = new Random();
-
+		int currentYear = LocalDate.now().getYear();
 		for (int i = 0; i < 50; i++) {
 			randUser = random.nextInt(3);
 			randDay = random.nextInt(28) +1;
 			randMonth = random.nextInt(12) + 1;
-			randYear = random.nextInt(8) + 2017;
+			randYear = currentYear + 3 - random.nextInt(7);
 			randDayTime = random.nextInt(3);
 			randServiceType = random.nextInt(4);
 			randStatus = random.nextInt(5);
@@ -71,20 +69,30 @@ public class OrderInitializer implements DataInitializer {
 					,"some Address " + random.nextInt(50),
 					serviceType[randServiceType]);
 
-
-			orderManagement.payOrder(order);
-
-			switch (randStatus){
-				case 0:
-				case 2:
-				case 1:
-					orderManagement.completeOrder(order);
-					break;
-				case 3: orderManagement.cancelOrder(order, "None");
-					break;
-				default:
-					break;
+			if(LocalDate.of(randYear, randMonth, randMonth).isBefore(LocalDate.now())) {
+				orderManagement.payOrder(order);
+				switch (randStatus) {
+					case 1:
+					case 3:
+					case 4:
+						orderManagement.completeOrder(order);
+						break;
+					case 0:
+					case 2:
+						orderManagement.cancelOrder(order, "None");
+					default:
+						break;
+				}
+			}else{
+				switch(randStatus){
+					case 1: case 4:
+					case 2:
+						break;
+					default: orderManagement.payOrder(order);
+						break;
+				}
 			}
+
 			orderManagement.save(order);
 		}
 	}

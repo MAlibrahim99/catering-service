@@ -133,8 +133,19 @@ public class CateringOrder extends Order {
 		this.time = time;
 	}
 
-	public String toString(){
-		return service + " " + completionDate + " " + time + " " + address + " " + waitercount + " " + chefcount;
+	@Override
+	public String toString() {
+		return "CateringOrder{" +
+				"allocStaff=" + allocStaff +
+				", completionDate=" + completionDate +
+				", address='" + address + '\'' +
+				", service='" + service + '\'' +
+				", time=" + time +
+				", waitercount=" + waitercount +
+				", chefcount=" + chefcount +
+				", timeString='" + timeString + '\'' +
+				", status='" + super.getOrderStatus() + "' " +
+				'}';
 	}
 
 	public String getTimeString(){
