@@ -52,6 +52,9 @@ public class IncomeOverview {
 		Money totalIncome = Money.of(0.0, EURO);
 
 		for (CateringOrder order : ordersDone) {
+			if(order.getOrderStatus().equals(OrderStatus.CANCELLED)){
+				continue;
+			}
 			totalIncome = totalIncome.add(order.getTotal());
 		}
 //		totalIncome = totalIncome.add(Money.of(100000.99, EURO)); // zu prüfen ob ich den gewünschten Wert bekomme
@@ -83,7 +86,6 @@ public class IncomeOverview {
 			for(String service: services) {
 				orderPercentages.put(service, BigDecimal.ZERO);
 			}
-			System.out.println("in orders is empty!");
 		}else{
 			BigDecimal orderCount = BigDecimal.valueOf(orders.size());
 			int tempCounter = 0;
@@ -96,8 +98,6 @@ public class IncomeOverview {
 				// berechne Prozentsatz
 				BigDecimal percentage = BigDecimal.valueOf(tempCounter).multiply(BigDecimal.valueOf(100.0))
 						.divide(orderCount, RoundingMode.HALF_UP);
-
-				System.out.println(service + " percentage " + percentage);
 
 				orderPercentages.put(service, percentage);
 				tempCounter = 0;
