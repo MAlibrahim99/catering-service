@@ -82,29 +82,37 @@ public class IncomeOverview {
 		Map<String, BigDecimal> orderPercentages = new HashMap<>();
 		List<String> services = List.of("Eventcatering", "MobileBreakfast", "Partyservice", "RentACook");
 
+		int eventCatering = (int) orders.stream().filter(order -> order.getService().equals("Eventcatering")).count();
+		int mobileBreakfast = (int) orders.stream().filter(order -> order.getService().equals("MobileBreakfast")).count();
+		int partyService = (int) orders.stream().filter(order -> order.getService().equals("Partyservice")).count();
+		int rentACook = (int) orders.stream().filter(order -> order.getService().equals("RentACook")).count();
+
 		if(orders.isEmpty()){
 			for(String service: services) {
 				orderPercentages.put(service, BigDecimal.ZERO);
 			}
 		}else{
 			BigDecimal orderCount = BigDecimal.valueOf(orders.size());
-			int tempCounter = 0;
-			for(String service: services) {//zähle jeden Servicetyp
-				for(CateringOrder order: orders){
-					if(order.getService().equals(service)){
-						tempCounter++;
-					}
-				}
-				// berechne Prozentsatz
-				BigDecimal percentage = BigDecimal.valueOf(tempCounter).multiply(BigDecimal.valueOf(100.0))
-						.divide(orderCount, RoundingMode.HALF_UP);
 
-				orderPercentages.put(service, percentage);
-				tempCounter = 0;
-			}
+//			berechne Prozentsatz
+			BigDecimal percentage = BigDecimal.valueOf(eventCatering).multiply(BigDecimal.valueOf(100.0))
+					.divide(orderCount, RoundingMode.HALF_UP);
+			orderPercentages.put("Eventcatering", percentage);
+
+			percentage = BigDecimal.valueOf(mobileBreakfast).multiply(BigDecimal.valueOf(100.0))
+					.divide(orderCount, RoundingMode.HALF_UP);
+			orderPercentages.put("MobileBreakfast", percentage);
+
+			percentage = BigDecimal.valueOf(partyService).multiply(BigDecimal.valueOf(100.0))
+					.divide(orderCount, RoundingMode.HALF_UP);
+			orderPercentages.put("Partyservice", percentage);
+
+			percentage = BigDecimal.valueOf(rentACook).multiply(BigDecimal.valueOf(100.0))
+					.divide(orderCount, RoundingMode.HALF_UP);
+			orderPercentages.put("RentACook", percentage);
 		}
 		return orderPercentages;
-}
+	}
 
 	/**
 	 * Calculates status percentages of orders booked in a period specified with {@link LocalDate} start
