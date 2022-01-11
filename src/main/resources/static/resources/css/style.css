@@ -141,3 +141,11 @@ header {
 .lab{
 	font-size: 15px;
 }
+
+.ui.table thead th {
+	background: #dbc3ad;
+}
+
+.ui.table {
+	background: #fdefe2;
+}
