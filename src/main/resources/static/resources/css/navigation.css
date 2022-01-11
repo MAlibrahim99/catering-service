@@ -12,19 +12,19 @@ nav {
     text-align: center;
 
 }
-nav ul {
-    float: center;
-}
-nav a {
-    display: inline-block;
-    margin-top: 25px;
-    margin-right: 25px;
 
+nav .tooltiptext a {
+    height: fit-content;
+    display: inline-block;
+    padding: 13px 6px;
+    text-align: left;
 }
+
 .link {
     position: relative;
     display: inline-block;
     font-size: 21px;
+    margin: 10px;
 }
 
 .link .tooltiptext {
@@ -32,14 +32,15 @@ nav a {
     font-size: 20px;
     z-index: 5;
     background-color: #f37575;
-    border-radius: 16px;
+    border-radius: 0 0 16px 16px;
+    padding: 10px;
     position: absolute;
 }
 
 .link .tooltiptext {
     width: 160px;
-    top: 100%;
-    left: 50%;
+    top: 105%;
+    left: 86%;
     margin-left: -100px;
 }
 
