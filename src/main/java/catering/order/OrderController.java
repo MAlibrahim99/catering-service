@@ -193,6 +193,8 @@ public class OrderController {
 
 		String daytime = order.getTimeString();
 		switch(daytime){
+			default:
+			break;
 			case("Früh"):
 			order.setTime(TimeSegment.FRÜH);
 			break;
@@ -376,14 +378,8 @@ public class OrderController {
 					//checking workcount of Users and add the worker with lowest workcount, for a decent distribution
 					ArrayList<User> allstaff = new ArrayList<>();
 
-					System.out.println(chefList);
-					System.out.println(staffList);
-
-					System.out.println("------------------------------");
 					allstaff.addAll(getWorkerList(chefList, orderOut.getChefcount()));
 					allstaff.addAll(getWorkerList(staffList, orderOut.getWaitercount()));
-					System.out.println(order.getChefcount());
-					System.out.println("------------------------------");
 
 					for (User u : allstaff){
 						u.setWorkcount(u.getWorkcount()+1);
@@ -391,26 +387,8 @@ public class OrderController {
 					}
 					
 
-					System.out.println(allstaff);
-					/*for (int i=0; i<orderOut.getChefcount();i++){
-						allstaff.add(chefList.get(i));
-					}
-					for (int i=0; i<orderOut.getWaitercount();i++){
-						allstaff.add(staffList.get(i));
-					}
-					for (User u : allstaff){
-
-						u.setWorkcount(u.getWorkcount()+1);
-						userRepository.save(u);
-
-					}*/
-
-
-
-
 
 					order.setAllocStaff(allstaff);
-					System.out.println(order.getAllocStaff());
 
 
 
@@ -443,6 +421,8 @@ public class OrderController {
 			int chefcount;
 			int waitercount;
 			switch(service){
+				default:
+				break;
 				case "eventcatering":
 				guestcount = guestcount / 10;
 				if (guestcount == 0){
