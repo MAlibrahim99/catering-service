@@ -10,6 +10,7 @@ import org.salespointframework.inventory.UniqueInventory;
 import org.salespointframework.inventory.UniqueInventoryItem;
 import org.salespointframework.quantity.Quantity;
 
+import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 import org.springframework.util.Assert;
 
@@ -17,6 +18,7 @@ import org.springframework.util.Assert;
  * initializes the inventory with options from the {@link OptionCatalog}
  */
 @Component
+@Order(25)
 class InventoryInitializer implements DataInitializer {
 
 	private final UniqueInventory<UniqueInventoryItem> inventory;

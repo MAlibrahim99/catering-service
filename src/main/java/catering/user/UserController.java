@@ -7,13 +7,15 @@ import org.salespointframework.useraccount.UserAccount;
 import org.salespointframework.useraccount.UserAccountManagement;
 import org.salespointframework.useraccount.web.LoggedIn;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.boot.web.servlet.error.ErrorController;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
-import java.lang.reflect.Array;
 import java.util.List;
 import java.util.Optional;
 
@@ -80,21 +82,35 @@ public class UserController {
 				Position.WAITER, Position.MINIJOB});
 		return "register";
 	}
-
-	@RequestMapping(value="/profile", method= {RequestMethod.GET, RequestMethod.POST})
-	@PreAuthorize(value="hasAnyRole('CUSTOMER', 'ADMIN', 'STAFF')")
+// RequestMethod.GET
+	@GetMapping("/profile")
+	@PreAuthorize(value="isAuthenticated()")
 	public String sendProfilePage(@LoggedIn Optional<UserAccount> account,
 								  @RequestParam("userId") Optional<String> userId,
 								  Model model){
 		if(account.isEmpty() && userId.isEmpty()){
 			return "login";
 		}
+//		if(account.get().hasRole(Role.of("CUSTOMER"))){
+//			model.addAttribute("user", userManagement.findByUsername(account.get().getUsername()));
+//		}
 
-		if(userId.isPresent()){
-			model.addAttribute("user",
-					userRepository.findById(Long.parseLong(userId.get())).get());
-		}else{
+		boolean isIdNumeric = false;
+		long id = -1;
+		if(userId.isPresent()) {
+			try {
+				id = Long.parseLong(userId.get());
+				isIdNumeric = true;
+			} catch (Exception ignored) {
+			}
+		}
+		if(isIdNumeric && userRepository.existsById(id) && account.get().hasRole(Role.of("ADMIN"))){
+			model.addAttribute("user", userRepository.findById(id).get());
+		}else if(account.get().hasRole(Role.of("CUSTOMER"))){
 			model.addAttribute("user", userManagement.findByUsername(account.get().getUsername()));
+		}else {
+			model.addAttribute("errorMessage", "Nicht gültige Eingaben");
+			return "redirect:/error";
 		}
 		return "profile";
 	}
@@ -183,5 +199,15 @@ public class UserController {
 		}else {
 		return "access-denied";
 		}
+	}
+
+	@Controller
+	static class ErrorHandler implements ErrorController{
+	@GetMapping(value="/error")
+	public ModelAndView unExpectedError(HttpServletRequest httpRequest, Model model){
+		model.addAttribute("errorMessage", "Ungültige Eingaben");
+		int errorCode = (int) httpRequest.getAttribute("javax.servlet.error.status_code");
+		return new ModelAndView("error-page");
+	}
 	}
 }

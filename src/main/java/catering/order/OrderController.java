@@ -115,6 +115,9 @@ public class OrderController {
 			start = LocalDate.parse(startDate.get(), formatter);
 			end = LocalDate.parse(endDate.get(), formatter);
 		}
+		if(start.isAfter(end)){
+			start  = end.minusDays(30L);
+		}
 
 		model.addAttribute("totalIncome", incomeOverview.totalIncome(start, end));
 		model.addAttribute("statusPercentages", incomeOverview.statusPercentages(start, end));
@@ -353,7 +356,6 @@ public class OrderController {
 				cart.addItemsTo(order);
 
 				orderManagement.payOrder(order);
-				orderManagement.completeOrder(order);
 
 				
 				

@@ -32,22 +32,23 @@
 
             <div class="one wide column"></div>
 
-
-            <table class="ui single striped line table four wide column">
-                <!-- Verteilung der Bestellungen im Prozentsatz-->
-                <thead>
-                <tr>
-                    <td><strong>Dienstleistung</strong></td>
-                    <td><strong>Prozentsatz</strong></td>
-                </tr>
-                </thead>
-                <tbody>
-                <tr th:each="key : ${servicePercentages.keySet}">
-                    <td th:text="${key}">Test Angebot</td>
-                    <td th:text="${servicePercentages.get(key) + ' %'}">0.0%</td>
-                </tr>
-                </tbody>
-            </table>
+            <div class="four wide column">
+                <table class="ui single striped line table four wide table">
+                    <!-- Verteilung der Bestellungen im Prozentsatz-->
+                    <thead>
+                    <tr>
+                        <th><strong>Dienstleistung</strong></th>
+                        <th><strong>Prozentsatz</strong></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="key : ${servicePercentages.keySet}">
+                        <td th:text="${key}">Test Angebot</td>
+                        <td th:text="${servicePercentages.get(key) + ' %'}">0.0%</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
 
             <div class="one wide column"></div>
 

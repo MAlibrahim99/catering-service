@@ -19,6 +19,7 @@
 				<th>Nummer</th>
             	<th>Service</th>
 				<th>Veranstaltungsdatum</th>
+				<th>Status</th>
 				<th>Aktionen</th>
        		 </tr>
        	</thead>
@@ -28,6 +29,10 @@
 				<td th:text="${order.service}">Event Cateri</td>
 				<td th:text="${#conversions.convert(order.completionDate, 'String') + ', ' +
 				order.time.toString().toLowerCase()}">TT.MM.JJJJ</td>
+				<td th:if="${order.orderStatus.name().equals('PAID')}" th:text="bezahlt"></td>
+				<td th:if="${order.orderStatus.name().equals('COMPLETED')}" th:text="abgeschlossen"></td>
+				<td th:if="${order.orderStatus.name().equals('CANCELLED')}" th:text="storniert"></td>
+				<td th:if="${order.orderStatus.name().equals('OPEN')}" th:text="offen"></td>
 				<td><a class="ui black basic button" th:href="@{/order-details/{order-id}(order-id=${order.id})}">Mehr Details</a>
 					<!--Stornierenform-->
 					<form th:if="${order.orderStatus.toString().equals('PAID') || order.orderStatus.toString().equals('OPEN')}"

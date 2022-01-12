@@ -57,8 +57,8 @@ public class Catering {
 					.antMatchers(ACCESS_WITHOUT_AUTH).permitAll()
 					.anyRequest().authenticated().and()
 					.formLogin().loginPage(LOGIN_ROUTE).usernameParameter("email").loginProcessingUrl(LOGIN_ROUTE).permitAll()
-					.defaultSuccessUrl(CONTEXT_ROOT, true).and()
-//					.failureUrl("/error").and()
+					.defaultSuccessUrl(CONTEXT_ROOT, true)
+					.and()
 					.logout().logoutUrl("/logout").logoutSuccessUrl(CONTEXT_ROOT);
 			http.exceptionHandling().accessDeniedPage("/login");
 		}
