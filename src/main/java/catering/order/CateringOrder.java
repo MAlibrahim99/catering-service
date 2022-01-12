@@ -85,6 +85,10 @@ public class CateringOrder extends Order {
 		this.allocStaff.add(user);
 	}
 
+	public void setAllocStaff(ArrayList<User> allocStaffList){
+		this.allocStaff = allocStaffList;
+	}
+
 	public LocalDate getCompletionDate() {
 		return completionDate;
 	}

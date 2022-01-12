@@ -285,25 +285,6 @@ public class OrderController {
 	 * @param form
 	 * @return order_form for specific service
 	 */
-	@PostMapping("/clearcart")
-    String clear(@ModelAttribute Cart cart, @ModelAttribute ("form") OrderForm form){
-			
-			if (form.getService().equals("rentacook")){
-                cart.clear();
-                return "redirect:/order/rentacook";
-            }else if (form.getService().equals("eventcatering")){
-                cart.clear();
-                return "redirect:/order/eventcatering";
-            }else if (form.getService().equals("partyservice")){
-                cart.clear();
-                return "redirect:/order/partyservice";
-            }else if (form.getService().equals("mobilebreakfast")){
-                cart.clear();
-                return "redirect:/order/mobilebreakfast";
-            }
-        cart.clear();
-        return "redirect:/";
-    }
 
 	@PostMapping("/redirect")
 		public String redirect(@ModelAttribute Cart cart, @ModelAttribute ("form") OrderForm form) {
@@ -368,16 +349,20 @@ public class OrderController {
 				//creating Lists of Waiters and Chefs 
 				ArrayList<User> orderStaffList = new ArrayList<>();
 				Streamable<User> staff = userRepository.getUserByPositionIn(List.of(Position.EXPERIENCED_WAITER, Position.WAITER, Position.MINIJOB));
-				
-				for (User u : staff){
-					staffList.add(u);
-				}
+
+				staffList = getListof(staff);
 
 				ArrayList<User> chefList = new ArrayList<>();
 				Streamable<User> chef = userRepository.getUserByPositionIn(List.of(Position.COOK));
-				for (User u : chef){
-					chefList.add(u);
-				}
+
+				chefList = getListof(chef);
+
+				System.out.println(chefList);
+				System.out.println(staffList);
+
+				
+		
+				
 
 				//sorting lists
 				sort(staffList, staffList.size());
@@ -390,7 +375,24 @@ public class OrderController {
 
 					//checking workcount of Users and add the worker with lowest workcount, for a decent distribution
 					ArrayList<User> allstaff = new ArrayList<>();
-					for (int i=0; i<orderOut.getChefcount();i++){
+
+					System.out.println(chefList);
+					System.out.println(staffList);
+
+					System.out.println("------------------------------");
+					allstaff.addAll(getWorkerList(chefList, orderOut.getChefcount()));
+					allstaff.addAll(getWorkerList(staffList, orderOut.getWaitercount()));
+					System.out.println(order.getChefcount());
+					System.out.println("------------------------------");
+
+					for (User u : allstaff){
+						u.setWorkcount(u.getWorkcount()+1);
+						userRepository.save(u);
+					}
+					
+
+					System.out.println(allstaff);
+					/*for (int i=0; i<orderOut.getChefcount();i++){
 						allstaff.add(chefList.get(i));
 					}
 					for (int i=0; i<orderOut.getWaitercount();i++){
@@ -401,14 +403,14 @@ public class OrderController {
 						u.setWorkcount(u.getWorkcount()+1);
 						userRepository.save(u);
 
-					}
+					}*/
 
 
 
 
-					for (User u : allstaff){
-						order.addToAllocStaff(u);
-					}
+
+					order.setAllocStaff(allstaff);
+					System.out.println(order.getAllocStaff());
 
 
 
@@ -428,6 +430,13 @@ public class OrderController {
 			}).orElse("redirect:/");
 		}
 
+
+		/**
+		 * 
+		 * @param service
+		 * @param guestcount
+		 * @return List for setting amount of worker needed
+		 */
 
 		public ArrayList<Integer> calcWorker(String service, int guestcount){
 			ArrayList<Integer> workerAmount = new ArrayList<>();
@@ -480,6 +489,25 @@ public class OrderController {
 			}
 			return workerAmount;
 		}
+
+		public ArrayList<User> getListof(Streamable<User> workerList){
+			ArrayList<User> workerArrayList = new ArrayList<>();
+			for(User u : workerList){
+				workerArrayList.add(u);
+			}
+			return workerArrayList;
+		}
+
+
+		public ArrayList<User> getWorkerList(ArrayList<User> workerList, int amount){
+			ArrayList<User> workerArrayList = new ArrayList<>();
+			for(int i=0; i<amount; i++){
+				workerArrayList.add(workerList.get(i));
+			}
+			System.out.println(workerArrayList);
+			return workerArrayList;
+		}
+		
 
 
 

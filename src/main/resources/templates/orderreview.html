@@ -29,7 +29,7 @@
                 </tr>
                 </tbody>
             </table>
-            <form class="ui form" method="post" th:action="@{/clearcart}" th:object="${form}">  
+            <form class="ui form" method="post" th:action="@{/redirect}" th:object="${form}">  
                 <input type="hidden" name="service"  th:value="${form.service}"/>
                 <button class="btn btn-secondary" type="submit" th:text="#{cart.removeItem}">  <!--clear cart-->
                 </button>
