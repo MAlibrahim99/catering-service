@@ -188,66 +188,32 @@ public class OrderController {
 
 		int guestcount = form.getPersons();
 
-
-		if(order.getTimeString().equals("Früh")){
+		String daytime = order.getTimeString();
+		switch(daytime){
+			case("Früh"):
 			order.setTime(TimeSegment.FRÜH);
-		}else if(order.getTimeString().equals("Mittag")){
+			break;
+			case("Mittag"):
 			order.setTime(TimeSegment.MITTAG);
-		}else if(order.getTimeString().equals("Abend")){
+			break;
+			case("Abend"):
 			order.setTime(TimeSegment.ABEND);
+			break;
 		}
+		
+
+
+		System.out.println(order.getTime());
 
 
 		// calculates the amount of waiter and chefs in dependence of the servicetype and saves it for the order
 
+		order.setChefcount(calcWorker(form.getService(), guestcount).get(0));
+		order.setWaitercount(calcWorker(form.getService(), guestcount).get(1));
+		System.out.println(order.getChefcount());
+		System.out.println(order.getWaitercount());
 
-		if (form.getService().equals("eventcatering")){
-			guestcount = guestcount / 10;
-			if (guestcount == 0){
-				guestcount = 1;
-			}
-			int chefcount = guestcount * 4;
-
-			int waitercount = guestcount * 5;
-
-			order.setChefcount(chefcount);
-        	order.setWaitercount(waitercount);
-		}else if (form.getService().equals("partyservice")){
-			guestcount = guestcount / 10;
-			if (guestcount == 0){
-				guestcount = 1;
-			}
-			int chefcount = guestcount * 3;
-
-			int waitercount = guestcount * 4;
-
-			order.setChefcount(chefcount);
-        	order.setWaitercount(waitercount);
-		}else if (form.getService().equals("rentacook")){
-			guestcount = guestcount / 5;
-			if (guestcount == 0){
-				guestcount = 1;
-			}
-			int chefcount = guestcount * 2;
-
-			int waitercount = guestcount * 2;
-
-			order.setChefcount(chefcount);
-        	order.setWaitercount(waitercount);
-		}else if (form.getService().equals("mobilebreakfast")){
-			guestcount = guestcount / 3;
-			if (guestcount == 0){
-				guestcount = 1;
-			}
-			int chefcount = 1;
-
-			int waitercount = guestcount;
-
-			order.setChefcount(chefcount);
-        	order.setWaitercount(waitercount);
-		}
-
-
+		
 
 
 
@@ -458,6 +424,59 @@ public class OrderController {
 
 				return "redirect:/confirmOrder";
 			}).orElse("redirect:/");
+		}
+
+
+		public ArrayList<Integer> calcWorker(String service, int guestcount){
+			ArrayList<Integer> workerAmount = new ArrayList<>();
+			int chefcount;
+			int waitercount;
+			switch(service){
+				case "eventcatering":
+				guestcount = guestcount / 10;
+				if (guestcount == 0){
+					guestcount = 1;
+				}
+				chefcount = guestcount * 4;
+				waitercount = guestcount * 5;
+				workerAmount.add(chefcount);
+				workerAmount.add(waitercount);
+				return workerAmount;
+				
+				case "partyservice":
+				guestcount = guestcount / 10;
+				if (guestcount == 0){
+					guestcount = 1;
+				}
+				chefcount = guestcount * 3;
+				waitercount = guestcount * 4;
+				workerAmount.add(chefcount);
+				workerAmount.add(waitercount);
+				return workerAmount;
+
+				case "rentacook":
+				guestcount = guestcount / 5;
+				if (guestcount == 0){
+					guestcount = 1;
+				}
+				chefcount = guestcount * 2;
+				waitercount = guestcount * 2;
+				workerAmount.add(chefcount);
+				workerAmount.add(waitercount);
+				return workerAmount;
+
+				case "mobilebreakfast":
+				guestcount = guestcount / 3;
+				if (guestcount == 0){
+					guestcount = 1;
+				}
+				chefcount = 1;
+				waitercount = guestcount;
+				workerAmount.add(chefcount);
+				workerAmount.add(waitercount);
+				return workerAmount;
+			}
+			return workerAmount;
 		}
 
 
