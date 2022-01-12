@@ -208,15 +208,13 @@ public class OrderController {
 		
 
 
-		System.out.println(order.getTime());
+
 
 
 		// calculates the amount of waiter and chefs in dependence of the servicetype and saves it for the order
 
 		order.setChefcount(calcWorker(form.getService(), guestcount).get(0));
 		order.setWaitercount(calcWorker(form.getService(), guestcount).get(1));
-		System.out.println(order.getChefcount());
-		System.out.println(order.getWaitercount());
 
 		
 
@@ -359,8 +357,6 @@ public class OrderController {
 
 				chefList = getListof(chef);
 
-				System.out.println(chefList);
-				System.out.println(staffList);
 
 				
 		
@@ -484,7 +480,7 @@ public class OrderController {
 			for(int i=0; i<amount; i++){
 				workerArrayList.add(workerList.get(i));
 			}
-			System.out.println(workerArrayList);
+
 			return workerArrayList;
 		}
 		
@@ -563,7 +559,6 @@ public class OrderController {
 		model.addAttribute("account", orderManagement.get(parameter));
 		Totalable<OrderLine> orderLines = orderManagement.get(parameter).get().getOrderLines();
 		model.addAttribute("details", orderLines);
-		System.out.println(orderLines);
 		return "order-details";
 	}
 
