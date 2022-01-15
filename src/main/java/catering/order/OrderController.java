@@ -3,41 +3,54 @@ package catering.order;
 import catering.catalog.Option;
 import catering.catalog.OptionCatalog;
 import catering.catalog.OptionType;
-import catering.catalog.Option;
-import catering.catalog.OptionCatalog;
 import catering.user.Position;
 import catering.user.User;
 import catering.user.UserRepository;
-
-import org.apache.tomcat.websocket.server.UriTemplate;
+import org.apache.pdfbox.pdmodel.PDDocument;
+import org.apache.pdfbox.pdmodel.PDPage;
+import org.apache.pdfbox.pdmodel.PDPageContentStream;
+import org.apache.pdfbox.pdmodel.font.PDMMType1Font;
 import org.salespointframework.inventory.UniqueInventory;
 import org.salespointframework.inventory.UniqueInventoryItem;
-import org.salespointframework.order.*;
+import org.salespointframework.order.Cart;
+import org.salespointframework.order.CartItem;
+import org.salespointframework.order.OrderIdentifier;
+import org.salespointframework.order.OrderLine;
+import org.salespointframework.order.OrderManagement;
+import org.salespointframework.order.OrderStatus;
+import org.salespointframework.order.Totalable;
 import org.salespointframework.payment.Cash;
 import org.salespointframework.quantity.Quantity;
 import org.salespointframework.support.ConsoleWritingMailSender;
 import org.salespointframework.useraccount.UserAccount;
 import org.salespointframework.useraccount.web.LoggedIn;
-
 import org.springframework.data.util.Streamable;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.Assert;
+import org.springframework.util.FileCopyUtils;
 import org.springframework.validation.Errors;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.*;
+import javax.servlet.http.HttpServletResponse;
+import java.awt.*;
+import java.io.*;
+import java.time.DayOfWeek;
+import java.time.LocalDate;
+import java.time.Month;
+import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.IsoFields;
-import java.time.temporal.TemporalAdjusters;
-import java.time.temporal.WeekFields;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Collections;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 
 
 @Controller
@@ -692,5 +705,91 @@ public class OrderController {
 		return simpleMessage;
 	}
 
-	
+	@GetMapping(value = "/bill/{orderId}")
+	@PreAuthorize(value="hasRole('CUSTOMER')")
+	@ResponseBody void printBill(@PathVariable("orderId") OrderIdentifier orderId, HttpServletResponse response) throws IOException {
+		CateringOrder order = orderManagement.get(orderId).get();
+
+		String property = System.getProperty("java.io.tmpdir");
+		File tempDir = new File(property);
+		File bill = File.createTempFile(order.getService() + "_" + order.getCompletionDate().toString(), ".pdf", tempDir);
+		InputStream stream;
+
+		PDDocument document = new PDDocument();
+		PDPage page = new PDPage();
+		document.addPage(page);
+
+		try (PDPageContentStream contentStream = new PDPageContentStream(document, page)) {
+			createPdf(contentStream, document,  order).save(bill);
+			document.save(bill);
+			response.setContentType("application/pdf");
+			response.setHeader("Content-Disposition", String.format("attachment; filename=\"" + bill.getName() + "\""));
+			stream = new BufferedInputStream(new FileInputStream(bill));
+			FileCopyUtils.copy(stream, response.getOutputStream());
+		} catch (IOException ignored) {
+		}
+
+	}
+
+
+	private PDDocument createPdf(PDPageContentStream contentStream, PDDocument document, CateringOrder order) throws IOException {
+		contentStream.beginText();
+
+		int xOffset = 65;
+		int xOffsetData = 210;
+
+		contentStream.setFont(PDMMType1Font.HELVETICA_BOLD, 28);
+		contentStream.setNonStrokingColor(0.31f, 0.01f, 0.01f);
+		contentStream.newLineAtOffset(xOffset, 700);
+		contentStream.showText("Cateringservice ");
+
+		contentStream.setFont(PDMMType1Font.TIMES_ITALIC, 28);
+		contentStream.setNonStrokingColor(0.31f, 0.01f, 0.01f);
+		contentStream.showText("Mampf");
+
+		contentStream.setFont(PDMMType1Font.HELVETICA_BOLD, 24);
+		contentStream.setNonStrokingColor(0.12f, 0.36f, 0.95f);
+		contentStream.newLineAtOffset(400, -30);
+		contentStream.showText("Rechnung");
+		contentStream.endText();
+
+		contentStream.setFont(PDMMType1Font.HELVETICA, 18);
+		contentStream.setNonStrokingColor(Color.BLACK);
+		insertText(contentStream, xOffset, 600, "Bestellung von " + order.getUserAccount().getFirstname()
+				+ " " + order.getUserAccount().getLastname());
+
+		contentStream.setFont(PDMMType1Font.HELVETICA, 13);
+
+		insertText(contentStream,xOffset, 570, "Email:");
+		insertText(contentStream,xOffsetData, 570, order.getUserAccount().getEmail());
+
+		insertText(contentStream,xOffset, 550, "Datum:");
+		insertText(contentStream,xOffsetData, 550, order.getCompletionDate().toString() +
+				", " + order.getTime().toString().toLowerCase());
+
+		insertText(contentStream,xOffset, 530, "Adresse:");
+		insertText(contentStream,xOffsetData, 530, order.getAddress());
+
+		int yOffsetForLastLine = 490;
+		insertText(contentStream,xOffset, 510, "Ausgewählte Optionen:");
+		for(OrderLine option : order.getOrderLines().toList()){
+			insertText(contentStream, xOffsetData, yOffsetForLastLine, "- " + option.getProductName() + " "
+					+ option.getQuantity() + "x");
+			yOffsetForLastLine -= 20;
+		}
+
+		insertText(contentStream,xOffset, yOffsetForLastLine -20, "Kosten:");
+		contentStream.setFont(PDMMType1Font.HELVETICA_BOLD, 13);
+		insertText(contentStream,xOffsetData, yOffsetForLastLine - 20, order.getTotal().getNumber() +" EUR");
+
+		contentStream.close();
+		return document;
+	}
+
+	private void insertText(PDPageContentStream contentStream,int xOffset, int yOffset, String text) throws IOException {
+		contentStream.beginText();
+		contentStream.newLineAtOffset(xOffset, yOffset);
+		contentStream.showText(text);
+		contentStream.endText();
+	}
 }
