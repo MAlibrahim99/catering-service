@@ -52,7 +52,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-
 @Controller
 @PreAuthorize(value = "isAuthenticated()")
 @SessionAttributes("cart")
@@ -75,7 +74,6 @@ public class OrderController {
 
 		this.userRepository = userRepository;
 		this.inventory = inventory;
-
 	}
 
 	@GetMapping(value = "/order-history")
@@ -93,7 +91,6 @@ public class OrderController {
 		if (account == null || orderId == null) {
 			return "redirect:/login";
 		}
-
 		// Bestellung ist da, und aktueller Nutzer hat diese Bestellung in seinem Verlauf
 		if(orderManagement.contains(orderId) && orderManagement.get(orderId).get().getUserAccount().equals(account)){
 			CateringOrder cateringOrder =  orderManagement.get(orderId).get();
@@ -139,9 +136,7 @@ public class OrderController {
 		model.addAttribute("end", end);
 
 		return "income-overview";
-
 	}
-
 
 	/**
 	 * 
@@ -191,16 +186,13 @@ public class OrderController {
 	 * @return orderreview
 	 */
 
-
 	@PostMapping("/cartadd")
 	String addtoCart(Model model, @ModelAttribute ("order") CateringOrder order, @ModelAttribute ("form") OrderForm form,
 					 @ModelAttribute Cart cart ){
 		cart.clear();
 
 		model.addAttribute("order", order);
-		//model.addAttribute("orderOut", new CateringOrder());
 		model.addAttribute("form", form);
-
 
 		int guestcount = form.getPersons();
 
@@ -218,46 +210,19 @@ public class OrderController {
 			order.setTime(TimeSegment.ABEND);
 			break;
 		}
-		
-
-
-		System.out.println(order.getTime());
-
 
 		// calculates the amount of waiter and chefs in dependence of the servicetype and saves it for the order
-
 		order.setChefcount(calcWorker(form.getService(), guestcount).get(0));
 		order.setWaitercount(calcWorker(form.getService(), guestcount).get(1));
-		System.out.println(order.getChefcount());
-		System.out.println(order.getWaitercount());
-
-		
-
-
-
 
 		//if there aren't enough waiters or chefs it redirects to the orderform
-
 		Streamable<User> chefcountRep = userRepository.getUserByPositionIn(List.of(Position.COOK));
         Streamable<User> waitercountRep = userRepository.getUserByPositionIn(List.of(Position.WAITER,
 				Position.EXPERIENCED_WAITER, Position.MINIJOB));
         if(chefcountRep.toList().size() < order.getChefcount() ||
 				waitercountRep.toList().size() < order.getWaitercount()){
-            /*if (form.getService().equals("eventcatering")){
-				return "redirect:/order/eventcatering";
-			}else if (form.getService().equals("partyservice")){
-				return "redirect:/order/partyservice";
-			}else if (form.getService().equals("rentacook")){
-				return "redirect:/order/rentacook";
-			}else if (form.getService().equals("mobilebreakfast")){
-				return "redirect:/order/mobilebreakast";
-			}else{
-				return "redirect:/";
-			} */
 			return "redirect";
         }
-
-
 
 		for (OrderFormitem optionItem : form.getFoodList()) {
 			if (optionItem.getAmount() != 0){
@@ -275,24 +240,14 @@ public class OrderController {
 			}
 		}
 
-		/*
-
-		model.addAttribute("order", order);
-		//model.addAttribute("orderOut", new CateringOrder());
-		model.addAttribute("form", form);
-
-		*/
-
 		return "orderreview";
 
 	}
 
-	
 	@GetMapping("/confirmOrder")
 	String confirmOrderPage(){
 		return "confirmOrder";
 	}
-
 
 	/**
 	 * 
@@ -319,7 +274,6 @@ public class OrderController {
         cart.clear();
 		return "redirect:/";
 		}
-
 
 	/**
 	 * 
@@ -353,11 +307,7 @@ public class OrderController {
 
 				orderManagement.payOrder(order);
 
-				
-				
-
 				ArrayList<User> staffList = new ArrayList<>();
-
 				sort(staffList, staffList.size());
 				
 
@@ -372,19 +322,9 @@ public class OrderController {
 
 				chefList = getListof(chef);
 
-				System.out.println(chefList);
-				System.out.println(staffList);
-
-				
-		
-				
-
 				//sorting lists
 				sort(staffList, staffList.size());
 				sort(chefList, chefList.size());
-
-
-
 
 				if(chefList.size() >= orderOut.getChefcount() && staffList.size() >= orderOut.getWaitercount()){
 
@@ -398,19 +338,8 @@ public class OrderController {
 						u.setWorkcount(u.getWorkcount()+1);
 						userRepository.save(u);
 					}
-					
-
-
 					order.setAllocStaff(allstaff);
-
-
-
-
 				}
-
-
-
-
 
 				if (help.hasErrors()){
 					return "cart";
@@ -420,7 +349,6 @@ public class OrderController {
 				return "redirect:/confirmOrder";
 			}).orElse("redirect:/");
 		}
-
 
 		/**
 		 * 
@@ -491,7 +419,6 @@ public class OrderController {
 			return workerArrayList;
 		}
 
-
 		public ArrayList<User> getWorkerList(ArrayList<User> workerList, int amount){
 			ArrayList<User> workerArrayList = new ArrayList<>();
 			for(int i=0; i<amount; i++){
@@ -500,9 +427,6 @@ public class OrderController {
 			System.out.println(workerArrayList);
 			return workerArrayList;
 		}
-		
-
-
 
 		/**
 		 * 
@@ -535,25 +459,12 @@ public class OrderController {
 		 * to add Equip Items
 		 */
 		private void saveInventoryItem(Option option, Quantity quantity) {
-
-			/*Option option;
-			if (cartItem.getProductName() == "Eventcatering"  cartItem.getProductName() == "PartyService"
-				cartItem.getProductName() == "Rent a cook" || cartItem.getProductName() == "Mobilebreakfast"){
-
-				}*/
-			//Option option = catalog.findByName(cartItem.getProductName()).stream().findFirst().get();
 			UniqueInventoryItem item = inventory.findByProduct(option).get();
-
-
 			Quantity quantityInput = quantity;
-
-				item.increaseQuantity(quantity);
+			item.increaseQuantity(quantity);
 
 			inventory.save(item);
 		}
-
-		
-
 
 	//get status from buttons and redirect to correct order-list
 	@PostMapping("/setstatus")
@@ -726,11 +637,11 @@ public class OrderController {
 			response.setHeader("Content-Disposition", String.format("attachment; filename=\"" + bill.getName() + "\""));
 			stream = new BufferedInputStream(new FileInputStream(bill));
 			FileCopyUtils.copy(stream, response.getOutputStream());
-		} catch (IOException ignored) {
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
 
 	}
-
 
 	private PDDocument createPdf(PDPageContentStream contentStream, PDDocument document, CateringOrder order) throws IOException {
 		contentStream.beginText();

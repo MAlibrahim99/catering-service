@@ -29,7 +29,6 @@ public class UserController {
 	private final UserRepository userRepository;
 	private final UserAccountManagement accountManagement;
 
-
 	/**
 	 * @param userManagement
 	 * @param userRepository
@@ -91,9 +90,6 @@ public class UserController {
 		if(account.isEmpty() && userId.isEmpty()){
 			return "login";
 		}
-//		if(account.get().hasRole(Role.of("CUSTOMER"))){
-//			model.addAttribute("user", userManagement.findByUsername(account.get().getUsername()));
-//		}
 
 		boolean isIdNumeric = false;
 		long id = -1;
@@ -101,7 +97,8 @@ public class UserController {
 			try {
 				id = Long.parseLong(userId.get());
 				isIdNumeric = true;
-			} catch (Exception ignored) {
+			} catch (Exception e) {
+				e.printStackTrace();
 			}
 		}
 		if(isIdNumeric && userRepository.existsById(id) && account.get().hasRole(Role.of("ADMIN"))){
@@ -126,7 +123,6 @@ public class UserController {
 			return "login";
 		}
 	}
-
 
 	/**
 	 * Returns view of employee accounts registered in the system.
@@ -154,7 +150,6 @@ public class UserController {
 		return "edit-profile";
 	}
 
-
 	/**
 	 * handles updating and persisting {@link User}'s new submitted data. It also guarantees that there will be no
 	 * duplicates in emails or usernames.
@@ -179,7 +174,6 @@ public class UserController {
 		
 	}
 
-
 	/**
 	 * Delegates deleting user Entity to {@link UserManagement}
 	 * @param userId long
@@ -202,12 +196,12 @@ public class UserController {
 	}
 
 	@Controller
-	static class ErrorHandler implements ErrorController{
-	@GetMapping(value="/error")
-	public ModelAndView unExpectedError(HttpServletRequest httpRequest, Model model){
-		model.addAttribute("errorMessage", "Ungültige Eingaben");
-		int errorCode = (int) httpRequest.getAttribute("javax.servlet.error.status_code");
-		return new ModelAndView("error-page");
-	}
+	static class ErrorHandler implements ErrorController {
+		@GetMapping(value = "/error")
+		public ModelAndView unExpectedError(HttpServletRequest httpRequest, Model model) {
+			model.addAttribute("errorMessage", "Ungültige Eingaben");
+			int errorCode = (int) httpRequest.getAttribute("javax.servlet.error.status_code");
+			return new ModelAndView("error-page");
+		}
 	}
 }
