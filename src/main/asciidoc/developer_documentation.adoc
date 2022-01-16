@@ -1,5 +1,7 @@
+= Entwicklerdokumentation
+
 [options="header"]
-[cols="1, 1, 1, 1, 4"]
+[cols="1, 1, 1, 3, 5"]
 |===
 |Version | Status      | Bearbeitungsdatum   | Autoren |  Vermerk
 |0.1     | In Arbeit   | 12.11.2021          | Dan Nguyen, Konrad Schneider, Lennart Obermüller, Lisa-Marie Müller, Mohamad Alibrahim, Rosa Splittgerber
@@ -7,8 +9,6 @@
 |===
 
 :numbered:
-
-= Entwicklerdokumentation
 
 == Inhaltsverzeichnis
 <<Einführung und Ziele>> + 
@@ -192,9 +192,11 @@ image:models/design/BausteinsichtNutzer.png[block view user]
 |Nutzer|stellt angemeldeten Nutzer dar, der eine der Rollen “CUSTOMER”, “STAFF” oder “ADMIN” hat.
 |NutzerKontroller|leitet Nutzeranfragen zu den zuständigen Klassen weiter.
 |KontoManagement|stellt Funktionen zum Erstellen und Modifizieren von Nutzerkonten.
-|Kontodata|Dataobject zum Austausch von Kontodaten.
+|Registrierungsform|Datenobjekt zur Transport von Registerirungsdaten.
+|Profilform|Datenobjekt zur Transport von Profilbearbeitungsdaten.
 |NutzerDataInitialisierer|implementiert DataInitializer zum Instanziieren von Nutzerkonten.
 |NutzerRepository|Ein Repository-Interface, um Nutzer zu verwalten.
+|Position|Enumeration zur Darstellung von PersonalPosition.
 |===
 
 === Inventar 

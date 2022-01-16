@@ -3,42 +3,54 @@ package catering.order;
 import catering.catalog.Option;
 import catering.catalog.OptionCatalog;
 import catering.catalog.OptionType;
-import catering.catalog.Option;
-import catering.catalog.OptionCatalog;
 import catering.user.Position;
 import catering.user.User;
 import catering.user.UserRepository;
-
-import org.apache.tomcat.websocket.server.UriTemplate;
+import org.apache.pdfbox.pdmodel.PDDocument;
+import org.apache.pdfbox.pdmodel.PDPage;
+import org.apache.pdfbox.pdmodel.PDPageContentStream;
+import org.apache.pdfbox.pdmodel.font.PDMMType1Font;
 import org.salespointframework.inventory.UniqueInventory;
 import org.salespointframework.inventory.UniqueInventoryItem;
-import org.salespointframework.order.*;
+import org.salespointframework.order.Cart;
+import org.salespointframework.order.CartItem;
+import org.salespointframework.order.OrderIdentifier;
+import org.salespointframework.order.OrderLine;
+import org.salespointframework.order.OrderManagement;
+import org.salespointframework.order.OrderStatus;
+import org.salespointframework.order.Totalable;
 import org.salespointframework.payment.Cash;
 import org.salespointframework.quantity.Quantity;
 import org.salespointframework.support.ConsoleWritingMailSender;
 import org.salespointframework.useraccount.UserAccount;
 import org.salespointframework.useraccount.web.LoggedIn;
-
 import org.springframework.data.util.Streamable;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.Assert;
+import org.springframework.util.FileCopyUtils;
 import org.springframework.validation.Errors;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.*;
+import javax.servlet.http.HttpServletResponse;
+import java.awt.*;
+import java.io.*;
+import java.time.DayOfWeek;
+import java.time.LocalDate;
+import java.time.Month;
+import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.IsoFields;
-import java.time.temporal.TemporalAdjusters;
-import java.time.temporal.WeekFields;
-import java.util.*;
-
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Collections;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 
 @Controller
 @PreAuthorize(value = "isAuthenticated()")
@@ -62,7 +74,6 @@ public class OrderController {
 
 		this.userRepository = userRepository;
 		this.inventory = inventory;
-
 	}
 
 	@GetMapping(value = "/order-history")
@@ -80,7 +91,6 @@ public class OrderController {
 		if (account == null || orderId == null) {
 			return "redirect:/login";
 		}
-
 		// Bestellung ist da, und aktueller Nutzer hat diese Bestellung in seinem Verlauf
 		if(orderManagement.contains(orderId) && orderManagement.get(orderId).get().getUserAccount().equals(account)){
 			CateringOrder cateringOrder =  orderManagement.get(orderId).get();
@@ -126,9 +136,7 @@ public class OrderController {
 		model.addAttribute("end", end);
 
 		return "income-overview";
-
 	}
-
 
 	/**
 	 * 
@@ -178,16 +186,13 @@ public class OrderController {
 	 * @return orderreview
 	 */
 
-
 	@PostMapping("/cartadd")
 	String addtoCart(Model model, @ModelAttribute ("order") CateringOrder order, @ModelAttribute ("form") OrderForm form,
 					 @ModelAttribute Cart cart ){
 		cart.clear();
 
 		model.addAttribute("order", order);
-		//model.addAttribute("orderOut", new CateringOrder());
 		model.addAttribute("form", form);
-
 
 		int guestcount = form.getPersons();
 
@@ -205,14 +210,8 @@ public class OrderController {
 			order.setTime(TimeSegment.ABEND);
 			break;
 		}
-		
-
-
-
-
 
 		// calculates the amount of waiter and chefs in dependence of the servicetype and saves it for the order
-
 		order.setChefcount(calcWorker(form.getService(), guestcount).get(0));
 		order.setWaitercount(calcWorker(form.getService(), guestcount).get(1));
 
@@ -222,27 +221,13 @@ public class OrderController {
 
 
 		//if there aren't enough waiters or chefs it redirects to the orderform
-
 		Streamable<User> chefcountRep = userRepository.getUserByPositionIn(List.of(Position.COOK));
         Streamable<User> waitercountRep = userRepository.getUserByPositionIn(List.of(Position.WAITER,
 				Position.EXPERIENCED_WAITER, Position.MINIJOB));
         if(chefcountRep.toList().size() < order.getChefcount() ||
 				waitercountRep.toList().size() < order.getWaitercount()){
-            /*if (form.getService().equals("eventcatering")){
-				return "redirect:/order/eventcatering";
-			}else if (form.getService().equals("partyservice")){
-				return "redirect:/order/partyservice";
-			}else if (form.getService().equals("rentacook")){
-				return "redirect:/order/rentacook";
-			}else if (form.getService().equals("mobilebreakfast")){
-				return "redirect:/order/mobilebreakast";
-			}else{
-				return "redirect:/";
-			} */
 			return "redirect";
         }
-
-
 
 		for (OrderFormitem optionItem : form.getFoodList()) {
 			if (optionItem.getAmount() != 0){
@@ -260,24 +245,14 @@ public class OrderController {
 			}
 		}
 
-		/*
-
-		model.addAttribute("order", order);
-		//model.addAttribute("orderOut", new CateringOrder());
-		model.addAttribute("form", form);
-
-		*/
-
 		return "orderreview";
 
 	}
 
-	
 	@GetMapping("/confirmOrder")
 	String confirmOrderPage(){
 		return "confirmOrder";
 	}
-
 
 	/**
 	 * 
@@ -304,7 +279,6 @@ public class OrderController {
         cart.clear();
 		return "redirect:/";
 		}
-
 
 	/**
 	 * 
@@ -338,11 +312,7 @@ public class OrderController {
 
 				orderManagement.payOrder(order);
 
-				
-				
-
 				ArrayList<User> staffList = new ArrayList<>();
-
 				sort(staffList, staffList.size());
 				
 
@@ -366,9 +336,6 @@ public class OrderController {
 				sort(staffList, staffList.size());
 				sort(chefList, chefList.size());
 
-
-
-
 				if(chefList.size() >= orderOut.getChefcount() && staffList.size() >= orderOut.getWaitercount()){
 
 					//checking workcount of Users and add the worker with lowest workcount, for a decent distribution
@@ -381,19 +348,8 @@ public class OrderController {
 						u.setWorkcount(u.getWorkcount()+1);
 						userRepository.save(u);
 					}
-					
-
-
 					order.setAllocStaff(allstaff);
-
-
-
-
 				}
-
-
-
-
 
 				if (help.hasErrors()){
 					return "cart";
@@ -403,7 +359,6 @@ public class OrderController {
 				return "redirect:/confirmOrder";
 			}).orElse("redirect:/");
 		}
-
 
 		/**
 		 * 
@@ -474,7 +429,6 @@ public class OrderController {
 			return workerArrayList;
 		}
 
-
 		public ArrayList<User> getWorkerList(ArrayList<User> workerList, int amount){
 			ArrayList<User> workerArrayList = new ArrayList<>();
 			for(int i=0; i<amount; i++){
@@ -483,9 +437,6 @@ public class OrderController {
 
 			return workerArrayList;
 		}
-		
-
-
 
 		/**
 		 * 
@@ -518,25 +469,12 @@ public class OrderController {
 		 * to add Equip Items
 		 */
 		private void saveInventoryItem(Option option, Quantity quantity) {
-
-			/*Option option;
-			if (cartItem.getProductName() == "Eventcatering"  cartItem.getProductName() == "PartyService"
-				cartItem.getProductName() == "Rent a cook" || cartItem.getProductName() == "Mobilebreakfast"){
-
-				}*/
-			//Option option = catalog.findByName(cartItem.getProductName()).stream().findFirst().get();
 			UniqueInventoryItem item = inventory.findByProduct(option).get();
-
-
 			Quantity quantityInput = quantity;
-
-				item.increaseQuantity(quantity);
+			item.increaseQuantity(quantity);
 
 			inventory.save(item);
 		}
-
-		
-
 
 	//get status from buttons and redirect to correct order-list
 	@PostMapping("/setstatus")
@@ -687,5 +625,91 @@ public class OrderController {
 		return simpleMessage;
 	}
 
-	
+	@GetMapping(value = "/bill/{orderId}")
+	@PreAuthorize(value="hasRole('CUSTOMER')")
+	@ResponseBody void printBill(@PathVariable("orderId") OrderIdentifier orderId, HttpServletResponse response) throws IOException {
+		CateringOrder order = orderManagement.get(orderId).get();
+
+		String property = System.getProperty("java.io.tmpdir");
+		File tempDir = new File(property);
+		File bill = File.createTempFile(order.getService() + "_" + order.getCompletionDate().toString(), ".pdf", tempDir);
+		InputStream stream;
+
+		PDDocument document = new PDDocument();
+		PDPage page = new PDPage();
+		document.addPage(page);
+
+		try (PDPageContentStream contentStream = new PDPageContentStream(document, page)) {
+			createPdf(contentStream, document,  order).save(bill);
+			document.save(bill);
+			response.setContentType("application/pdf");
+			response.setHeader("Content-Disposition", String.format("attachment; filename=\"" + bill.getName() + "\""));
+			stream = new BufferedInputStream(new FileInputStream(bill));
+			FileCopyUtils.copy(stream, response.getOutputStream());
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+	}
+
+	private PDDocument createPdf(PDPageContentStream contentStream, PDDocument document, CateringOrder order) throws IOException {
+		contentStream.beginText();
+
+		int xOffset = 65;
+		int xOffsetData = 210;
+
+		contentStream.setFont(PDMMType1Font.HELVETICA_BOLD, 28);
+		contentStream.setNonStrokingColor(0.31f, 0.01f, 0.01f);
+		contentStream.newLineAtOffset(xOffset, 700);
+		contentStream.showText("Cateringservice ");
+
+		contentStream.setFont(PDMMType1Font.TIMES_ITALIC, 28);
+		contentStream.setNonStrokingColor(0.31f, 0.01f, 0.01f);
+		contentStream.showText("Mampf");
+
+		contentStream.setFont(PDMMType1Font.HELVETICA_BOLD, 24);
+		contentStream.setNonStrokingColor(0.12f, 0.36f, 0.95f);
+		contentStream.newLineAtOffset(400, -30);
+		contentStream.showText("Rechnung");
+		contentStream.endText();
+
+		contentStream.setFont(PDMMType1Font.HELVETICA, 18);
+		contentStream.setNonStrokingColor(Color.BLACK);
+		insertText(contentStream, xOffset, 600, "Bestellung von " + order.getUserAccount().getFirstname()
+				+ " " + order.getUserAccount().getLastname());
+
+		contentStream.setFont(PDMMType1Font.HELVETICA, 13);
+
+		insertText(contentStream,xOffset, 570, "Email:");
+		insertText(contentStream,xOffsetData, 570, order.getUserAccount().getEmail());
+
+		insertText(contentStream,xOffset, 550, "Datum:");
+		insertText(contentStream,xOffsetData, 550, order.getCompletionDate().toString() +
+				", " + order.getTime().toString().toLowerCase());
+
+		insertText(contentStream,xOffset, 530, "Adresse:");
+		insertText(contentStream,xOffsetData, 530, order.getAddress());
+
+		int yOffsetForLastLine = 490;
+		insertText(contentStream,xOffset, 510, "Ausgewählte Optionen:");
+		for(OrderLine option : order.getOrderLines().toList()){
+			insertText(contentStream, xOffsetData, yOffsetForLastLine, "- " + option.getProductName() + " "
+					+ option.getQuantity() + "x");
+			yOffsetForLastLine -= 20;
+		}
+
+		insertText(contentStream,xOffset, yOffsetForLastLine -20, "Kosten:");
+		contentStream.setFont(PDMMType1Font.HELVETICA_BOLD, 13);
+		insertText(contentStream,xOffsetData, yOffsetForLastLine - 20, order.getTotal().getNumber() +" EUR");
+
+		contentStream.close();
+		return document;
+	}
+
+	private void insertText(PDPageContentStream contentStream,int xOffset, int yOffset, String text) throws IOException {
+		contentStream.beginText();
+		contentStream.newLineAtOffset(xOffset, yOffset);
+		contentStream.showText(text);
+		contentStream.endText();
+	}
 }

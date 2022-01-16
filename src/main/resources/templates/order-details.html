@@ -43,5 +43,8 @@
         <td th:text="*{total}" class="p-1-rem"></td>
         </tr>
     </table>
+    <div>
+        <a sec:authorize="hasRole('CUSTOMER')" class="ui blue button" th:href="@{/bill/{orderId}(orderId=${order.id})}">Als PDF herunterladen</a>
+    </div>
 </section>
 </body>
