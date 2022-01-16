@@ -211,7 +211,7 @@ image:models/design/BausteinsichtInventar.png[block view inventory]
 |===
 
 === Bestellung 
-image:models/design/BausteinsichtBestellung.png[block view order]
+image:models/design/BausteinansichtBestellung.PNG[block view order]
 
 [options="header"]
 |===
