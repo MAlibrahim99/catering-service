@@ -194,7 +194,7 @@ image:models/design/BausteinsichtNutzer.png[block view user]
 |UserManagement|stellt Funktionen zum Erstellen und Modifizieren von Nutzerkonten.
 |RegistrationForm|Datenobjekt zur Transport von Registerirungsdaten.
 |ProfilForm|Datenobjekt zur Transport von Profilbearbeitungsdaten.
-|UserInitialisierer|implementiert DataInitializer zum Instanziieren von Nutzerkonten.
+|UserInitializer|implementiert DataInitializer zum Instanziieren von Nutzerkonten.
 |UserRepository|Ein Repository-Interface, um Nutzer zu verwalten.
 |Position|Enumeration zur Darstellung von PersonalPosition.
 |===
