@@ -122,10 +122,10 @@ image:models/design/Benutzeroberfläche.png[user interface]
 -catalog.Option + 
 -catalog.OptionCatalog
 |salespointframework.core| -catalog.CatalogDataInitializer + 
--nutzer.NutzerDataInitializer +
--catering.nutzer.Nutzer +
+-user.UserInitializer +
+-user.User +
 -inventory.InventoryDataInitializer +
--nutzer.KontoManagement
+-user.UserManagement
 |salespointframework.inventory | -inventory.InventoryController +
 -inventory.InventoryDataInitializer + 
 -inventory.QuantityInputs
@@ -136,27 +136,27 @@ image:models/design/Benutzeroberfläche.png[user interface]
 -inventory.InventoryDataInitializer
 |salespointframework.SalespointSecurityConfiguration|-catering.Catering
 |salespointframework.time| -catalog.CatalogController
-|salespointframework.useraccount | -nutzer.Nutzer +
--nutzer.NutzerDataInitializer + 
--nutzer.KontoManagement
+|salespointframework.useraccount | -user.User +
+-user.UserInitializer + 
+-user.UserManagement
 |salespointframework.boot | -catering.Catering +
--nutzer.Nutzer
-|salespointframework.data | -nutzerKontoManagement +
+-user.User
+|salespointframework.data | -user.UserManagement +
 -catalog.OptionCatalog +
--nutzer.NutzerRepository + 
+-user.UserRepository + 
 -inventory.InventoryController
 |salespointframework.security | -catering.Catering +
--nutzer.NutzerKontroller
-|salespointframework.ui |-nutzer.NutzerKontroller +
+-user.UserController
+|salespointframework.ui |-user.UserController +
 -inventory.InventoryController
-|salespointframework.util | -nutzer.NutzerKontroller +
--nutzer.NutzerDataInitializer + 
+|salespointframework.util | -user.UserController +
+-user.UserInitializer + 
 -order.OrderController + 
 -catalog.CatalogDataInitializer + 
 -inventory.InventoryDataInnitializer
-|salespointframework..validation | -nutzer.NutzerKontroller
+|salespointframework.validation | -user.UserController
 |salespointframework.web | -inventory.InventoryController + 
--nutzer.NutzerKontroller
+-user.UserController
 |===
 
 == Bausteinsicht
@@ -189,13 +189,13 @@ image:models/design/BausteinsichtNutzer.png[block view user]
 [options="header"]
 |===
 |*Klasse/Enumeration* |*Beschreibung*
-|Nutzer|stellt angemeldeten Nutzer dar, der eine der Rollen “CUSTOMER”, “STAFF” oder “ADMIN” hat.
-|NutzerKontroller|leitet Nutzeranfragen zu den zuständigen Klassen weiter.
-|KontoManagement|stellt Funktionen zum Erstellen und Modifizieren von Nutzerkonten.
-|Registrierungsform|Datenobjekt zur Transport von Registerirungsdaten.
-|Profilform|Datenobjekt zur Transport von Profilbearbeitungsdaten.
-|NutzerDataInitialisierer|implementiert DataInitializer zum Instanziieren von Nutzerkonten.
-|NutzerRepository|Ein Repository-Interface, um Nutzer zu verwalten.
+|User|stellt angemeldeten Nutzer dar, der eine der Rollen “CUSTOMER”, “STAFF” oder “ADMIN” hat.
+|UserController|leitet Nutzeranfragen zu den zuständigen Klassen weiter.
+|UserManagement|stellt Funktionen zum Erstellen und Modifizieren von Nutzerkonten.
+|RegistrationForm|Datenobjekt zur Transport von Registerirungsdaten.
+|ProfilForm|Datenobjekt zur Transport von Profilbearbeitungsdaten.
+|UserInitialisierer|implementiert DataInitializer zum Instanziieren von Nutzerkonten.
+|UserRepository|Ein Repository-Interface, um Nutzer zu verwalten.
 |Position|Enumeration zur Darstellung von PersonalPosition.
 |===
 
