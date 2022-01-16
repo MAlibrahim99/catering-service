@@ -421,6 +421,12 @@ public class OrderController {
 			return workerAmount;
 		}
 
+		/**
+		 * 
+		 * @param workerList
+		 * @return workerArrayList
+		 * creates List for the needed WorkerType
+		 */
 		public ArrayList<User> getListof(Streamable<User> workerList){
 			ArrayList<User> workerArrayList = new ArrayList<>();
 			for(User u : workerList){
@@ -429,6 +435,13 @@ public class OrderController {
 			return workerArrayList;
 		}
 
+		/**
+		 * 
+		 * @param workerList
+		 * @param amount
+		 * @return workerArrayList
+		 * creates List for needed worker for an order
+		 */
 		public ArrayList<User> getWorkerList(ArrayList<User> workerList, int amount){
 			ArrayList<User> workerArrayList = new ArrayList<>();
 			for(int i=0; i<amount; i++){
