@@ -18,7 +18,7 @@ __Teilnehmer:__
 - Lennart Obermüller (Scrum Master)
 - Lisa-Marie Müller
 - Mohamad Alibrahim
-- Konrad Schneider
+- Dan Nguyen
 - Rosa Splittgerber
 
 == Bemerkungen

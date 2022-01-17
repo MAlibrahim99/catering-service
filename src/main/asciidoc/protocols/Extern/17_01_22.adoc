@@ -1,0 +1,35 @@
+= Protokoll Gruppe 27
+
+Treffen am 17.01.2022
+
+Ort:      Online (BBB) +
+Beginn:   15:00 Uhr +
+Ende:     15:50 Uhr
+
+__Schriftführer:__ Rosa Splittgerber
+
+*Nächstes Treffen:* +
+24.01.2022, 15:00 Uhr, Online (BBB)
+
+__Teilnehmer:__
+//Tabellarisch oder Aufzählung, Kennzeichnung von Teilnehmern mit besonderer Rolle (z.B. Kunde)
+
+- Phillipp Zschiedrich (Tutor)
+- Lennart Obermüller (Scrum Master)
+- Lisa-Marie Müller
+- Mohamad Alibrahim
+- Konrad Schneider
+- Dan Nguyen
+- Rosa Splittgerber
+
+== Bemerkungen
+n.V.
+
+== Ereignisse
+- Auswertungsbogen zum Softwarepraktikum wurde im Team mit Tutor ausgefüllt
+- Termin der Prüfung wurde bekannt gegeben (03.02.2022, 14:50 Uhr)
+- Hinweise zur Einverständniserklärung und Evaluationsbogen
+
+== Aktueller Stand
+- Fertigstellung der Anwendung und Entwicklerdokumentation
+- Auswertung des Praktikums durch jedes Teammitglied
