@@ -21,7 +21,7 @@ Leider wussten wir vorher nicht, wie der Aufwand der verschiedenen Aufgabenteile
 
 == Welche Erfahrungen habe ich bei der Wiederverwendung von Bibliotheken/Frameworks (insbesondere SalesPoint) gemacht?
 // Einschätzung der Arbeit mit den bereitgestellten und zusätzlich genutzten Frameworks. Was War gut? Was war verbesserungswürdig?
-Die Frameeworks waren hilfreeich, allerdings für mich anfangs schwer zu veerstehen. Das hat sich letztlich geändeert und ich konnte mir dieee Arbeit mit diesen erleichtern.
+Die Frameworks waren hilfreich, allerdings für mich anfangs schwer zu verstehen. Das hat sich letztlich geändert und ich konnte mir die Arbeit mit diesen erleichtern.
 
 == Feedback für den Tutor
 // Fühlten Sie sich durch den vom Lehrstuhl bereitgestellten Tutor gut betreut? Was war positiv? Was war verbesserungswürdig?
