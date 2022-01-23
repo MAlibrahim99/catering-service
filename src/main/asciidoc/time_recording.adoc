@@ -18,8 +18,8 @@ Die individuell erfasste Zeit beinhaltet auch das Lesen von Dokumentationen, Bes
 |9  |540   |660   |600    |430    |400    |360    |15
 |10  |180   |120    |210    |160    |540    |90    |150
 |11  |120   |120    |90    |90    |600   |160    |15
-|12  |…   |60    |120    |100    |0    |…    |200
-|Stunden gesamt*  |98   |84    |88    |81    |118    |76    |36
+|12  |…   |60    |120    |100    |0    |200    |200
+|Stunden gesamt*  |98   |84    |88    |81    |118    |79    |36
 |Stunden pro Woche pro Student  |8   |7    |7    |7    |10    |6    |-
 |Durchschnitt 6+|8 |-
 |===
