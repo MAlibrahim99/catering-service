@@ -28,14 +28,14 @@
             <div class="two fields">
                 <div class="five wide field">
                     <label>Benutzername</label>
-                    <input type="text" name="first-name" placeholder="Uniquer Benutzername" th:field="*{username}" required>
+                    <input type="text" name="first-name" placeholder="Benutzername" th:field="*{username}" required>
                     <div class="ui red message" th:if="${usernameAlreadyExists}"
                          th:text="#{register.name.exists.error}">Nutzername ist bereits vergeben
                     </div>
                 </div>
                 <div class="five wide field">
                     <label>Email-Adresse</label>
-                    <input type="text" name="Email address" placeholder="Unique Email"
+                    <input type="text" name="Email address" placeholder="Email"
                            pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$" th:field="*{email}" required>
                     <div class="ui red message" th:if="${emailAddressAlreadyExists}"
                          th:text="#{register.email.exists.error}">Benutzername ist bereits vergeben

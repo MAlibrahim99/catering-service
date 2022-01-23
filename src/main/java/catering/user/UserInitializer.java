@@ -30,7 +30,7 @@ public class UserInitializer implements DataInitializer {
 		}
 
 		System.out.println("Initializing User accounts");
-		userManagement.createUser(new RegistrationForm("Hannses", "Wurst", "Hannes Wurst", "admin@mampf.de",
+		userManagement.createUser(new RegistrationForm("Hannes", "Wurst", "Hannes Wurst", "admin@mampf.de",
 				"123", Position.NONE), Role.of("ADMIN"));
 
 		List<RegistrationForm> registrationForms = List.of(

@@ -193,7 +193,7 @@ image:models/design/BausteinsichtNutzer.png[block view user]
 |UserController|leitet Nutzeranfragen zu den zuständigen Klassen weiter.
 |UserManagement|stellt Funktionen zum Erstellen und Modifizieren von Nutzerkonten.
 |RegistrationForm|Datenobjekt zur Transport von Registerirungsdaten.
-|ProfilForm|Datenobjekt zur Transport von Profilbearbeitungsdaten.
+|ProfileForm|Datenobjekt zur Transport von Profilbearbeitungsdaten.
 |UserInitializer|implementiert DataInitializer zum Instanziieren von Nutzerkonten.
 |UserRepository|Ein Repository-Interface, um Nutzer zu verwalten.
 |Position|Enumeration zur Darstellung von PersonalPosition.
@@ -256,6 +256,4 @@ Funktionsargument
 == Laufzeitsicht (Bestellung)
 image:models/design/SequenzdiagrammBestellung.png[seq order]
 
-== Technische Schulden
-* Auflistung der nicht erreichten Quality Gates und der zugehörigen SonarQube Issues zum Zeitpunkt der Abgabe
 
